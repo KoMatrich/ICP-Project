@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "graphview.h"
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
@@ -49,6 +51,8 @@ private:
     MainWindow *findMainWindow(const QString &fileName);
 
     QTextEdit *textEdit;
+    GraphView *graphView;
+
     QString curFile;
     bool isUntitled;
 

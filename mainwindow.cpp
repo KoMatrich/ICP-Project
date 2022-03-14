@@ -77,11 +77,11 @@ bool MainWindow::saveAs()
     return saveFile(fileName);
 }
 
+///@TODO
 void MainWindow::about()
 {
    QMessageBox::about(this, tr("About SDI"),
-            tr("The <b>SDI</b> example demonstrates how to write single "
-               "document interface applications using Qt."));
+            tr("<b>@TODO</b>"));
 }
 
 void MainWindow::documentWasModified()
@@ -95,8 +95,15 @@ void MainWindow::init()
 
     isUntitled = true;
 
-    textEdit = new QTextEdit;
-    setCentralWidget(textEdit);
+    QSplitter *split = new QSplitter;
+
+    textEdit = new QTextEdit(split);
+    split->addWidget(textEdit);
+
+    graphView = new GraphView(split,textEdit);
+    split->addWidget(graphView);
+
+    setCentralWidget(split);
 
     createActions();
     createMenus();
@@ -224,7 +231,7 @@ void MainWindow::readSettings()
 {
     QSettings settings;
     QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-    QSize size = settings.value("size", QSize(400, 400)).toSize();
+    QSize size = settings.value("size", QSize(800, 800)).toSize();
     move(pos);
     resize(size);
 }
