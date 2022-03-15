@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    graphview.cpp
+    graphview.cpp \
+    highlighter.cpp
 
 HEADERS  += mainwindow.h \
-    graphview.h
+    graphview.h \
+    highlighter.h
 
 FORMS    +=

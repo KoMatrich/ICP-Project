@@ -1,9 +1,9 @@
 #include <QtWidgets>
 #include "graphview.h"
 
-GraphView::GraphView(QWidget *parent, QTextEdit *editor) : QWidget(parent)
+GraphView::GraphView(QTextEdit *parent) : QWidget(parent)
 {
-    this->editor = editor;
+    this->editor = parent;
     resize(200, 200);
 }
 

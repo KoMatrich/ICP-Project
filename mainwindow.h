@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "graphview.h"
+#include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -52,6 +53,7 @@ private:
 
     QTextEdit *textEdit;
     GraphView *graphView;
+    Highlighter *syntax;
 
     QString curFile;
     bool isUntitled;

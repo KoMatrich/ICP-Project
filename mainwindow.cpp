@@ -16,8 +16,9 @@ MainWindow::MainWindow(const QString &fileName)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    writeSettings();
+
     if (maybeSave()) {
-        writeSettings();
         event->accept();
     } else {
         event->ignore();
@@ -98,11 +99,13 @@ void MainWindow::init()
     QSplitter *split = new QSplitter;
 
     textEdit = new QTextEdit(split);
+    textEdit->acceptRichText();
     split->addWidget(textEdit);
 
-    graphView = new GraphView(split,textEdit);
+    graphView = new GraphView(textEdit);
     split->addWidget(graphView);
 
+    syntax = new Highlighter(textEdit->document());
     setCentralWidget(split);
 
     createActions();
@@ -231,7 +234,7 @@ void MainWindow::readSettings()
 {
     QSettings settings;
     QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
-    QSize size = settings.value("size", QSize(800, 800)).toSize();
+    QSize size = settings.value("size", QSize(400, 400)).toSize();
     move(pos);
     resize(size);
 }

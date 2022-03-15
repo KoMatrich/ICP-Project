@@ -11,7 +11,7 @@ class GraphView : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GraphView(QWidget *parent = 0,QTextEdit *editor = 0);
+    explicit GraphView(QTextEdit *parent = 0);
 
 signals:
 
