@@ -19,6 +19,10 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     graphview.h \
-    highlighter.h
+    highlighter.h \
+    pch/precompile_header.h
 
 FORMS    +=
+
+PRECOMPILED_HEADER = 'pch/precompile_header.h'
+CONFIG += precompile_header
