@@ -1,13 +1,13 @@
 #include <QtWidgets>
-#include "graphview.h"
+#include "SEQview.h"
 
-GraphView::GraphView(QTextEdit *parent) : QWidget(parent)
+SEQview::SEQview(QTextEdit *parent) : QWidget(parent)
 {
     this->editor = parent;
     resize(200, 200);
 }
 
-void GraphView::paintEvent(QPaintEvent *)
+void SEQview::paintEvent(QPaintEvent *)
 {
     static const QPoint hourHand[3] = {
         QPoint(7, 8),
@@ -20,8 +20,8 @@ void GraphView::paintEvent(QPaintEvent *)
         QPoint(0, -70)
     };
 
-    QColor hourColor(127, 0, 127);
-    QColor minuteColor(0, 127, 127, 191);
+    QColor hourColor(0, 127, 127);
+    QColor minuteColor(40, 0, 127, 191);
 
     int side = qMin(width(), height());
 

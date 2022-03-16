@@ -1,9 +1,9 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
-#include "graphview.h"
+#include "ERDview.h"
+#include "SEQview.h"
 #include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
@@ -51,8 +51,9 @@ private:
     QString strippedName(const QString &fullFileName);
     MainWindow *findMainWindow(const QString &fileName);
 
-    QTextEdit *textEdit;
-    GraphView *graphView;
+    QTextEdit *textEdit; // REPLACE WITH UNIQUE
+    ERDview *erdView;
+    SEQview *seqView;
     Highlighter *syntax;
 
     QString curFile;
@@ -77,5 +78,3 @@ private:
     QAction *aboutAct;
     QAction *aboutQtAct;
 };
-
-#endif

@@ -10,19 +10,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ICP-Project
 TEMPLATE = app
-QMAKE_CXXFLAGS += -std=c++17
+
+QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    graphview.cpp \
-    highlighter.cpp
+    highlighter.cpp \
+    ERDview.cpp \
+    SEQview.cpp
 
 HEADERS  += mainwindow.h \
-    graphview.h \
     highlighter.h \
-    pch/precompile_header.h
+    ERDview.h \
+    SEQview.h
 
 FORMS    +=
-
-PRECOMPILED_HEADER = 'pch/precompile_header.h'
-CONFIG += precompile_header

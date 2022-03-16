@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("BUT FIT");
 
     MainWindow *mainWin = new MainWindow;
+    mainWin->resize(1280,720);
     mainWin->show();
     return app.exec();
 }

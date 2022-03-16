@@ -102,8 +102,16 @@ void MainWindow::init()
     textEdit->acceptRichText();
     split->addWidget(textEdit);
 
-    graphView = new GraphView(textEdit);
-    split->addWidget(graphView);
+    QTabWidget *tabs = new QTabWidget(split);
+    tabs->setTabPosition(QTabWidget::East);
+
+    erdView = new ERDview(textEdit);
+    tabs->addTab(erdView, "Class");
+
+    seqView = new SEQview(textEdit);
+    tabs->addTab(seqView, "Sequence");
+
+    split->addWidget(tabs);
 
     syntax = new Highlighter(textEdit->document());
     setCentralWidget(split);

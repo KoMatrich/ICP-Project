@@ -1,5 +1,4 @@
-#ifndef GRAPHVIEW_H
-#define GRAPHVIEW_H
+#pragma once
 
 #include <QWidget>
 
@@ -7,11 +6,11 @@ QT_BEGIN_NAMESPACE
 class QTextEdit;
 QT_END_NAMESPACE
 
-class GraphView : public QWidget
+class SEQview : public QWidget
 {
     Q_OBJECT
 public:
-    explicit GraphView(QTextEdit *parent = 0);
+    explicit SEQview(QTextEdit *parent = 0);
 
 signals:
 
@@ -23,5 +22,3 @@ protected:
 private:
     QTextEdit *editor;
 };
-
-#endif // GRAPHVIEW_H
