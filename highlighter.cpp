@@ -1,23 +1,124 @@
 #include "highlighter.h"
 #include <QDebug>
 
-Highlighter::Highlighter(QTextDocument *parent)
-    : QSyntaxHighlighter(parent)
+Highlighter::Highlighter(QTextEdit *parent)
+    : QSyntaxHighlighter(parent->document())
 {
     err.setBackground(Qt::red);
     after_err.setForeground(Qt::darkGray);
+    cursor_color.setBackground(Qt::yellow);
 
-    //rule for main body
+    const QString _name = "[_A-Za-z0-9]+";
+    const QString _sentence = "("+_name+"[ {}[\\]()\\!]*)+";
+
+    Rule sentence;
+    sentence.start = QRegExp("^"+_sentence+"$");
+
+    Rule sentence_f;
+    sentence_f.start = QRegExp("^(\\[\\*]{2})"+_sentence+"\\1$");
+
+    Rule atr;//class atribute
+    atr.start = QRegExp("^(\\*{0,3})"+_sentence+"\\1$");
+
+    Rule sep;//class separator
+    sep.start = QRegExp("^(([.\\-=]{2})"+_sentence+"\\2)|([.\\-=]{4})$");
+    sep.format.setUnderlineStyle(QTextCharFormat::SingleUnderline);
+
+    //main body
     Rule main;
-    main.start = QRegExp("@startuml");
-    main.end   = QRegExp("@enduml");
+    main.start = QRegExp("^@startuml$");
+    main.end   = QRegExp("^@enduml$");
     main.format.setFontWeight(QFont::Bold);
+
+    //class
+    Rule clas;
+    clas.start = QRegExp("^class "+_name+"$");
+    clas.end   = QRegExp("^end class$");
+    clas.format.setFontWeight(QFont::Bold);
+    clas.parts.append(atr);
+    clas.parts.append(sep);
+    main.parts.append(clas);
+
+
+    //object
+    Rule object;
+    object.start = QRegExp("^object "+_name+"$");
+    object.end   = QRegExp("^end$");
+    object.format.setFontWeight(QFont::Bold);
+    object.parts.append(atr);
+    object.parts.append(sep);
+    object.parts.append(sentence_f);
+    main.parts.append(object);
+
+    //note
+    Rule note;
+    note.start = QRegExp("^note (left|right)$");
+    note.end   = QRegExp("^end note$");
+    note.format.setFontWeight(QFont::Bold);
+    note.format.setForeground(Qt::darkGreen);
+
+    Rule note_body;
+    note_body.format.setForeground(Qt::green);
+
+    note.parts.append(note_body);
+    main.parts.append(note);
+
+    //title
+    Rule title;
+    title.start = QRegExp("^title "+_sentence+"$");
+    title.format.setFontWeight(QFont::Bold);
+    main.parts.append(title);
+
+    //skin
+    Rule skin;
+    skin.start = QRegExp("^skin "+_sentence+"$");
+    main.parts.append(skin);
 
     syntax.append(main);
 }
 
-int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &current, Path *path)
+void inline Highlighter::error(int code, const QString msg){
+    qDebug() << msg;
+    setCurrentBlockState(code);
+}
+
+void Highlighter::getRules(Rule &current,RuleSet &parts, Path *path){
+    parts = syntax; //default body of code
+
+    if(path->length()!=0){
+        //path not empty   => in body
+        int i = 0;
+        while(path->length() > i){
+            current = parts.at(path->at(i));
+            parts   = current.parts;
+            i++;
+        }
+
+        if(current.end.isEmpty()){
+            //one line block without end
+            path->pop_back();
+            getRules(current,parts,path);
+        }
+    }
+}
+
+int Highlighter::match(const QString &text, int &offset, Path *path)
 {
+    RuleSet parts;
+    Rule current;
+    getRules(current,parts,path);
+
+    //find end of current block
+    QRegExp end = current.end;
+    if(!end.isEmpty()){
+        int match_i = end.indexIn(text,offset);
+        if(match_i == offset){
+            setFormat(offset,end.matchedLength(),current.format);
+            offset += end.matchedLength();
+            return -1;
+        }
+    }
+
     //find start of sub block
     for(int i = 0; i < parts.length();i++){
         Rule part = parts.at(i);
@@ -26,33 +127,15 @@ int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &c
         if(match_i == offset){
             setFormat(offset,start.matchedLength(),part.format);
             offset += start.matchedLength();
-            path->append(i);
-            return 0;
-        }
-    }
-
-    //find end of actual block
-    QRegExp end = current.end;
-    if(!end.isEmpty()){
-        int match_i = end.indexIn(text,offset);
-        if(match_i == offset){
-            setFormat(offset,end.matchedLength(),current.format);
-            offset += end.matchedLength();
-            path->pop_back();
-            return 1;
+            return i;
         }
     }
     //no rule was matched
-    return -1;
+    return -2;
 }
 
-void Highlighter::find(const QString &text, int line)
+void Highlighter::find(const QString &text, int line, int &offset)
 {
-    if(syntax.length()==0){
-        setCurrentBlockState(-3);
-        return;
-    }
-
     Path *path;
     if(line == 0){
         //first line
@@ -60,8 +143,7 @@ void Highlighter::find(const QString &text, int line)
     }else{
         //load stack from previous line
         if(path_stack.length()<line){
-            qDebug() << "Stack error index out of bounds";
-            setCurrentBlockState(-3);
+            error(-3,"Stack error index out of bounds");
             return;
         }
         path = new Path(path_stack.at(line-1));
@@ -69,31 +151,25 @@ void Highlighter::find(const QString &text, int line)
 
     //empty line skip
     if(!text.isEmpty()){
-        RuleSet parts = syntax;
-        Rule current;
-        if(path->length()==0){
-            //path empty       => not in body
-        }else{
-            //path not empty   => in body
-            int i = 0;
-            while(path->length() > i){
-                current = parts.at(path->at(i));
-                parts   = current.parts;
-                i++;
-            }
-        }
+        int result = match(text,offset,path);
 
-        int offset = 0; ///@TODO multiple rules per line
-        int result = match(text,offset,parts,current,path);
-
-        if(result == -1){
+        switch(result){
+        default:
+            path->append(result);
+            break;
+        case -1:
+            path->pop_back();
+            break;
+        case -2:
             if(path->empty()){
                 //outside of main class
+                //ignore all
             }else{
                 //wrong input
                 setCurrentBlockState(-2);
                 setFormat(offset,text.length(),err);
             }
+            break;
         }
     }
     path_stack.append(*path);
@@ -124,7 +200,8 @@ void Highlighter::highlightBlock(const QString &text)
             path_stack.pop_back();
         }
 
-        find(text,line);
+        int offset = 0;
+        find(text,line,offset);
         break;
     }
 }
