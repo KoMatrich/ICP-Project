@@ -6,7 +6,6 @@
 #include "SEQview.h"
 #include "MainTextEdit.h"
 #include "DebugTextEdit.h"
-#include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -57,7 +56,6 @@ private:
     DebugTextEdit *debugTextEdit;
     ERDview *erdView;
     SEQview *seqView;
-    Highlighter *syntax;
 
     QString curFile;
     bool isUntitled;

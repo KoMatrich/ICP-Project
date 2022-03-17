@@ -96,16 +96,20 @@ void MainWindow::init()
 
     isUntitled = true;
 
-    QSplitter *hsplit = new QSplitter(Qt::Horizontal);
+    /*  window layout
+     *  #======================#
+     *  #mainTextEdit  |       #
+     *  #==============|tabs   #
+     *  #debugTextEdit |       #
+     *  #======================#
+    */
 
-    //left
+    //left horizontal split
+    QSplitter *hsplit = new QSplitter(Qt::Horizontal,this);
+
+    //center vertical split
     QSplitter *vsplit = new QSplitter(Qt::Vertical, hsplit);
     hsplit->addWidget(vsplit);
-
-    //right
-    QTabWidget *tabs = new QTabWidget(hsplit);
-    tabs->setTabPosition(QTabWidget::East);
-    hsplit->addWidget(tabs);
 
     //left top
     mainTextEdit = new MainTextEdit(vsplit);
@@ -116,6 +120,11 @@ void MainWindow::init()
     debugTextEdit = new DebugTextEdit(vsplit);
     vsplit->addWidget(mainTextEdit);
 
+    //right
+    QTabWidget *tabs = new QTabWidget(hsplit);
+    tabs->setTabPosition(QTabWidget::East);
+    hsplit->addWidget(tabs);
+
     //right first
     erdView = new ERDview(mainTextEdit);
     tabs->addTab(erdView, "Class");
@@ -124,8 +133,6 @@ void MainWindow::init()
     seqView = new SEQview(mainTextEdit);
     tabs->addTab(seqView, "Sequence");
 
-    //??
-    syntax = new Highlighter(mainTextEdit->document());
     setCentralWidget(hsplit);
 
     createActions();
