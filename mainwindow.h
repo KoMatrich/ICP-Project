@@ -4,6 +4,8 @@
 
 #include "ERDview.h"
 #include "SEQview.h"
+#include "MainTextEdit.h"
+#include "DebugTextEdit.h"
 #include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
@@ -51,7 +53,8 @@ private:
     QString strippedName(const QString &fullFileName);
     MainWindow *findMainWindow(const QString &fileName);
 
-    QTextEdit *textEdit; // REPLACE WITH UNIQUE
+    MainTextEdit *mainTextEdit;
+    DebugTextEdit *debugTextEdit;
     ERDview *erdView;
     SEQview *seqView;
     Highlighter *syntax;

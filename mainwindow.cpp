@@ -44,7 +44,7 @@ void MainWindow::open()
             return;
         }
 
-        if (isUntitled && textEdit->document()->isEmpty()
+        if (isUntitled && mainTextEdit->document()->isEmpty()
                 && !isWindowModified()) {
             loadFile(fileName);
         } else {
@@ -96,25 +96,37 @@ void MainWindow::init()
 
     isUntitled = true;
 
-    QSplitter *split = new QSplitter;
+    QSplitter *hsplit = new QSplitter(Qt::Horizontal);
 
-    textEdit = new QTextEdit(split);
-    textEdit->acceptRichText();
-    split->addWidget(textEdit);
+    //left
+    QSplitter *vsplit = new QSplitter(Qt::Vertical, hsplit);
+    hsplit->addWidget(vsplit);
 
-    QTabWidget *tabs = new QTabWidget(split);
+    //right
+    QTabWidget *tabs = new QTabWidget(hsplit);
     tabs->setTabPosition(QTabWidget::East);
+    hsplit->addWidget(tabs);
 
-    erdView = new ERDview(textEdit);
+    //left top
+    mainTextEdit = new MainTextEdit(vsplit);
+    mainTextEdit->acceptRichText();
+    vsplit->addWidget(mainTextEdit);
+
+    //left bottom
+    debugTextEdit = new DebugTextEdit(vsplit);
+    vsplit->addWidget(mainTextEdit);
+
+    //right first
+    erdView = new ERDview(mainTextEdit);
     tabs->addTab(erdView, "Class");
 
-    seqView = new SEQview(textEdit);
+    //right second
+    seqView = new SEQview(mainTextEdit);
     tabs->addTab(seqView, "Sequence");
 
-    split->addWidget(tabs);
-
-    syntax = new Highlighter(textEdit->document());
-    setCentralWidget(split);
+    //??
+    syntax = new Highlighter(mainTextEdit->document());
+    setCentralWidget(hsplit);
 
     createActions();
     createMenus();
@@ -123,7 +135,7 @@ void MainWindow::init()
 
     readSettings();
 
-    connect(textEdit->document(), SIGNAL(contentsChanged()),
+    connect(mainTextEdit->document(), SIGNAL(contentsChanged()),
             this, SLOT(documentWasModified()));
 
     setUnifiedTitleAndToolBarOnMac(true);
@@ -165,19 +177,19 @@ void MainWindow::createActions()
     cutAct->setShortcuts(QKeySequence::Cut);
     cutAct->setStatusTip(tr("Cut the current selection's contents to the "
                             "clipboard"));
-    connect(cutAct, SIGNAL(triggered()), textEdit, SLOT(cut()));
+    connect(cutAct, SIGNAL(triggered()), mainTextEdit, SLOT(cut()));
 
     copyAct = new QAction(tr("&Copy"), this);
     copyAct->setShortcuts(QKeySequence::Copy);
     copyAct->setStatusTip(tr("Copy the current selection's contents to the "
                              "clipboard"));
-    connect(copyAct, SIGNAL(triggered()), textEdit, SLOT(copy()));
+    connect(copyAct, SIGNAL(triggered()), mainTextEdit, SLOT(copy()));
 
     pasteAct = new QAction(tr("&Paste"), this);
     pasteAct->setShortcuts(QKeySequence::Paste);
     pasteAct->setStatusTip(tr("Paste the clipboard's contents into the current "
                               "selection"));
-    connect(pasteAct, SIGNAL(triggered()), textEdit, SLOT(paste()));
+    connect(pasteAct, SIGNAL(triggered()), mainTextEdit, SLOT(paste()));
 
     aboutAct = new QAction(tr("&About"), this);
     aboutAct->setStatusTip(tr("Show the application's About box"));
@@ -190,9 +202,9 @@ void MainWindow::createActions()
 
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
-    connect(textEdit, SIGNAL(copyAvailable(bool)),
+    connect(mainTextEdit, SIGNAL(copyAvailable(bool)),
             cutAct, SLOT(setEnabled(bool)));
-    connect(textEdit, SIGNAL(copyAvailable(bool)),
+    connect(mainTextEdit, SIGNAL(copyAvailable(bool)),
             copyAct, SLOT(setEnabled(bool)));
 }
 
@@ -256,7 +268,7 @@ void MainWindow::writeSettings()
 
 bool MainWindow::maybeSave()
 {
-    if (textEdit->document()->isModified()) {
+    if (mainTextEdit->document()->isModified()) {
         QMessageBox::StandardButton ret;
         ret = QMessageBox::warning(this, tr("SDI"),
                      tr("The document has been modified.\n"
@@ -285,7 +297,7 @@ void MainWindow::loadFile(const QString &fileName)
 
     QTextStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    textEdit->setPlainText(in.readAll());
+    mainTextEdit->setPlainText(in.readAll());
     QApplication::restoreOverrideCursor();
 
     setCurrentFile(fileName);
@@ -305,7 +317,7 @@ bool MainWindow::saveFile(const QString &fileName)
 
     QTextStream out(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    out << textEdit->toPlainText();
+    out << mainTextEdit->toPlainText();
     QApplication::restoreOverrideCursor();
 
     setCurrentFile(fileName);
@@ -324,7 +336,7 @@ void MainWindow::setCurrentFile(const QString &fileName)
         curFile = QFileInfo(fileName).canonicalFilePath();
     }
 
-    textEdit->document()->setModified(false);
+    mainTextEdit->document()->setModified(false);
     setWindowModified(false);
     setWindowFilePath(curFile);
 }

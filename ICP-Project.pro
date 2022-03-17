@@ -17,11 +17,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     highlighter.cpp \
     ERDview.cpp \
-    SEQview.cpp
+    SEQview.cpp \
+    MainTextEdit.cpp \
+    DebugTextEdit.cpp
 
 HEADERS  += mainwindow.h \
     highlighter.h \
     ERDview.h \
-    SEQview.h
+    SEQview.h \
+    MainTextEdit.h \
+    DebugTextEdit.h
 
 FORMS    +=
