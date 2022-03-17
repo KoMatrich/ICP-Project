@@ -117,8 +117,8 @@ void MainWindow::init()
     vsplit->addWidget(mainTextEdit);
 
     //left bottom
-    debugTextEdit = new DebugTextEdit(vsplit);
-    vsplit->addWidget(mainTextEdit);
+    debugTextEdit = new DebugTextEdit(mainTextEdit);
+    vsplit->addWidget(debugTextEdit);
 
     //right
     QTabWidget *tabs = new QTabWidget(hsplit);

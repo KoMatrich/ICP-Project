@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QTextEdit>
-#include "highlighter.h"
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;
@@ -19,5 +18,4 @@ public slots:
 protected:
 
 private:
-    Highlighter *syntax;
 };
