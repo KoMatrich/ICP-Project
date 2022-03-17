@@ -28,14 +28,17 @@ private:
     };
     typedef QVector<Rule> RuleSet;
 
-    QVector<int> stack;
+    typedef QVector<int> Path;
+    typedef QVector<Path> PathStack;
+
+    PathStack path_stack;
     RuleSet syntax;
 
     QTextCharFormat err;
     QTextCharFormat after_err;
 
-    int match(const QString &text, int &offset, RuleSet &parts, Rule &current);
-    void find(const QString &text, int &offset);
+    int match(const QString &text, int &offset, RuleSet &parts, Rule &current, Path *path);
+    void find(const QString &text, int line);
 };
 
 /*

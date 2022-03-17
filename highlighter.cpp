@@ -7,15 +7,16 @@ Highlighter::Highlighter(QTextDocument *parent)
     err.setBackground(Qt::red);
     after_err.setForeground(Qt::darkGray);
 
-    Rule r;
-    r.start = QRegExp("@startuml");
-    r.end   = QRegExp("@enduml");
-    r.format.setFontWeight(QFont::Bold);
+    //rule for main body
+    Rule main;
+    main.start = QRegExp("@startuml");
+    main.end   = QRegExp("@enduml");
+    main.format.setFontWeight(QFont::Bold);
 
-    syntax.append(r);
+    syntax.append(main);
 }
 
-int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &current)
+int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &current, Path *path)
 {
     //find start of sub block
     for(int i = 0; i < parts.length();i++){
@@ -25,8 +26,7 @@ int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &c
         if(match_i == offset){
             setFormat(offset,start.matchedLength(),part.format);
             offset += start.matchedLength();
-            setCurrentBlockState(1);
-            stack.append(i);
+            path->append(i);
             return 0;
         }
     }
@@ -38,51 +38,69 @@ int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &c
         if(match_i == offset){
             setFormat(offset,end.matchedLength(),current.format);
             offset += end.matchedLength();
-            setCurrentBlockState(1);
-            stack.pop_back();
+            path->pop_back();
             return 1;
         }
     }
-
-    //nothing has been found
-    setFormat(offset,text.length(),err);
+    //no rule was matched
     return -1;
 }
 
-void Highlighter::find(const QString &text, int &offset)
+void Highlighter::find(const QString &text, int line)
 {
     if(syntax.length()==0){
         setCurrentBlockState(-3);
         return;
     }
 
-    //empty line check
-    if(text.isEmpty()){
-        setCurrentBlockState(1);
-        return;
+    Path *path;
+    if(line == 0){
+        //first line
+        path = new Path();
+    }else{
+        //load stack from previous line
+        if(path_stack.length()<line){
+            qDebug() << "Stack error index out of bounds";
+            setCurrentBlockState(-3);
+            return;
+        }
+        path = new Path(path_stack.at(line-1));
     }
 
-    RuleSet parts = syntax;
-    Rule current;
-    if(stack.length()==0){
-        //stack empty       => not in body
-    }else{
-        //stack not empty   => in body
-        int stack_l = stack.length();
-        int i = 0;
-        while(stack_l > i){
-            current = parts.at(stack.at(i));
-            parts   = current.parts;
-            i++;
+    //empty line skip
+    if(!text.isEmpty()){
+        RuleSet parts = syntax;
+        Rule current;
+        if(path->length()==0){
+            //path empty       => not in body
+        }else{
+            //path not empty   => in body
+            int i = 0;
+            while(path->length() > i){
+                current = parts.at(path->at(i));
+                parts   = current.parts;
+                i++;
+            }
+        }
+
+        int offset = 0; ///@TODO multiple rules per line
+        int result = match(text,offset,parts,current,path);
+
+        if(result == -1){
+            if(path->empty()){
+                //outside of main class
+            }else{
+                //wrong input
+                setCurrentBlockState(-2);
+                setFormat(offset,text.length(),err);
+            }
         }
     }
-
-    match(text,offset,parts,current);
+    path_stack.append(*path);
 }
 
 void Highlighter::highlightBlock(const QString &text)
 {
-    setCurrentBlockState(-2);
     switch(previousBlockState()){
     case -3:
         //internal error
@@ -95,11 +113,18 @@ void Highlighter::highlightBlock(const QString &text)
         break;
     case -1:
         //start of file
-        stack.clear();
-    case 1:
+        path_stack.clear();
+    default:
         //normal operation
-        int start = 0;
-        find(text,start);
+        setCurrentBlockState(previousBlockState()+1);
+        int line = currentBlockState();
+
+        while(line < path_stack.length()){
+            //line number bigger than actual stack number
+            path_stack.pop_back();
+        }
+
+        find(text,line);
         break;
     }
 }
