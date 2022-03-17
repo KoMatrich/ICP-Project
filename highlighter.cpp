@@ -1,83 +1,130 @@
 #include "highlighter.h"
+#include <QDebug>
 
 Highlighter::Highlighter(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
-    //key words
-    keywordFormat.setForeground(Qt::darkBlue);
-    keywordFormat.setFontWeight(QFont::Bold);
+    err.setBackground(Qt::red);
+    after_err.setForeground(Qt::darkGray);
 
-    QStringList keywordPatterns;
-    keywordPatterns << "^participant" << "^'participant" << "^title"
-                    << "^class"       << "^bactivate"   << "^note"
-                    << "^deactivate"  << "^activate";
+    //rule for main body
+    Rule main;
+    main.start = QRegExp("@startuml");
+    main.end   = QRegExp("@enduml");
+    main.format.setFontWeight(QFont::Bold);
 
-    HighlightingRule rule;
-    foreach (const QString &pattern, keywordPatterns) {
-        rule.pattern = QRegExp(pattern);
-        rule.format = keywordFormat;
-        highlightingRules.append(rule);
+    syntax.append(main);
+}
+
+int Highlighter::match(const QString &text, int &offset, RuleSet &parts, Rule &current, Path *path)
+{
+    //find start of sub block
+    for(int i = 0; i < parts.length();i++){
+        Rule part = parts.at(i);
+        QRegExp start = part.start;
+        int match_i = start.indexIn(text,offset);
+        if(match_i == offset){
+            setFormat(offset,start.matchedLength(),part.format);
+            offset += start.matchedLength();
+            path->append(i);
+            return 0;
+        }
     }
 
-    //@key words
-    classFormat.setFontWeight(QFont::Bold);
-    classFormat.setForeground(Qt::darkMagenta);
-    rule.pattern = QRegExp("^@[A-Za-z]+");
-    rule.format = classFormat;
-    highlightingRules.append(rule);
+    //find end of actual block
+    QRegExp end = current.end;
+    if(!end.isEmpty()){
+        int match_i = end.indexIn(text,offset);
+        if(match_i == offset){
+            setFormat(offset,end.matchedLength(),current.format);
+            offset += end.matchedLength();
+            path->pop_back();
+            return 1;
+        }
+    }
+    //no rule was matched
+    return -1;
+}
 
-    quotationFormat.setForeground(Qt::darkGreen);
-    rule.pattern = QRegExp("\"[^\"]*\"");
-    rule.format = quotationFormat;
-    highlightingRules.append(rule);
+void Highlighter::find(const QString &text, int line)
+{
+    if(syntax.length()==0){
+        setCurrentBlockState(-3);
+        return;
+    }
 
-    functionFormat.setFontItalic(true);
-    functionFormat.setForeground(Qt::blue);
-    rule.pattern = QRegExp("^[A-Za-z0-9_]+ ?(\\-\\>|\\-\\-\\>) ?[A-Za-z0-9_]+:");
-    rule.format = functionFormat;
-    highlightingRules.append(rule);
+    Path *path;
+    if(line == 0){
+        //first line
+        path = new Path();
+    }else{
+        //load stack from previous line
+        if(path_stack.length()<line){
+            qDebug() << "Stack error index out of bounds";
+            setCurrentBlockState(-3);
+            return;
+        }
+        path = new Path(path_stack.at(line-1));
+    }
 
-    singleLineCommentFormat.setForeground(Qt::gray);
-    rule.pattern = QRegExp("^' [^\n]*");
-    rule.format = singleLineCommentFormat;
-    highlightingRules.append(rule);
+    //empty line skip
+    if(!text.isEmpty()){
+        RuleSet parts = syntax;
+        Rule current;
+        if(path->length()==0){
+            //path empty       => not in body
+        }else{
+            //path not empty   => in body
+            int i = 0;
+            while(path->length() > i){
+                current = parts.at(path->at(i));
+                parts   = current.parts;
+                i++;
+            }
+        }
 
-    multiLineCommentFormat.setForeground(Qt::gray);
-    commentStartExpression = QRegExp("^/' ");
-    commentEndExpression = QRegExp(" '/$");
+        int offset = 0; ///@TODO multiple rules per line
+        int result = match(text,offset,parts,current,path);
+
+        if(result == -1){
+            if(path->empty()){
+                //outside of main class
+            }else{
+                //wrong input
+                setCurrentBlockState(-2);
+                setFormat(offset,text.length(),err);
+            }
+        }
+    }
+    path_stack.append(*path);
 }
 
 void Highlighter::highlightBlock(const QString &text)
 {
-    //simple one line rules
-    foreach (const HighlightingRule &rule, highlightingRules) {
-        QRegExp expression(rule.pattern);
-        int index = expression.indexIn(text);
-        while (index >= 0) {
-            int length = expression.matchedLength();
-            setFormat(index, length, rule.format);
-            index = expression.indexIn(text, index + length);
+    switch(previousBlockState()){
+    case -3:
+        //internal error
+        setCurrentBlockState(-3);
+        break;
+    case -2:
+        //error ocured in syntax last check
+        setFormat(0,text.length(),after_err);
+        setCurrentBlockState(-2);
+        break;
+    case -1:
+        //start of file
+        path_stack.clear();
+    default:
+        //normal operation
+        setCurrentBlockState(previousBlockState()+1);
+        int line = currentBlockState();
+
+        while(line < path_stack.length()){
+            //line number bigger than actual stack number
+            path_stack.pop_back();
         }
-    }
 
-    //simple multi line rule
-    setCurrentBlockState(0);
-
-    int startIndex = 0;
-    if (previousBlockState() != 1)
-        startIndex = commentStartExpression.indexIn(text);
-
-    while (startIndex >= 0) {
-        int endIndex = commentEndExpression.indexIn(text, startIndex);
-        int commentLength;
-        if (endIndex == -1) {
-            setCurrentBlockState(1);
-            commentLength = text.length() - startIndex;
-        } else {
-            commentLength = endIndex - startIndex
-                            + commentEndExpression.matchedLength();
-        }
-        setFormat(startIndex, commentLength, multiLineCommentFormat);
-        startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
+        find(text,line);
+        break;
     }
 }
