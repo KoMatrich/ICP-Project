@@ -1,6 +1,6 @@
 #include <QtWidgets>
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 MainWindow::MainWindow()
 {
@@ -206,6 +206,9 @@ void MainWindow::createActions()
     aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+    syntaxReloadAct = new QAction(tr("Syntax refresh"), this);
+    syntaxReloadAct->setStatusTip(tr("Refreshes syntax checking"));
+    connect(syntaxReloadAct, SIGNAL(triggered()), mainTextEdit, SLOT(syntax_reload()));
 
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
@@ -242,9 +245,7 @@ void MainWindow::createMenus()
 void MainWindow::createToolBars()
 {
     fileToolBar = addToolBar(tr("File"));
-    fileToolBar->addAction(newAct);
-    fileToolBar->addAction(openAct);
-    fileToolBar->addAction(saveAct);
+    fileToolBar->addAction(syntaxReloadAct);
 
     editToolBar = addToolBar(tr("Edit"));
     editToolBar->addAction(cutAct);

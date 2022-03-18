@@ -1,5 +1,4 @@
-#include "highlighter.h"
-#include <QDebug>
+#include "Highlighter.h"
 
 Highlighter::Highlighter(QTextEdit *parent)
     : QSyntaxHighlighter(parent->document())
@@ -8,52 +7,87 @@ Highlighter::Highlighter(QTextEdit *parent)
     after_err.setForeground(Qt::darkGray);
     cursor_color.setBackground(Qt::yellow);
 
+    ///note tabs in formating not working
+
     const QString _name = "[_A-Za-z0-9]+";
-    const QString _sentence = "("+_name+"[ {}[\\]()\\!]*)+";
+    const QString _sentence = "("+_name+"|[ {}[\\]()\\!]*)+";
 
     Rule sentence;
-    sentence.start = QRegExp("^"+_sentence+"$");
+    sentence.start = Regex("^"+_sentence+"$");
 
     Rule sentence_f;
-    sentence_f.start = QRegExp("^(\\[\\*]{2})"+_sentence+"\\1$");
+    sentence_f.start = Regex("^([\\*]{2})"+_sentence+"\\1$");
 
-    Rule atr;//class atribute
-    atr.start = QRegExp("^(\\*{0,3})"+_sentence+"\\1$");
+    Rule string;
+    string.start = Regex("\""+_sentence);
+    string.end = Regex("\"");
+    string.format.setForeground(Qt::green);
 
-    Rule sep;//class separator
-    sep.start = QRegExp("^(([.\\-=]{2})"+_sentence+"\\2)|([.\\-=]{4})$");
+
+    //uml body
+    Rule uml;
+    uml.start = Regex("^@startuml$");
+    uml.end   = Regex("^@enduml$");
+    uml.format.setFontWeight(QFont::Bold);
+
+    //title
+    Rule title;
+    title.start = Regex("^title "+_sentence+"$");
+    title.format.setFontWeight(QFont::Bold);
+    uml.parts.append(title);
+
+    //skin
+    Rule skin;
+    skin.start = Regex("^skin "+_sentence+"$");
+    uml.parts.append(skin);
+/*
+    //namedef
+    Rule namedef;
+    namedef.start = Regex("^'?participant "+string+" as "+_name+"$");
+    uml.parts.append(namedef);
+*/
+    //activate
+    Rule activate;
+    activate.start = Regex("^activate "+_name+"$");
+    uml.parts.append(activate);
+/*
+    //transmision
+    Rule transmision;
+    transmision.start = Regex("^"+_name+" (-->|->) "+_name+"$");
+    uml.parts.append(transmision);
+*/
+    //class atribute
+    Rule atr;
+    atr.start = Regex("^(\\*{0,3})"+_sentence+"\\1$");
+
+    //class separator
+    Rule sep;
+    sep.start = Regex("^(([.\\-=]{2})"+_sentence+"\\2)|([.\\-=]{4})$");
     sep.format.setUnderlineStyle(QTextCharFormat::SingleUnderline);
-
-    //main body
-    Rule main;
-    main.start = QRegExp("^@startuml$");
-    main.end   = QRegExp("^@enduml$");
-    main.format.setFontWeight(QFont::Bold);
 
     //class
     Rule clas;
-    clas.start = QRegExp("^class "+_name+"$");
-    clas.end   = QRegExp("^end class$");
+    clas.start = Regex("^class "+_name+"$");
+    clas.end   = Regex("^end class$");
     clas.format.setFontWeight(QFont::Bold);
     clas.parts.append(atr);
     clas.parts.append(sep);
-    main.parts.append(clas);
-
+    uml.parts.append(clas);
 
     //object
     Rule object;
-    object.start = QRegExp("^object "+_name+"$");
-    object.end   = QRegExp("^end$");
+    object.start = Regex("^object "+_name+"$");
+    object.end   = Regex("^end$");
     object.format.setFontWeight(QFont::Bold);
     object.parts.append(atr);
     object.parts.append(sep);
     object.parts.append(sentence_f);
-    main.parts.append(object);
+    uml.parts.append(object);
 
     //note
     Rule note;
-    note.start = QRegExp("^note (left|right)$");
-    note.end   = QRegExp("^end note$");
+    note.start = Regex("^note (left|right)$");
+    note.end   = Regex("^end note$");
     note.format.setFontWeight(QFont::Bold);
     note.format.setForeground(Qt::darkGreen);
 
@@ -61,25 +95,9 @@ Highlighter::Highlighter(QTextEdit *parent)
     note_body.format.setForeground(Qt::green);
 
     note.parts.append(note_body);
-    main.parts.append(note);
+    uml.parts.append(note);
 
-    //title
-    Rule title;
-    title.start = QRegExp("^title "+_sentence+"$");
-    title.format.setFontWeight(QFont::Bold);
-    main.parts.append(title);
-
-    //skin
-    Rule skin;
-    skin.start = QRegExp("^skin "+_sentence+"$");
-    main.parts.append(skin);
-
-    syntax.append(main);
-}
-
-void inline Highlighter::error(int code, const QString msg){
-    qDebug() << msg;
-    setCurrentBlockState(code);
+    syntax.append(uml);
 }
 
 void Highlighter::getRules(Rule &current,RuleSet &parts, Path *path){
@@ -136,6 +154,11 @@ int Highlighter::match(const QString &text, int &offset, Path *path)
 
 void Highlighter::find(const QString &text, int line, int &offset)
 {
+    while(line < path_stack.length()){
+        //line number bigger than actual stack index
+        path_stack.pop_back();
+    }
+
     Path *path;
     if(line == 0){
         //first line
@@ -149,28 +172,25 @@ void Highlighter::find(const QString &text, int line, int &offset)
         path = new Path(path_stack.at(line-1));
     }
 
-    //empty line skip
-    if(!text.isEmpty()){
-        int result = match(text,offset,path);
+    int result = match(text,offset,path);
 
-        switch(result){
-        default:
-            path->append(result);
-            break;
-        case -1:
-            path->pop_back();
-            break;
-        case -2:
-            if(path->empty()){
-                //outside of main class
-                //ignore all
-            }else{
-                //wrong input
-                setCurrentBlockState(-2);
-                setFormat(offset,text.length(),err);
-            }
-            break;
+    switch(result){
+    default:
+        path->append(result);
+        break;
+    case -1:
+        path->pop_back();
+        break;
+    case -2:
+        if(path->empty()){
+            //outside of uml body
+            //ignore all
+        }else{
+            //wrong input
+            setCurrentBlockState(-2);
+            setFormat(offset,text.length(),err);
         }
+        break;
     }
     path_stack.append(*path);
 }
@@ -192,13 +212,13 @@ void Highlighter::highlightBlock(const QString &text)
         path_stack.clear();
     default:
         //normal operation
-        setCurrentBlockState(previousBlockState()+1);
-        int line = currentBlockState();
-
-        while(line < path_stack.length()){
-            //line number bigger than actual stack number
-            path_stack.pop_back();
+        if(text.isEmpty()){
+            setCurrentBlockState(previousBlockState());
+            break;
         }
+        setCurrentBlockState(previousBlockState()+1);
+
+        int line = currentBlockState();
 
         int offset = 0;
         find(text,line,offset);

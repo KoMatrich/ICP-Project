@@ -3,6 +3,7 @@
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
 #include <QTextEdit>
+#include <QDebug>
 
 class Highlighter : public QSyntaxHighlighter
 {
@@ -35,7 +36,19 @@ private:
     QTextCharFormat after_err;
     QTextCharFormat cursor_color;
 
-    void inline error(int code, const QString msg);
+    void inline error(int code, const QString msg){
+        qDebug() << msg;
+        setCurrentBlockState(code);
+    }
+
+    QRegExp inline Regex(const QString input){
+        QRegExp regex = QRegExp(input);
+        if(!regex.isValid()){
+            qDebug() << "Invalid syntax \"" << input << "\"" ;
+        }
+        return regex;
+    }
+
     void getRules(Rule &current,RuleSet &parts, Path *path);
     int match(const QString &text, int &offset, Path *path);
     void find(const QString &text, int line, int &offset);

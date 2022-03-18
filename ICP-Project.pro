@@ -14,18 +14,19 @@ TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    highlighter.cpp \
     ERDview.cpp \
     SEQview.cpp \
-    MainTextEdit.cpp \
-    DebugTextEdit.cpp
+    Highlighter.cpp \
+    TextDebug.cpp \
+    TextCode.cpp \
+    MainWindow.cpp
 
-HEADERS  += mainwindow.h \
-    highlighter.h \
+HEADERS  += \
     ERDview.h \
     SEQview.h \
-    MainTextEdit.h \
-    DebugTextEdit.h
+    Highlighter.h \
+    TextDebug.h \
+    TextCode.h \
+    MainWindow.h
 
 FORMS    +=

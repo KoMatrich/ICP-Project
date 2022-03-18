@@ -4,8 +4,8 @@
 
 #include "ERDview.h"
 #include "SEQview.h"
-#include "MainTextEdit.h"
-#include "DebugTextEdit.h"
+#include "TextCode.h"
+#include "TextDebug.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -78,4 +78,5 @@ private:
     QAction *pasteAct;
     QAction *aboutAct;
     QAction *aboutQtAct;
+    QAction *syntaxReloadAct;
 };
