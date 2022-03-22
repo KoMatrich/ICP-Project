@@ -195,6 +195,12 @@ void Highlighter::find(const QString &text, int line, int &offset)
     path_stack.append(*path);
 }
 
+int state_modify(int state){
+    int index = state / 2;
+    int mod = state % 2;
+    return index*2 + (mod+1)%2;
+}
+
 void Highlighter::highlightBlock(const QString &text)
 {
     switch(previousBlockState()){
@@ -212,13 +218,46 @@ void Highlighter::highlightBlock(const QString &text)
         path_stack.clear();
     default:
         //normal operation
+
+        //KoMatrich magic
         if(text.isEmpty()){
-            setCurrentBlockState(previousBlockState());
+            //empty line copy previous
+            int state = previousBlockState();
+            setCurrentBlockState(state);
             break;
         }
-        setCurrentBlockState(previousBlockState()+1);
 
-        int line = currentBlockState();
+        if(previousBlockState() == -1){
+            //first block
+            int state;
+            if(currentBlockState() == -1){
+                //new block
+                state = 0;
+            }else{
+                //just edit
+                int dif = currentBlockState()/2 - previousBlockState()/2;
+                if(dif==0)
+                    state = state_modify(currentBlockState());
+                else
+                    state = state_modify(previousBlockState()+2);
+            }
+            setCurrentBlockState(state);
+        }else{
+            //others
+            int state;
+            int dif = currentBlockState()/2 - previousBlockState()/2;
+            if(dif==1){
+                //just change
+                state = state_modify(currentBlockState());
+            }else{
+                //line before was delete/removed/added
+                state = state_modify(previousBlockState()+2);
+            }
+            setCurrentBlockState(state);
+        }
+        //magic end
+
+        int line = currentBlockState()/2;
 
         int offset = 0;
         find(text,line,offset);
