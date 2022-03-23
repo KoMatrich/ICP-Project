@@ -10,7 +10,8 @@ Highlighter::Highlighter(QTextEdit *parent)
     ///note tabs in formating not working
 
     const QString _name = "[_A-Za-z0-9]+";
-    const QString _sentence = "("+_name+"|[ {}[\\]()\\!]*)+";
+    const QString _forms = "[ \\{\\}\\[\\]\\(\\)\\!\\_\\@\\#\\$\\%\\^\\&\\+\\-\\*\\/\\=\\?\\.\\,\\'\"\\;\\:\\<\\>\\\\]";
+    const QString _sentence = "("+_name+"|"+_forms+"*)+";
 
     Rule sentence;
     sentence.start = Regex("^"+_sentence+"$");
@@ -40,22 +41,26 @@ Highlighter::Highlighter(QTextEdit *parent)
     Rule skin;
     skin.start = Regex("^skin "+_sentence+"$");
     uml.parts.append(skin);
-/*
+
     //namedef
     Rule namedef;
-    namedef.start = Regex("^'?participant "+string+" as "+_name+"$");
+    namedef.start = Regex("^'?participant \""+_name+"\" as "+_name+"$");
     uml.parts.append(namedef);
-*/
+
     //activate
     Rule activate;
     activate.start = Regex("^activate "+_name+"$");
     uml.parts.append(activate);
-/*
+
+    //deactivate
+    Rule deactivate;
+    deactivate.start = Regex("^deactivate "+_name+"$");
+    uml.parts.append(deactivate);
+
     //transmision
     Rule transmision;
-    transmision.start = Regex("^"+_name+" (-->|->) "+_name+"$");
+    transmision.start = Regex("^"+_name+" (-->|->) "+_name+": "+_sentence+"$");
     uml.parts.append(transmision);
-*/
     //class atribute
     Rule atr;
     atr.start = Regex("^(\\*{0,3})"+_sentence+"\\1$");
@@ -84,18 +89,24 @@ Highlighter::Highlighter(QTextEdit *parent)
     object.parts.append(sentence_f);
     uml.parts.append(object);
 
-    //note
-    Rule note;
-    note.start = Regex("^note (left|right)$");
-    note.end   = Regex("^end note$");
-    note.format.setFontWeight(QFont::Bold);
-    note.format.setForeground(Qt::darkGreen);
+    //block_note
+    Rule b_note;
+    b_note.start = Regex("^note (left|right)$");
+    b_note.end   = Regex("^end note$");
+    b_note.format.setFontWeight(QFont::Bold);
+    b_note.format.setForeground(Qt::darkGreen);
 
     Rule note_body;
     note_body.format.setForeground(Qt::green);
+    b_note.parts.append(note_body);
+    uml.parts.append(b_note);
 
-    note.parts.append(note_body);
-    uml.parts.append(note);
+    //line note
+    Rule l_note;
+    l_note.start = Regex("^note (left|right): "+_sentence+"$");
+    l_note.format.setFontWeight(QFont::Bold);
+    l_note.format.setForeground(Qt::darkGreen);
+    uml.parts.append(l_note);
 
     syntax.append(uml);
 }
