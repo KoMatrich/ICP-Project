@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     Highlighter.cpp \
     TextDebug.cpp \
     TextCode.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    Syntax.cpp
 
 HEADERS  += \
     ERDview.h \
@@ -27,6 +28,7 @@ HEADERS  += \
     Highlighter.h \
     TextDebug.h \
     TextCode.h \
-    MainWindow.h
+    MainWindow.h \
+    Syntax.h
 
 FORMS    +=
