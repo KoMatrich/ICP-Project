@@ -120,6 +120,12 @@ void MainWindow::init()
     debugTextEdit = new DebugTextEdit(mainTextEdit);
     vsplit->addWidget(debugTextEdit);
 
+    //set height proportion
+    QList<int> v_list= vsplit->sizes();
+    v_list.replace(0,this->height()/0.2);
+    v_list.replace(1,this->height()/0.8);
+    vsplit->setSizes(v_list);
+
     //right
     QTabWidget *tabs = new QTabWidget(hsplit);
     tabs->setTabPosition(QTabWidget::East);
@@ -132,6 +138,12 @@ void MainWindow::init()
     //right second
     seqView = new SEQview(mainTextEdit);
     tabs->addTab(seqView, "Sequence");
+
+    //set width proportion
+    QList<int> h_list= hsplit->sizes();
+    h_list.replace(0,this->width()/0.5);
+    h_list.replace(1,this->width()/0.5);
+    hsplit->setSizes(h_list);
 
     setCentralWidget(hsplit);
 
