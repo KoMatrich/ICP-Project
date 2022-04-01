@@ -13,22 +13,23 @@ TEMPLATE = app
 
 QMAKE_CXXFLAGS += -std=c++11
 
-SOURCES += main.cpp\
-    ERDview.cpp \
-    SEQview.cpp \
-    Highlighter.cpp \
-    TextDebug.cpp \
-    TextCode.cpp \
-    MainWindow.cpp \
-    Syntax.cpp
-
-HEADERS  += \
-    ERDview.h \
-    SEQview.h \
-    Highlighter.h \
-    TextDebug.h \
-    TextCode.h \
-    MainWindow.h \
-    Syntax.h
-
 FORMS    +=
+
+HEADERS += \
+    Code/Highlighter.h \
+    Code/syntax.h \
+    Code/TextCode.h \
+    Code/TextDebug.h \
+    Graph/ERDview.h \
+    Graph/SEQview.h \
+    MainWindow.h
+
+SOURCES += \
+    Code/Highlighter.cpp \
+    Code/syntax.cpp \
+    Code/TextCode.cpp \
+    Code/TextDebug.cpp \
+    Graph/ERDview.cpp \
+    Graph/SEQview.cpp \
+    main.cpp \
+    MainWindow.cpp
