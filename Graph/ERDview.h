@@ -17,6 +17,7 @@ public:
 signals:
 
 public slots:
+    void documentWasModified();
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;

@@ -1,4 +1,4 @@
-#include "draglabel.h"
+#include "DragItem.h"
 
 #include <QtWidgets>
 
@@ -6,9 +6,9 @@ DragLabel::DragLabel(const QString &text, QWidget *parent)
     : QLabel(parent)
 {
     QFontMetrics metric(font());
-    QSize size = metric.size(Qt::TextSingleLine, text);
+    QSize width = metric.size(Qt::TextLongestVariant, text);
 
-    QImage image(size.width() + 12, size.height() + 12, QImage::Format_ARGB32_Premultiplied);
+    QImage image(width.width() + 12, width.height() + 12, QImage::Format_ARGB32_Premultiplied);
     image.fill(qRgba(0, 0, 0, 0));
 
     QFont font;
@@ -29,7 +29,7 @@ DragLabel::DragLabel(const QString &text, QWidget *parent)
 
     painter.setFont(font);
     painter.setBrush(Qt::black);
-    painter.drawText(QRect(QPoint(6, 6), size), Qt::AlignCenter, text);
+    painter.drawText(QRect(QPoint(6, 6), width), Qt::AlignCenter, text);
     painter.end();
 
     setPixmap(QPixmap::fromImage(image));

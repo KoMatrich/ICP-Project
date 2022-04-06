@@ -155,6 +155,8 @@ void MainWindow::init()
 
     connect(mainTextEdit->document(), SIGNAL(contentsChanged()),
             this, SLOT(documentWasModified()));
+    connect(mainTextEdit->document(), SIGNAL(contentsChanged()),
+            erdView, SLOT(documentWasModified()));
 
     setUnifiedTitleAndToolBarOnMac(true);
 }

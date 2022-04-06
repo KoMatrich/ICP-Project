@@ -1,6 +1,6 @@
 #include <QtWidgets>
 #include "ERDview.h"
-#include "draglabel.h"
+#include "DragItem.h"
 
 ERDview::ERDview(QTextEdit *parent) : QWidget(parent)
 {
@@ -9,9 +9,14 @@ ERDview::ERDview(QTextEdit *parent) : QWidget(parent)
     setAcceptDrops(true);
 }
 
+void ERDview::documentWasModified()
+{
+
+}
+
 void ERDview::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+    if (event->mimeData()->hasFormat("app/ERDview")) {
         if (children().contains(event->source())) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
@@ -28,7 +33,7 @@ void ERDview::dragEnterEvent(QDragEnterEvent *event)
 
 void ERDview::dragMoveEvent(QDragMoveEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+    if (event->mimeData()->hasFormat("app/ERDview")) {
         if (children().contains(event->source())) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
@@ -44,10 +49,11 @@ void ERDview::dragMoveEvent(QDragMoveEvent *event)
 
 void ERDview::dropEvent(QDropEvent *event)
 {
-    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+    //accept only drops from this QWidget
+    if (event->mimeData()->hasFormat("app/ERDview")) {
         const QMimeData *mime = event->mimeData();
 
-        QByteArray itemData = mime->data("application/x-fridgemagnet");
+        QByteArray itemData = mime->data("app/ERDview");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
         QString text;
@@ -65,24 +71,6 @@ void ERDview::dropEvent(QDropEvent *event)
         } else {
             event->acceptProposedAction();
         }
-
-    } else if (event->mimeData()->hasText()) {
-        QStringList pieces = event->mimeData()->text().split(QRegExp("\\s+"),
-                             QString::SkipEmptyParts);
-        QPoint position = event->pos();
-
-        foreach (QString piece, pieces) {
-            DragLabel *newLabel = new DragLabel(piece, this);
-            newLabel->move(position);
-            newLabel->show();
-            newLabel->setAttribute(Qt::WA_DeleteOnClose);
-
-            position += QPoint(newLabel->width(), 0);
-        }
-
-        event->acceptProposedAction();
-    } else {
-        event->ignore();
     }
 }
 
@@ -99,7 +87,7 @@ void ERDview::mousePressEvent(QMouseEvent *event)
     dataStream << child->labelText() << QPoint(hotSpot);
 
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData("application/x-fridgemagnet", itemData);
+    mimeData->setData("app/ERDview", itemData);
     mimeData->setText(child->labelText());
 
     QDrag *drag = new QDrag(this);
