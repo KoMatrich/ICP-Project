@@ -108,7 +108,13 @@ void Highlighter::highlightBlock(const QString &text){
 
         if(offset > 0)
             setFormat(last_off,offset-last_off,rule.format);
-    }while((offset>0)&&(offset<len));
+    }while((offset>=0)&&(offset<len));
+
+    if(offset==len){
+        return;
+    }else{
+        offset = SYNTAX_ERR;
+    }
 
     switch(offset){
     case NO_CHECK:

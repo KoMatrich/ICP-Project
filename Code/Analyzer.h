@@ -22,4 +22,6 @@ private:
 
     int matchBody(const QString &text, int &offset, RuleSet parts);
     int matchEnd(const QString &text, int &offset, Rule current);
+
+    void reducePath(Path *path);
 };

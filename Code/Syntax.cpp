@@ -28,6 +28,10 @@ QRegExp inline Regex(const QString input){
 RuleSet const Syntax::genRules(){
     RuleSet syntax;
 
+    Rule name;
+    name.start = Regex("[A-Za-z0-9_]*");
+    name.format.setForeground(Qt::green);
+
     //uml body
     Rule uml;
     uml.start = Regex("^@startuml$");
@@ -38,7 +42,7 @@ RuleSet const Syntax::genRules(){
     //title
     Rule title;
     title.start = Regex("^title ");
-    title.end   = Regex("$");
+    title.parts.append(name);
     title.format.setFontWeight(QFont::Bold);
     uml.parts.append(title);
 

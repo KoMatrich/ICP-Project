@@ -1,4 +1,5 @@
 #include "Analyzer.h"
+#include "QDebug"
 
 Analyzer::Analyzer(Syntax *syntax)
 {
@@ -12,11 +13,9 @@ void inline Analyzer::getRules(Rule &current,RuleSet &parts, Path path){
 
     if(path.length()!=0){
         //path not empty   => in body
-        int i = 0;
-        while(path.length() > i){
+        for(int i = 0; i < path.length(); i++){
             current = parts.at(path.at(i));
             parts   = current.parts;
-            i++;
         }
     }
 }
@@ -32,6 +31,10 @@ int Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
         if(match_i == offset){
             offset += start.matchedLength();
             return i;
+        }else{
+            qDebug() << "Missmatch:";
+            qDebug() << "\t" << text.right(offset);
+            qDebug() << "\t" << part.start.pattern();
         }
     }
 
@@ -50,22 +53,51 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
             offset += end.matchedLength();
             return 0;
         }
+    }else{
+        //block without ending
+        return 0;
     }
 
     //no rule was matched
     return -1;
 }
 
+void Analyzer::reducePath(Path *path)
+{
+    while(path->length()!=0){
+        RuleSet parts = syntax->getRules();
+        Rule current;
+
+        for(int i = 0; i < path->length(); i++){
+            current = parts.at(path->at(i));
+            parts   = current.parts;
+        }
+
+        if(current.end.isEmpty()){
+            path->pop_back();
+        }else{
+            break;
+        }
+    }
+}
+
 void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
 {
     //path to current block
     Path *path;
-    if(line == 0){
-        //first line
-        path = new Path();
+    if(path_stack.length() == line+1){
+        //recursive call
+        path = new Path(path_stack.at(line));
     }else{
-        //load stack from previous line
-        path = new Path(path_stack.at(line-1));
+        //first call of this function on this line
+        if(line == 0){
+            //first line
+            path = new Path();
+        }else{
+            //load stack from previous line
+            path = new Path(path_stack.at(line-1));
+            reducePath(path);
+        }
     }
 
     RuleSet parts;
@@ -74,6 +106,7 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
 
     if((offset==0) && (current.type==INLINE)){
         offset = SYNTAX_E;
+        qDebug() << "Previus rule didn end well";
         goto SKIP;
     }
 
@@ -99,6 +132,7 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
     //nothing found but text is still remaining
     offset = SYNTAX_E;
 SKIP:
+    ClearTo(line);
     path_stack.append(*path);
 }
 
