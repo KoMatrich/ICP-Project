@@ -1,4 +1,4 @@
-#include "Syntax.h"
+#include "SyntaxRules.h"
 #include <QDebug>
 
 QRegExp inline Regex(const QString input){

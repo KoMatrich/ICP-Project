@@ -121,71 +121,81 @@ void inline Highlighter::error(int code, const QString msg){
     setCurrentBlockState(code);
 }
 
+
+//  doc handeling
 int inline state_modify(int state){
     int index = state / 2;
     int mod = state % 2;
     return index*2 + (mod+1)%2;
 }
-//handles line numbering and calls find funct
-void Highlighter::highlightBlock(const QString &text)
-{
-    switch(previousBlockState()){
-    case -3:
-        //internal error
-        setCurrentBlockState(-3);
-        break;
-    case -2:
-        //error ocured in syntax last check
-        setFormat(0,text.length(),after_err);
-        setCurrentBlockState(-2);
-        break;
-    case -1:
-        //start of file
-        path_stack.clear();
-    default:
-        //normal operation
 
-        //KoMatrich magic
-        if(text.isEmpty()){
-            //empty line copy previous
-            int state = previousBlockState();
-            setCurrentBlockState(state);
+void Highlighter::updateCurrentBlockState(){
+    auto prevState = previousBlockState();
+
+    if(prevState == -1){
+        //first block
+        int state;
+        if(currentBlockState() == -1){
+            //new block
+            state = 0;
+        }else{
+            //just edit
+            int dif = currentBlockState()/2 - prevState/2;
+            if(dif==0)
+                state = state_modify(currentBlockState());
+            else
+                state = state_modify(prevState+2);
+        }
+        setCurrentBlockState(state);
+    }else{
+        //others
+        int state;
+        int dif = currentBlockState()/2 - prevState/2;
+        if(dif==1){
+            //just change
+            state = state_modify(currentBlockState());
+        }else{
+            //line before was delete/removed/added
+            state = state_modify(prevState+2);
+        }
+        setCurrentBlockState(state);
+    }
+}
+
+//handles line numbering and calls find funct
+void Highlighter::highlightBlock(const QString &text){
+    auto prevState = previousBlockState();
+
+    if(prevState < -1)
+        switch(prevState){
+        case INTERNAL_E:
+            setCurrentBlockState(INTERNAL_E);
+            break;
+        case SYNTAX_E:
+            setFormat(0,text.length(),after_err);
+            setCurrentBlockState(SYNTAX_E);
             break;
         }
+    else
+        switch(prevState){
+        case FILE_START:
+            path_stack.clear();
+        default:
+            //normal operation
+            if(text.isEmpty()){
+                //empty line copy previous number
+                int state = prevState;
+                setCurrentBlockState(state);
+                break;
+            }else{
+                //update line number
+                updateCurrentBlockState();
+            }
 
-        if(previousBlockState() == -1){
-            //first block
-            int state;
-            if(currentBlockState() == -1){
-                //new block
-                state = 0;
-            }else{
-                //just edit
-                int dif = currentBlockState()/2 - previousBlockState()/2;
-                if(dif==0)
-                    state = state_modify(currentBlockState());
-                else
-                    state = state_modify(previousBlockState()+2);
-            }
-            setCurrentBlockState(state);
-        }else{
-            //others
-            int state;
-            int dif = currentBlockState()/2 - previousBlockState()/2;
-            if(dif==1){
-                //just change
-                state = state_modify(currentBlockState());
-            }else{
-                //line before was delete/removed/added
-                state = state_modify(previousBlockState()+2);
-            }
-            setCurrentBlockState(state);
+            int lineNumber = currentBlockState()/2;
+            int offset = 0;
+            //run syntax check
+            find(text,lineNumber,offset);
+            break;
         }
-        //magic end
-
-        int line = currentBlockState()/2;
-        int offset = 0;
-        find(text,line,offset);
-        break;
-    }
 }

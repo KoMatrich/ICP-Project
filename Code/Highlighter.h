@@ -4,7 +4,7 @@
 #include <QTextCharFormat>
 #include <QTextEdit>
 #include <QDebug>
-#include "syntax.h"
+#include "SyntaxRules.h"
 
 class Highlighter : public QSyntaxHighlighter
 {
@@ -15,6 +15,7 @@ public:
 
 protected:
     void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
+    void updateCurrentBlockState();
 
 private:
     typedef QVector<int> Path;
@@ -25,6 +26,8 @@ private:
     QTextCharFormat cursor_color;
     QTextCharFormat err;
     QTextCharFormat after_err;
+
+    enum LineState{NORMAL,FILE_START=-1,SYNTAX_E=-2,INTERNAL_E=-3};
 
     void getRules(Rule &current,RuleSet &parts, Path *path);
     int match(const QString &text, int &offset, Path *path);

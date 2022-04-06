@@ -5,7 +5,7 @@
 #include <QTextEdit>
 
 enum RuleType{
-    NORMAL, INLINE,
+    INLINE, NORMAL,
 };
 
 struct Rule

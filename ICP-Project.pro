@@ -17,21 +17,21 @@ FORMS    +=
 
 HEADERS += \
     Code/Highlighter.h \
-    Code/syntax.h \
     Code/TextCode.h \
     Code/TextDebug.h \
     Graph/ERDview.h \
     Graph/SEQview.h \
     MainWindow.h \
-    Graph/DragItem.h
+    Graph/DragItem.h \
+    Code/SyntaxRules.h
 
 SOURCES += \
     Code/Highlighter.cpp \
-    Code/syntax.cpp \
     Code/TextCode.cpp \
     Code/TextDebug.cpp \
     Graph/ERDview.cpp \
     Graph/SEQview.cpp \
     main.cpp \
     MainWindow.cpp \
-    Graph/DragItem.cpp
+    Graph/DragItem.cpp \
+    Code/SyntaxRules.cpp
