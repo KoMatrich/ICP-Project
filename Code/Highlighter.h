@@ -4,7 +4,7 @@
 #include <QTextCharFormat>
 #include <QTextEdit>
 #include <QDebug>
-#include "SyntaxRules.h"
+#include "Syntax.h"
 
 class Highlighter : public QSyntaxHighlighter
 {
@@ -23,9 +23,7 @@ private:
 
     PathStack path_stack;
 
-    QTextCharFormat cursor_color;
-    QTextCharFormat err;
-    QTextCharFormat after_err;
+    Syntax syntax;
 
     enum LineState{NORMAL,FILE_START=-1,SYNTAX_E=-2,INTERNAL_E=-3};
 

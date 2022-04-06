@@ -1,5 +1,4 @@
-#ifndef SYNTAX_H
-#define SYNTAX_H
+#pragma once
 
 #include <QTextCharFormat>
 #include <QTextEdit>
@@ -20,6 +19,12 @@ struct Rule
 
 typedef QVector<Rule> RuleSet;
 
-RuleSet const Syntax();
-RuleSet const syntax = Syntax();
-#endif // SYNTAX_H
+class Syntax{
+public:
+    Syntax();
+    QTextCharFormat err,cursor_color,after_err,no_check;
+    RuleSet const getRules();
+private:
+    RuleSet const genRules();
+    RuleSet rules;
+};

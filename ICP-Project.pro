@@ -23,7 +23,7 @@ HEADERS += \
     Graph/SEQview.h \
     MainWindow.h \
     Graph/DragItem.h \
-    Code/SyntaxRules.h
+    Code/Syntax.h
 
 SOURCES += \
     Code/Highlighter.cpp \
@@ -34,4 +34,4 @@ SOURCES += \
     main.cpp \
     MainWindow.cpp \
     Graph/DragItem.cpp \
-    Code/SyntaxRules.cpp
+    Code/Syntax.cpp

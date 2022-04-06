@@ -1,15 +1,30 @@
-#include "SyntaxRules.h"
+#include "Syntax.h"
 #include <QDebug>
+
+Syntax::Syntax()
+{
+    err.setBackground(Qt::red);
+    cursor_color.setBackground(Qt::yellow);
+    after_err.setForeground(Qt::darkGray);
+    no_check.setForeground(Qt::lightGray);
+
+    rules = genRules();
+}
+
+RuleSet const Syntax::getRules(){
+    return rules;
+}
 
 QRegExp inline Regex(const QString input){
     QRegExp regex = QRegExp(input);
     if(!regex.isValid()){
         qDebug() << "Invalid syntax \"" << input << "\"" ;
+        exit(1);
     }
     return regex;
 }
 
-RuleSet const Syntax(){
+RuleSet const Syntax::genRules(){
     RuleSet syntax;
 
     const QString _name = "[_A-Za-z0-9]+";

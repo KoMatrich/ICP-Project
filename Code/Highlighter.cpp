@@ -3,11 +3,6 @@
 Highlighter::Highlighter(QTextEdit *parent)
     : QSyntaxHighlighter(parent->document())
 {
-    err.setBackground(Qt::red);
-    parent->setTextColor(Qt::black);
-    after_err.setForeground(Qt::darkGray);
-    cursor_color.setBackground(Qt::yellow);
-
     QFont font;
     font.setFamily("Courier");
     font.setStyleHint(QFont::Monospace);
@@ -20,7 +15,7 @@ Highlighter::Highlighter(QTextEdit *parent)
 }
 
 void Highlighter::getRules(Rule &current,RuleSet &parts, Path *path){
-    parts = syntax; //default body of code
+    parts = syntax.getRules();
 
     if(path->length()!=0){
         //path not empty   => in body
@@ -105,11 +100,11 @@ void Highlighter::find(const QString &text, int line, int &offset)
     case -2:
         if(path->empty()){
             //outside of uml body
-            //ignore all
+            setFormat(0,text.length(),syntax.no_check);
         }else{
             //wrong input
             setCurrentBlockState(-2);
-            setFormat(offset,text.length(),err);
+            setFormat(offset,text.length(),syntax.err);
         }
         break;
     }
@@ -172,7 +167,7 @@ void Highlighter::highlightBlock(const QString &text){
             setCurrentBlockState(INTERNAL_E);
             break;
         case SYNTAX_E:
-            setFormat(0,text.length(),after_err);
+            setFormat(0,text.length(),syntax.after_err);
             setCurrentBlockState(SYNTAX_E);
             break;
         }
