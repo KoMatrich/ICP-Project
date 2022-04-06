@@ -20,6 +20,7 @@ HEADERS += \
     Code/syntax.h \
     Code/TextCode.h \
     Code/TextDebug.h \
+    Graph/draglabel.h \
     Graph/ERDview.h \
     Graph/SEQview.h \
     MainWindow.h
@@ -29,6 +30,7 @@ SOURCES += \
     Code/syntax.cpp \
     Code/TextCode.cpp \
     Code/TextDebug.cpp \
+    Graph/draglabel.cpp \
     Graph/ERDview.cpp \
     Graph/SEQview.cpp \
     main.cpp \

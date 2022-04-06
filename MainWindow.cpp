@@ -113,11 +113,10 @@ void MainWindow::init()
 
     //left top
     mainTextEdit = new MainTextEdit(vsplit);
-    mainTextEdit->acceptRichText();
     vsplit->addWidget(mainTextEdit);
 
     //left bottom
-    debugTextEdit = new DebugTextEdit(mainTextEdit);
+    debugTextEdit = new DebugTextEdit(vsplit);
     vsplit->addWidget(debugTextEdit);
 
     //set height proportion

@@ -2,10 +2,10 @@
 
 #include <QMainWindow>
 
-#include "ERDview.h"
-#include "SEQview.h"
-#include "TextCode.h"
-#include "TextDebug.h"
+#include "Graph/ERDview.h"
+#include "Graph/SEQview.h"
+#include "Code/TextCode.h"
+#include "Code/TextDebug.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;

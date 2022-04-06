@@ -1,62 +1,116 @@
 #include <QtWidgets>
 #include "ERDview.h"
+#include "draglabel.h"
 
 ERDview::ERDview(QTextEdit *parent) : QWidget(parent)
 {
     this->editor = parent;
     resize(200, 200);
+    setAcceptDrops(true);
 }
 
-void ERDview::paintEvent(QPaintEvent *)
+void ERDview::dragEnterEvent(QDragEnterEvent *event)
 {
-    static const QPoint hourHand[3] = {
-        QPoint(7, 8),
-        QPoint(-7, 8),
-        QPoint(0, -40)
-    };
-    static const QPoint minuteHand[3] = {
-        QPoint(7, 8),
-        QPoint(-7, 8),
-        QPoint(0, -70)
-    };
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        if (children().contains(event->source())) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
 
-    QColor hourColor(127, 0, 127);
-    QColor minuteColor(0, 127, 127, 191);
-
-    int side = qMin(width(), height());
-
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.translate(width() / 2, height() / 2);
-    painter.scale(side / 200.0, side / 200.0);
-
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(hourColor);
-
-    painter.save();
-    painter.drawConvexPolygon(hourHand, 3);
-    painter.restore();
-
-    painter.setPen(hourColor);
-
-    for (int i = 0; i < 12; ++i) {
-        painter.drawLine(88, 0, 96, 0);
-        painter.rotate(30.0);
-    }
-
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(minuteColor);
-
-    painter.save();
-    painter.drawConvexPolygon(minuteHand, 3);
-    painter.restore();
-
-    painter.setPen(minuteColor);
-
-    for (int j = 0; j < 60; ++j) {
-        if ((j % 5) != 0)
-            painter.drawLine(92, 0, 96, 0);
-        painter.rotate(6.0);
+    } else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
     }
 }
 
+void ERDview::dragMoveEvent(QDragMoveEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        if (children().contains(event->source())) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+    } else if (event->mimeData()->hasText()) {
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
+}
+
+void ERDview::dropEvent(QDropEvent *event)
+{
+    if (event->mimeData()->hasFormat("application/x-fridgemagnet")) {
+        const QMimeData *mime = event->mimeData();
+
+        QByteArray itemData = mime->data("application/x-fridgemagnet");
+        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
+
+        QString text;
+        QPoint offset;
+        dataStream >> text >> offset;
+
+        DragLabel *newLabel = new DragLabel(text, this);
+        newLabel->move(event->pos() - offset);
+        newLabel->show();
+        newLabel->setAttribute(Qt::WA_DeleteOnClose);
+
+        if (event->source() == this) {
+            event->setDropAction(Qt::MoveAction);
+            event->accept();
+        } else {
+            event->acceptProposedAction();
+        }
+
+    } else if (event->mimeData()->hasText()) {
+        QStringList pieces = event->mimeData()->text().split(QRegExp("\\s+"),
+                             QString::SkipEmptyParts);
+        QPoint position = event->pos();
+
+        foreach (QString piece, pieces) {
+            DragLabel *newLabel = new DragLabel(piece, this);
+            newLabel->move(position);
+            newLabel->show();
+            newLabel->setAttribute(Qt::WA_DeleteOnClose);
+
+            position += QPoint(newLabel->width(), 0);
+        }
+
+        event->acceptProposedAction();
+    } else {
+        event->ignore();
+    }
+}
+
+void ERDview::mousePressEvent(QMouseEvent *event)
+{
+    DragLabel *child = static_cast<DragLabel*>(childAt(event->pos()));
+    if (!child)
+        return;
+
+    QPoint hotSpot = event->pos() - child->pos();
+
+    QByteArray itemData;
+    QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+    dataStream << child->labelText() << QPoint(hotSpot);
+
+    QMimeData *mimeData = new QMimeData;
+    mimeData->setData("application/x-fridgemagnet", itemData);
+    mimeData->setText(child->labelText());
+
+    QDrag *drag = new QDrag(this);
+    drag->setMimeData(mimeData);
+    drag->setPixmap(*child->pixmap());
+    drag->setHotSpot(hotSpot);
+
+    child->hide();
+
+    if (drag->exec(Qt::MoveAction | Qt::CopyAction, Qt::CopyAction) == Qt::MoveAction)
+        child->close();
+    else
+        child->show();
+}
