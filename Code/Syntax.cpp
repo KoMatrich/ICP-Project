@@ -34,39 +34,44 @@ RuleSet const Syntax::genRules(){
     RuleSet syntax;
 
     Rule name;
-    name.start = Start("[A-Za-z0-9_]+");
+    name.start = Start("\\s+[A-Za-z0-9_]+");
     name.format.setForeground(Qt::darkGreen);
 
-    Rule text_content;
-    text_content.start = Start("[A-Za-z0-9_ ]+");
-    text_content.format.setForeground(Qt::darkGreen);
+    Rule string_content;
+    string_content.start = Start("[A-Za-z0-9_\\s]+");
+    string_content.format.setForeground(Qt::darkGreen);
 
     Rule string;
-    string.start = Start("\"");
+    string.start = Start("\\s+\"");
     string.type  = MULTI_LINE;
     string.end   = End("\"");
     string.format.setForeground(Qt::green);
-    string.parts.append(text_content);
+    string.parts.append(string_content);
+
+    Rule type;
+    type.start = Start("\\s+(int|string|float)");
+    type.format.setFontWeight(QFont::Bold);
+    type.parts.append(name);
+    type.parts.append(string);
 
     //uml body
     Rule uml;
-    uml.start = Start("^@startuml");
+    uml.start = Start("^@startuml$");
     uml.type  = MULTI_LINE;
-    uml.end   = End("^@enduml");
+    uml.end   = End("^@enduml$");
     uml.format.setFontWeight(QFont::Bold);
 
     //class
     Rule clas;
-    clas.start = Start("^class\\s+[A-Za-z0-9_]+");
+    clas.start = Start("^\\s*class\\s+[A-Za-z0-9_]+$");
     clas.type  = MULTI_LINE;
     clas.format.setFontWeight(QFont::Bold);
 
     //class atr
     Rule class_atr;
-    class_atr.start = Start("^[+\\-#~]\\s+");
+    class_atr.start = Start("^\\s*[+\\-#~]");
     class_atr.format.setFontWeight(QFont::Bold);
-    class_atr.parts.append(name);
-    class_atr.parts.append(string);
+    class_atr.parts.append(type);
     clas.parts.append(class_atr);
 
     uml.parts.append(clas);
