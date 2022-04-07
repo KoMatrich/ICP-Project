@@ -63,7 +63,7 @@ RuleSet const Syntax::genRules(){
 
     //class atr
     Rule class_atr;
-    class_atr.start = Start("^[+#\\-]\\s+");
+    class_atr.start = Start("^[+\\-#~]\\s+");
     class_atr.format.setFontWeight(QFont::Bold);
     class_atr.parts.append(name);
     class_atr.parts.append(string);
