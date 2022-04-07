@@ -29,15 +29,12 @@ int Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
         QRegExp start = part.start;
         int match_i = start.indexIn(text,offset);
         if(match_i == offset){
-            offset += start.matchedLength();
 
             qDebug("Matched:part%d/%d.start",i,parts.length());
-            if(offset!=0)
-                qDebug("\t%"+text.right(offset).toLatin1());
-            else
-                qDebug("\t%"+text.toLatin1());
-            qDebug("\t%"+part.start.pattern().toLatin1());
+            qDebug("\t"+text.mid(offset,start.matchedLength()).toLatin1());
+            qDebug("\t"+part.start.pattern().toLatin1());
 
+            offset += start.matchedLength();
             return i;
         }
     }
@@ -54,25 +51,18 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
     if(!end.isEmpty()){
         int match_i = end.indexIn(text,offset);
         if(match_i == offset){
-            offset += end.matchedLength();
 
             qDebug("Matched:body.end");
-            if(offset!=0)
-                qDebug("\t%"+text.right(offset).toLatin1());
-            else
-                qDebug("\t%"+text.toLatin1());
-            qDebug("\t%"+current.end.pattern().toLatin1());
+            qDebug("\t"+text.mid(offset,end.matchedLength()).toLatin1());
+            qDebug("\t"+current.end.pattern().toLatin1());
 
+            offset += end.matchedLength();
             return 0;
         }
     }else{
         //block without ending
         qDebug("Ending :body.end");
-        if(offset!=0)
-            qDebug("\t%"+text.right(offset).toLatin1());
-        else
-            qDebug("\t%"+text.toLatin1());
-        qDebug("\t%"+current.end.pattern().toLatin1());
+        qDebug("\t Empty patern");
 
         return 1;
     }
@@ -92,7 +82,7 @@ void Analyzer::reducePath(Path *path)
             parts   = current.parts;
         }
 
-        if(current.end.isEmpty()){
+        if(current.end.isEmpty()&&current.type!=MULTI_LINE){
             path->pop_back();
         }else{
             break;
@@ -117,9 +107,7 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
         }else{
             //load stack from previous line
             path = new Path(path_stack.at(line-1));
-            getRules(current,parts,*path);
-            if(current.type==INLINE)
-                reducePath(path);
+            reducePath(path);
         }
     }
 
