@@ -3,8 +3,9 @@
 Highlighter::Highlighter(QTextEdit *parent)
     : QSyntaxHighlighter(parent->document())
 {
+    //setup basic highlight
     QFont font;
-    font.setFamily("Courier");
+    font.setFamily("Monospace");
     font.setStyleHint(QFont::Monospace);
     font.setFixedPitch(true);
     parent->setFont(font);
@@ -61,6 +62,7 @@ void Highlighter::updateCurrentBlockState(){
 void Highlighter::highlightBlock(const QString &text){
     auto prevState = previousBlockState();
 
+    //if previous line failed copy rc and end
     if(prevState < -1){
         switch(prevState){
         case INTERNAL_E:
@@ -99,9 +101,11 @@ void Highlighter::highlightBlock(const QString &text){
     int last_off;
 
     //run syntax check
+    //  clear syntax stack to current line
     analyzer->ClearTo(lineNumber);
     Rule rule;
 
+    //  match everything possible on this line
     do{
         last_off = offset;
         analyzer->Next(lineNumber,offset,text,rule);
@@ -110,10 +114,10 @@ void Highlighter::highlightBlock(const QString &text){
             setFormat(last_off,offset-last_off,rule.format);
     }while((offset>=0)&&(offset<len));
 
+    //  check result
     if(offset==len){
+        //everything is matched
         return;
-    }else{
-        offset = SYNTAX_ERR;
     }
 
     switch(offset){
