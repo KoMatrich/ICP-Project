@@ -1,4 +1,5 @@
 #include "Syntax.h"
+#include "assert.h"
 #include <QDebug>
 
 Syntax::Syntax()
@@ -18,23 +19,14 @@ RuleSet const Syntax::getRules(){
 
 QRegExp inline End(const QString input){
     QRegExp regex = QRegExp(input);
-    if(!regex.isValid()){
-        qDebug() << "Invalid syntax! \"" << input << "\"" ;
-        exit(1);
-    }
+    assert(regex.isValid());
     return regex;
 }
 
 QRegExp inline Start(const QString input){
     QRegExp regex = QRegExp(input);
-    if(!regex.isValid()){
-        qDebug() << "Invalid syntax! \"" << input << "\"" ;
-        exit(1);
-    }
-    if(regex.indexIn("") != -1){
-        qDebug() << "Syntax matches empty space! \"" << input << "\"" ;
-        exit(1);
-    }
+    assert(regex.isValid());
+    assert(regex.indexIn("") == -1);
     return regex;
 }
 
