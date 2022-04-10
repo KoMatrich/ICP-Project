@@ -11,11 +11,16 @@ class MainTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
-    explicit MainTextEdit(QWidget *parent = 0);
+    MainTextEdit(QWidget *parent) : QTextEdit(parent)
+    {
+        highlighter = new Highlighter(this);
+    }
 signals:
 
 public slots:
-    void syntax_reload();
+    void syntax_reload(){
+        highlighter->rehighlight();
+    };
 protected:
 
 private:

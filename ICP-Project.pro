@@ -28,7 +28,6 @@ HEADERS += \
 
 SOURCES += \
     Code/Highlighter.cpp \
-    Code/TextCode.cpp \
     Code/TextDebug.cpp \
     Graph/ERDview.cpp \
     Graph/SEQview.cpp \
