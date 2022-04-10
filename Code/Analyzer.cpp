@@ -83,7 +83,7 @@ void Analyzer::reducePath(Path *path)
         }
 
         if(current.end.isEmpty()&&current.type!=MULTI_LINE){
-            path->pop_back();
+            path->removeLast();
         }else{
             break;
         }
@@ -116,7 +116,7 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
 
     if((offset==0) && (current.type==INLINE)){
         offset = SYNTAX_E;
-        qDebug() << "Previus rule didn end well";
+        qDebug() << "Previus rule didn't end well";
         goto SKIP;
     }
 
@@ -128,14 +128,14 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
     }
 
     if(path->size()==0){
-        //not in body soo no checking
+        //not in body so no checking
         offset = NO_CHECK;
         goto SKIP;
     }
 
     result = matchEnd(text,offset,current);
     if(result>=0){
-        path->pop_back();
+        path->removeLast();
         goto SKIP;
     }
 
@@ -151,7 +151,7 @@ void Analyzer::ClearTo(int lineNumber)
     while(lineNumber < path_stack.length()){
         //line number bigger than actual stack index
         //needs to remove overhead
-        path_stack.pop_back();
+        path_stack.removeLast();
     }
 }
 

@@ -24,7 +24,8 @@ HEADERS += \
     MainWindow.h \
     Graph/DragItem.h \
     Code/Syntax.h \
-    Code/Analyzer.h
+    Code/Analyzer.h \
+    Code/Semantics.h
 
 SOURCES += \
     Code/Highlighter.cpp \
@@ -36,4 +37,5 @@ SOURCES += \
     MainWindow.cpp \
     Graph/DragItem.cpp \
     Code/Syntax.cpp \
-    Code/Analyzer.cpp
+    Code/Analyzer.cpp \
+    Code/Semantics.cpp
