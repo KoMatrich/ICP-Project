@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
+#include "Semantics.h"
 #include <QString>
 
 typedef QVector<int> Path;

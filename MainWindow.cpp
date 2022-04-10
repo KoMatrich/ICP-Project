@@ -35,8 +35,8 @@ void MainWindow::newFile()
 void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this);
-    if (!fileName.isEmpty()) {
-        MainWindow *existing = findMainWindow(fileName);
+    if (!fileName.isEmpty()) { //selected a real file
+        MainWindow *existing = findMainWindow(fileName); //random sample code
         if (existing) {
             existing->show();
             existing->raise();
@@ -44,8 +44,7 @@ void MainWindow::open()
             return;
         }
 
-        if (isUntitled && mainTextEdit->document()->isEmpty()
-                && !isWindowModified()) {
+        if (isUntitled && mainTextEdit->document()->isEmpty()) {
             loadFile(fileName);
         } else {
             MainWindow *other = new MainWindow(fileName);
