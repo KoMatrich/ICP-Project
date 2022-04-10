@@ -44,8 +44,7 @@ void MainWindow::open()
             return;
         }
 
-        if (isUntitled && mainTextEdit->document()->isEmpty()
-                && !isWindowModified()) {
+        if (isUntitled && mainTextEdit->document()->isEmpty()) {
             loadFile(fileName);
         } else {
             MainWindow *other = new MainWindow(fileName);
