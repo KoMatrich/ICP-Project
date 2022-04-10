@@ -8,4 +8,4 @@ MainTextEdit::MainTextEdit(QWidget *parent) : QTextEdit(parent)
 
 void MainTextEdit::syntax_reload(){
     highlighter->rehighlight();
-};
+}

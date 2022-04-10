@@ -20,7 +20,7 @@ void inline Analyzer::getRules(Rule &current,RuleSet &parts, Path path){
     }
 }
 
-///If found index of matched rule, else -1
+//If found index of matched rule, else -1
 int Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
 {
     //find start of sub block
