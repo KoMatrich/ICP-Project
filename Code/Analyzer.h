@@ -4,25 +4,29 @@
 #include "Semantics.h"
 #include <QString>
 
-typedef QVector<int> Path;
-typedef QVector<Path> PathStack;
+typedef QPair<Rule,QString> Lexem;
 
 class Analyzer
 {
+    typedef QVector<Lexem> LineStack;
+    typedef QVector<LineStack> GlobalStack;
+
 public:
-    Analyzer(Syntax *syntax);
+    Analyzer(SyntaxTree *syntax_tree){
+        this->syntax_tree = syntax_tree;
+    }
 
     void Next(int line, int &offset, const QString &text, Rule &rule);
     void ClearTo(int lineNumber);
     void ClearAll();
 private:
-    Syntax *syntax;
+    SyntaxTree *syntax_tree;
 
-    PathStack path_stack;
-    void inline getRules(Rule &current,RuleSet &parts, Path path);
+    GlobalStack global_stack;
+    void inline getRules(Rule &current,RuleSet &parts, LineStack stack);
 
-    int matchBody(const QString &text, int &offset, RuleSet parts);
+    Lexem *matchBody(const QString &text, int &offset, RuleSet parts);
     int matchEnd(const QString &text, int &offset, Rule current);
 
-    void reducePath(Path *path);
+    void reduceStack(LineStack *stack);
 };

@@ -1,27 +1,21 @@
 #include "Analyzer.h"
 #include "QDebug"
 
-Analyzer::Analyzer(Syntax *syntax)
-{
-    this->syntax = syntax;
-}
-
-void inline Analyzer::getRules(Rule &current,RuleSet &parts, Path path){
-    parts = syntax->getRules();
+/// Returns current rule on top of line stack
+/// without poping inline rules
+void inline Analyzer::getRules(Rule &current,RuleSet &parts, LineStack stack){
+    parts = syntax_tree->getRules();
     current = Rule();
     current.type = MULTI_LINE;
 
-    if(path.length()!=0){
-        //path not empty   => in body
-        for(int i = 0; i < path.length(); i++){
-            current = parts.at(path.at(i));
-            parts   = current.parts;
-        }
+    if(stack.length()!=0){
+        current = stack.back().first;
+        parts = current.parts;
     }
 }
 
-//If found index of matched rule, else -1
-int Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
+///If found index of matched rule, else -1
+Lexem *Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
 {
     //find start of sub block
     for(int i = 0; i < parts.length();i++){
@@ -29,18 +23,21 @@ int Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
         QRegExp start = part.start;
         int match_i = start.indexIn(text,offset);
         if(match_i == offset){
+            Lexem *lex = new Lexem();
+            lex->first = part;
+            lex->second = text.mid(offset,start.matchedLength()).toLatin1();
 
             qDebug("Matched:part%d/%d.start",i,parts.length());
-            qDebug("\t"+text.mid(offset,start.matchedLength()).toLatin1());
+            qDebug("\t"+lex->second.toLatin1());
             qDebug("\t"+part.start.pattern().toLatin1());
 
             offset += start.matchedLength();
-            return i;
+            return lex;
         }
     }
 
     //no rule was matched
-    return -1;
+    return nullptr;
 }
 
 ///If found returns 0, else -1
@@ -71,47 +68,46 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
     return -1;
 }
 
-void Analyzer::reducePath(Path *path)
+/// Pops INLINE rules from LineStack
+void Analyzer::reduceStack(LineStack *stack)
 {
-    while(path->length()!=0){
-        RuleSet parts = syntax->getRules();
-        Rule current;
-
-        for(int i = 0; i < path->length(); i++){
-            current = parts.at(path->at(i));
-            parts   = current.parts;
-        }
+    while(stack->length()!=0){
+        Rule current = stack->back().first;
 
         if(current.end.isEmpty()&&current.type!=MULTI_LINE){
-            path->removeLast();
+            stack->removeLast();
         }else{
             break;
         }
     }
 }
 
+/// Finds next lexem in text and updates LineStack.
+/// Offset is lengh of match, if lexem is found.
+/// Offset is unchenged on empty rule match
+/// (used as last rule when matching)
 void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
 {
-    //path to current block
-    Path *path;
+    LineStack *stack;
     RuleSet parts;
 
-    if(path_stack.length() == line+1){
+    if(global_stack.length() == line+1){
         //recursive call
-        path = new Path(path_stack.at(line));
+        stack = new LineStack(global_stack.at(line));
     }else{
         //first call of this function on this line
         if(line == 0){
             //first line
-            path = new Path();
+            stack = new LineStack();
         }else{
             //load stack from previous line
-            path = new Path(path_stack.at(line-1));
-            reducePath(path);
+            stack = new LineStack(global_stack.at(line-1));
+            reduceStack(stack);
         }
     }
 
-    getRules(current,parts,*path);
+    getRules(current,parts,*stack);
+    Lexem *lex = nullptr;
     int result;
 
     if((offset==0) && (current.type==INLINE)){
@@ -120,22 +116,23 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
         goto SKIP;
     }
 
-    result = matchBody(text,offset,parts);
-    if(result>=0){
-        path->append(result);
-        getRules(current,parts,*path);
+    lex = matchBody(text,offset,parts);
+    if(lex != nullptr){
+        stack->append(*lex);
+        free(lex);
+        getRules(current,parts,*stack);
         goto SKIP;
     }
 
-    if(path->size()==0){
+    if(stack->size()==0){
         //not in body so no checking
         offset = NO_CHECK;
         goto SKIP;
     }
 
     result = matchEnd(text,offset,current);
-    if(result>=0){
-        path->removeLast();
+    if(result >= 0){
+        stack->removeLast();
         goto SKIP;
     }
 
@@ -143,20 +140,20 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
     offset = SYNTAX_E;
 SKIP:
     ClearTo(line);
-    path_stack.append(*path);
+    global_stack.append(*stack);
 }
 
+/// Removes all LineStacks with index > line number
+/// from GlobalStack
 void Analyzer::ClearTo(int lineNumber)
 {
-    while(lineNumber < path_stack.length()){
-        //line number bigger than actual stack index
-        //needs to remove overhead
-        path_stack.removeLast();
+    while(lineNumber < global_stack.length()){
+        global_stack.removeLast();
     }
 }
 
 void Analyzer::ClearAll()
 {
-    path_stack.clear();
+    global_stack.clear();
 }
 

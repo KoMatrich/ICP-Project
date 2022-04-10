@@ -14,17 +14,22 @@ Highlighter::Highlighter(QTextEdit *parent)
     QFontMetrics metrics(font);
     parent->setTabStopWidth(tabStop * metrics.width(' '));
 
-    syntax = new Syntax();
+    syntax = new SyntaxTree();
     analyzer = new Analyzer(syntax);
 }
 
-//  doc handeling
+/// Line index numbering updating
+/// chenges index from odd to even
+/// and back, to make chenge in indexing.
+/// Required to updated all remaining
+/// lines after edited line.
 int inline state_modify(int state){
     int index = state / 2;
     int mod = state % 2;
     return index*2 + (mod+1)%2;
 }
 
+/// Logic inplementation of line indexing.
 void Highlighter::updateCurrentBlockState(){
     auto prevState = previousBlockState();
 
@@ -44,7 +49,7 @@ void Highlighter::updateCurrentBlockState(){
         }
         setCurrentBlockState(state);
     }else{
-        //others
+        //not first
         int state;
         int dif = currentBlockState()/2 - prevState/2;
         if(dif==1){
@@ -58,12 +63,12 @@ void Highlighter::updateCurrentBlockState(){
     }
 }
 
-//handles line numbering and calls find funct
+/// Main highlighter functions
 void Highlighter::highlightBlock(const QString &text){
     auto prevState = previousBlockState();
 
-    //if previous line failed copy rc and end
     if(prevState < -1){
+        //check if previous line failed
         switch(prevState){
         case INTERNAL_E:
             setCurrentBlockState(INTERNAL_E);
@@ -112,6 +117,7 @@ void Highlighter::highlightBlock(const QString &text){
 
         if(offset > 0)
             setFormat(last_off,offset-last_off,rule.format);
+
     }while((offset>=0)&&(offset<len));
 
     //  check result

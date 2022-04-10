@@ -18,9 +18,9 @@ struct Rule
 };
 typedef QVector<Rule> RuleSet;
 
-class Syntax{
+class SyntaxTree{
 public:
-    Syntax();
+    SyntaxTree();
     QTextCharFormat err,cursor_color,after_err,no_check;
 
     RuleSet const getRules();

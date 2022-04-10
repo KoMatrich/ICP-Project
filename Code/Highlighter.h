@@ -18,6 +18,6 @@ protected:
     void updateCurrentBlockState();
 
 private:
-    Syntax* syntax;
+    SyntaxTree* syntax;
     Analyzer* analyzer;
 };

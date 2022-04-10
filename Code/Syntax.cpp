@@ -2,7 +2,7 @@
 #include "assert.h"
 #include <QDebug>
 
-Syntax::Syntax()
+SyntaxTree::SyntaxTree()
 {
     err.setBackground(Qt::red);
     after_err.setForeground(Qt::darkGray);
@@ -13,7 +13,7 @@ Syntax::Syntax()
     rules = genRules();
 }
 
-RuleSet const Syntax::getRules(){
+RuleSet const SyntaxTree::getRules(){
     return rules;
 }
 
@@ -30,7 +30,7 @@ QRegExp inline Start(const QString input){
     return regex;
 }
 
-RuleSet const Syntax::genRules(){
+RuleSet const SyntaxTree::genRules(){
     RuleSet syntax;
 
     //uml body
