@@ -116,6 +116,9 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
         goto SKIP;
     }
 
+    if(offset==text.length())
+        goto SKIP;
+
     lex = matchBody(text,offset,parts);
     if(lex != nullptr){
         stack->append(*lex);

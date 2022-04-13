@@ -19,52 +19,75 @@ RuleSet const SyntaxTree::getRules(){
 
 QRegExp inline End(const QString input){
     QRegExp regex = QRegExp(input);
-    assert(regex.isValid());
+    if(!regex.isValid()){
+        qDebug("Invalid regex:"+regex.pattern().toLatin1());
+        exit(99);
+    }
     return regex;
 }
 
 QRegExp inline Start(const QString input){
     QRegExp regex = QRegExp(input);
-    assert(regex.isValid());
-    assert(regex.indexIn("") == -1);
+    if(!regex.isValid()){
+        qDebug("Invalid regex:"+regex.pattern().toLatin1());
+        exit(99);
+    }
+    if(!regex.indexIn("") == -1){
+        qDebug("Regex matchings empty rule:"+regex.pattern().toLatin1());
+        exit(99);
+    }
     return regex;
 }
+
+///@TODO https://real-world-plantuml.com/umls/4783596598460416
 
 RuleSet const SyntaxTree::genRules(){
     RuleSet syntax;
 
     //uml body
     Rule uml;
-    uml.start = Start("^@startuml$");
-    uml.type  = MULTI_LINE;
-    uml.end   = End("^@enduml$");
+    uml.start   = Start("^@startuml$");
+    uml.type    = MULTI_LINE;
+    uml.end     = End("^@enduml$");
     uml.format.setFontWeight(QFont::Bold);
 
     //class
     Rule clas;
-    clas.start = Start("^\\s*class\\s+[A-Za-z0-9_]+$");
-    clas.type  = MULTI_LINE;
+    clas.start  = Start("class\\s+[A-Za-z0-9_]+\\{$");
+    clas.type   = MULTI_LINE;
+    clas.end    = End("\\}");
     clas.format.setFontWeight(QFont::Bold);
 
-    Rule name;
-    name.start = Start("\\s*_?[A-Za-z][A-Za-z0-9_]*");
-    name.format.setForeground(Qt::darkGreen);
+    //separators
+    Rule separ;
+    separ.start  = Start("(\\-|\\.|_){2}");
+    separ.format.setFontUnderline(true);
+    clas.parts.append(separ);
 
+    //method
+    Rule method;
+    method.start = Start("_?[A-Za-z][A-Za-z0-9_]*\\(\\)");
+    method.format.setFontWeight(QFont::Bold);
+    method.format.setForeground(Qt::darkBlue);
+    clas.parts.append(method);
+
+    //var
+    Rule var;
+    var.start = Start("_?[A-Za-z][A-Za-z0-9_]*");
+    var.format.setFontWeight(QFont::Bold);
+    var.format.setForeground(Qt::darkGreen);
+    clas.parts.append(var);
+
+    //class access
     Rule type;
-    type.start = Start("\\s*(int|string|float)");
+    type.start = Start("[+\\-#~]");
     type.format.setFontWeight(QFont::Bold);
-    type.parts.append(name);
-
-    //class atr
-    Rule class_atr;
-    class_atr.start = Start("^\\s*[+\\-#~]");
-    class_atr.format.setFontWeight(QFont::Bold);
-    class_atr.parts.append(type);
-    clas.parts.append(class_atr);
+    type.parts.append(method);
+    type.parts.append(var);
+    clas.parts.append(type);
 
     uml.parts.append(clas);
-///@todo
-//https://java-programming.mooc.fi/part-11/1-class-diagrams
+
     syntax.append(uml);
     return syntax;
 }

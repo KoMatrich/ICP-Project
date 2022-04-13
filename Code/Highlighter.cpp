@@ -63,6 +63,23 @@ void Highlighter::updateCurrentBlockState(){
     }
 }
 
+/// Skips to next non white space char on line
+void Highlighter::skipSpace(const QString text, int &offset){
+    //save current offset
+    int tmp = offset;
+    //move offset to next non whitespace
+    for(auto c: text.mid(tmp))
+        if(c.isSpace())
+            offset++;
+        else{
+            if(offset >= text.length())
+                offset = text.length();
+            return;
+        }
+    if(offset >= text.length())
+        offset = text.length();
+}
+
 /// Main highlighter functions
 void Highlighter::highlightBlock(const QString &text){
     auto prevState = previousBlockState();
@@ -103,7 +120,7 @@ void Highlighter::highlightBlock(const QString &text){
     int len = text.length();
 
     int offset = 0;
-    int last_off;
+    int last_off = 0;
 
     //run syntax check
     //  clear syntax stack to current line
@@ -112,6 +129,8 @@ void Highlighter::highlightBlock(const QString &text){
 
     //  match everything possible on this line
     do{
+        skipSpace(text, offset);
+
         last_off = offset;
         analyzer->Next(lineNumber,offset,text,rule);
 
@@ -120,11 +139,8 @@ void Highlighter::highlightBlock(const QString &text){
 
     }while((offset>=0)&&(offset<len));
 
-    //  check result
-    if(offset==len){
-        //everything is matched
+    if(offset==len)
         return;
-    }
 
     switch(offset){
     case NO_CHECK:

@@ -20,4 +20,6 @@ protected:
 private:
     SyntaxTree* syntax;
     Analyzer* analyzer;
+
+    void skipSpace(const QString text, int &offset);
 };

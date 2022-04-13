@@ -3,10 +3,16 @@ https://real-world-plantuml.com/?type=sequence
 
 @startuml
 
-class pepe
-- string	name
-+ string pass
-# int age
-~ float iq
-
+class pepe{
+	-	name
+	pass
+#	age
+	~	iq
+--
+getName()
+..
+	getAge()
+__
+	+	getBulied()
+}
 @enduml
