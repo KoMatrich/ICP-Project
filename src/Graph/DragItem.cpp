@@ -1,4 +1,4 @@
-#include "DragItem.h"
+#include <Graph/DragItem.h>
 
 #include <QtWidgets>
 

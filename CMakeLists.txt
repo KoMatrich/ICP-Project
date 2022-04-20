@@ -1,0 +1,37 @@
+# CMakeLists.txt
+# author: Ilya Doroshenko (xdoros01)
+
+cmake_minimum_required (VERSION 3.16)
+
+project(ICP CXX)
+
+set(CXX_STANDARD 23)
+if(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
+else(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g")
+endif()
+
+#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+# Include Qt deployment helper function
+include(windeployqt.cmake)
+
+
+file(GLOB_RECURSE vsrc "src/*.cpp")
+file(GLOB_RECURSE vrec "resources/*.ui")
+file(GLOB_RECURSE vhead "include/*.h" "include/*.hpp")
+
+add_executable ("${PROJECT_NAME}"  "${vsrc}" "${vrec}" "${vhead}")
+
+target_include_directories("${PROJECT_NAME}" PUBLIC "${Qt5Widgets_INCLUDE_DIRS}")
+target_include_directories("${PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+target_precompile_headers("${PROJECT_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/pch.h")
+target_link_libraries("${PROJECT_NAME}" Qt5::Widgets)
+
+
+windeployqt("${PROJECT_NAME}")
