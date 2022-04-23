@@ -10,8 +10,6 @@
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-
 public:
     MainWindow();
     MainWindow(const QString &fileName);
@@ -31,8 +29,6 @@ private:
     void init();
 
     void createActions();
-    void createMenus();
-    void createToolBars();
     void createStatusBar();
 
     void readSettings();
@@ -54,10 +50,6 @@ private:
 
     QString curFile;
     bool isUntitled;
-
-    QMenu *fileMenu;
-    QMenu *editMenu;
-    QMenu *helpMenu;
 
     QToolBar *fileToolBar;
     QToolBar *editToolBar;
