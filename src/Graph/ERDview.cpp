@@ -1,5 +1,4 @@
 #include <Graph/ERDview.h>
-#include <Graph/DragItem.h>
 
 ERDview::ERDview(QTextEdit *parent) : QWidget(parent)
 {
@@ -10,7 +9,16 @@ ERDview::ERDview(QTextEdit *parent) : QWidget(parent)
 
 void ERDview::documentWasModified()
 {
-
+    auto test = new DragItem("Class Pepe\n"
+                             "__\n"
+                             "- age name\n"
+                             "==\n"
+                             "\n"
+                             "--\n"
+                             "getname()", this);
+    test->move(this->width()/2,this->height()/2);
+    test->show();
+    test->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void ERDview::dragEnterEvent(QDragEnterEvent *event)
@@ -59,7 +67,7 @@ void ERDview::dropEvent(QDropEvent *event)
         QPoint offset;
         dataStream >> text >> offset;
 
-        DragLabel *newLabel = new DragLabel(text, this);
+        DragItem *newLabel = new DragItem(text, this);
         newLabel->move(event->pos() - offset);
         newLabel->show();
         newLabel->setAttribute(Qt::WA_DeleteOnClose);
@@ -68,14 +76,14 @@ void ERDview::dropEvent(QDropEvent *event)
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
-            event->acceptProposedAction();
+            //event->acceptProposedAction();
         }
     }
 }
 
 void ERDview::mousePressEvent(QMouseEvent *event)
 {
-    DragLabel *child = static_cast<DragLabel*>(childAt(event->pos()));
+    DragItem *child = static_cast<DragItem*>(childAt(event->pos()));
     if (!child)
         return;
 

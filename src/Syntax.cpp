@@ -32,7 +32,7 @@ QRegExp inline Start(const QString input){
         qDebug("Invalid regex:"+regex.pattern().toLatin1());
         exit(99);
     }
-    if(!regex.indexIn("") == -1){
+    if(!(regex.indexIn("") == -1)){
         qDebug("Regex matchings empty rule:"+regex.pattern().toLatin1());
         exit(99);
     }
@@ -60,7 +60,7 @@ RuleSet const SyntaxTree::genRules(){
 
     //separators
     Rule separ;
-    separ.start  = Start("(\\-|\\.|_){2}");
+    separ.start  = Start("(\\-|=|_){2}");
     separ.format.setFontUnderline(true);
     clas.parts.append(separ);
 

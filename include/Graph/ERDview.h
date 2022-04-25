@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <Graph/DragItem.h>
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;
@@ -24,7 +25,7 @@ protected:
     void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
     void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-
 private:
     QTextEdit *editor;
+    QVector<DragItem> list;
 };
