@@ -20,10 +20,11 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 # Include Qt deployment helper function
 include(windeployqt.cmake)
 
-
 file(GLOB_RECURSE vsrc "src/*.cpp")
 file(GLOB_RECURSE vrec "resources/*.ui")
 file(GLOB_RECURSE vhead "include/*.h" "include/*.hpp")
+
+qt5_add_resources(resources.qrc)
 
 add_executable ("${PROJECT_NAME}"  "${vsrc}" "${vrec}" "${vhead}")
 

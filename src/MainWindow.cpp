@@ -86,7 +86,7 @@ void MainWindow::init()
 
 	//right first
 	erdView = new ERDview(mainTextEdit);
-	tabs->addTab(erdView, "Class");
+	tabs->addTab(erdView->View(), "Class");
 
 	//right second
 	seqView = new SEQview(mainTextEdit);

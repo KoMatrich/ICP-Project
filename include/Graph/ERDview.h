@@ -13,19 +13,15 @@ class ERDview : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ERDview(QTextEdit *parent = 0);
-
-signals:
+    explicit ERDview(QWidget *parent = 0);
+    QGraphicsView* View(){return view;}
 
 public slots:
     void documentWasModified();
-
-protected:
-    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
-    void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
-    void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
-    QTextEdit *editor;
-    QVector<DragItem> list;
+    QGraphicsScene *scene;
+    QGraphicsView* view;
+
+    //TODO fix this
+    QPixmap bckg = QPixmap(":images/res/grid.png");
 };
