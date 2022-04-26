@@ -1,5 +1,8 @@
 #include "Analyzer.h"
 #include "QDebug"
+#include <iostream>
+#include "TextDebug.h"
+#include <format>
 
 /// Returns current rule on top of line stack
 /// without poping inline rules
@@ -27,9 +30,9 @@ Lexem *Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
             lex->first = part;
             lex->second = text.mid(offset,start.matchedLength()).toLatin1();
 
-            qDebug("Matched:part%d/%d.start",i,parts.length());
-            qDebug("\t"+lex->second.toLatin1());
-            qDebug("\t"+part.start.pattern().toLatin1());
+            this->debug->printText(QString("Matched:part % d / % d.start").arg(i, parts.length()));
+            this->debug->printText(QString("\t" + lex->second.toLatin1()));
+            this->debug->printText(QString("\t" + part.start.pattern().toLatin1()));
 
             offset += start.matchedLength();
             return lex;
@@ -49,17 +52,17 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
         int match_i = end.indexIn(text,offset);
         if(match_i == offset){
 
-            qDebug("Matched:body.end");
-            qDebug("\t"+text.mid(offset,end.matchedLength()).toLatin1());
-            qDebug("\t"+current.end.pattern().toLatin1());
+            this->debug->printText(QString("Matched:body.end"));
+            this->debug->printText(QString("\t" + text.mid(offset, end.matchedLength()).toLatin1()));
+            this->debug->printText(QString("\t" + current.end.pattern().toLatin1()));
 
             offset += end.matchedLength();
             return 0;
         }
     }else{
         //block without ending
-        qDebug("Ending :body.end");
-        qDebug("\t Empty patern");
+        this->debug->printText(QString("Ending :body.end"));
+        this->debug->printText(QString("\t Empty patern"));
 
         return 1;
     }

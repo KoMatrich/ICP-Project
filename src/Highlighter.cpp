@@ -1,6 +1,7 @@
 #include "Highlighter.h"
+#include "TextDebug.h"
 
-Highlighter::Highlighter(QTextEdit *parent)
+Highlighter::Highlighter(QTextEdit *parent, DebugTextEdit *debug)
     : QSyntaxHighlighter(parent->document())
 {
     //setup basic highlight
@@ -15,7 +16,7 @@ Highlighter::Highlighter(QTextEdit *parent)
     parent->setTabStopWidth(tabStop * metrics.width(' '));
 
     syntax = new SyntaxTree();
-    analyzer = new Analyzer(syntax);
+    analyzer = new Analyzer(syntax, debug);
 }
 
 /// Line index numbering updating

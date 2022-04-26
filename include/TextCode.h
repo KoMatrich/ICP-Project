@@ -2,6 +2,7 @@
 
 #include <QTextEdit>
 #include "Highlighter.h"
+#include "TextDebug.h"
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;
@@ -11,9 +12,9 @@ class MainTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
-    MainTextEdit(QWidget *parent) : QTextEdit(parent)
+    MainTextEdit(QWidget *parent, DebugTextEdit *debug) : QTextEdit(parent)
     {
-        highlighter = new Highlighter(this);
+        highlighter = new Highlighter(this, debug);
     }
 signals:
 

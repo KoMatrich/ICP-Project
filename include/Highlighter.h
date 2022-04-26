@@ -5,13 +5,14 @@
 #include <QTextEdit>
 #include <QDebug>
 #include "Analyzer.h"
+#include "TextDebug.h"
 
 class Highlighter : public QSyntaxHighlighter
 {
     Q_OBJECT
 
 public:
-    Highlighter(QTextEdit *parent = 0);
+    Highlighter(QTextEdit *parent, DebugTextEdit* debug);
 
 protected:
     void highlightBlock(const QString &text) Q_DECL_OVERRIDE;

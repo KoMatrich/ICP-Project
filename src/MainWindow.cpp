@@ -60,17 +60,18 @@ void MainWindow::init()
 
 	//left horizontal split
 	QSplitter* hsplit = new QSplitter(Qt::Horizontal, this);
-
+	
 	//center vertical split
 	QSplitter* vsplit = new QSplitter(Qt::Vertical, hsplit);
 	hsplit->addWidget(vsplit);
 
-	//left top
-	mainTextEdit = new MainTextEdit(vsplit);
-	vsplit->addWidget(mainTextEdit);
-
 	//left bottom
 	debugTextEdit = new DebugTextEdit(vsplit);
+
+	//left top
+	mainTextEdit = new MainTextEdit(vsplit, debugTextEdit);
+	vsplit->addWidget(mainTextEdit);
+	
 	vsplit->addWidget(debugTextEdit);
 
 	//set height proportion
