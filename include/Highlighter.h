@@ -12,7 +12,7 @@ class Highlighter : public QSyntaxHighlighter
     Q_OBJECT
 
 public:
-    Highlighter(QTextEdit *parent, DebugTextEdit* debug);
+    Highlighter(QTextEdit *parent);
 
 protected:
     void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
@@ -21,6 +21,5 @@ protected:
 private:
     SyntaxTree* syntax;
     Analyzer* analyzer;
-
     void skipSpace(const QString text, int &offset);
 };

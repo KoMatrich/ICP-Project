@@ -1,7 +1,7 @@
 #include "Highlighter.h"
-#include "TextDebug.h"
+#include "DebugService.h"
 
-Highlighter::Highlighter(QTextEdit *parent, DebugTextEdit *debug)
+Highlighter::Highlighter(QTextEdit *parent)
     : QSyntaxHighlighter(parent->document())
 {
     //setup basic highlight
@@ -16,7 +16,7 @@ Highlighter::Highlighter(QTextEdit *parent, DebugTextEdit *debug)
     parent->setTabStopWidth(tabStop * metrics.width(' '));
 
     syntax = new SyntaxTree();
-    analyzer = new Analyzer(syntax, debug);
+    analyzer = new Analyzer(syntax);
 }
 
 /// Line index numbering updating
@@ -126,6 +126,10 @@ void Highlighter::highlightBlock(const QString &text){
     //run syntax check
     //  clear syntax stack to current line
     analyzer->ClearTo(lineNumber);
+
+    VitaClear();
+    VitaPrint("Initializing semantics");
+
     Rule rule;
 
     //  match everything possible on this line
@@ -140,8 +144,13 @@ void Highlighter::highlightBlock(const QString &text){
 
     }while((offset>=0)&&(offset<len));
 
-    if(offset==len)
+    if (offset == len) {
+        // syntax check OK -> pass tree for semantic check
+        VitaPrint("Initializing semantics");
+        //call a singleton Semantics generator
+        Semantics::getInstance()->buildSTree(analyzer->GetStack());
         return;
+    }
 
     switch(offset){
     case NO_CHECK:

@@ -4,26 +4,22 @@
 #include "Semantics.h"
 #include <QString>
 #include "TextDebug.h"
-
-typedef QPair<Rule,QString> Lexem;
+#include "Types.h"
 
 class Analyzer
 {
-    typedef QVector<Lexem> LineStack;
-    typedef QVector<LineStack> GlobalStack;
 
 public:
-    Analyzer(SyntaxTree *syntax_tree, DebugTextEdit *debug){
+    Analyzer(SyntaxTree *syntax_tree){
         this->syntax_tree = syntax_tree;
-        this->debug = debug;
     }
 
     void Next(int line, int &offset, const QString &text, Rule &rule);
     void ClearTo(int lineNumber);
     void ClearAll();
+    GlobalStack GetStack();
 private:
     SyntaxTree *syntax_tree;
-    DebugTextEdit *debug;
     GlobalStack global_stack;
     void inline getRules(Rule &current,RuleSet &parts, LineStack stack);
 

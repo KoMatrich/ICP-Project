@@ -12,9 +12,9 @@ class MainTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
-    MainTextEdit(QWidget *parent, DebugTextEdit *debug) : QTextEdit(parent)
+    MainTextEdit(QWidget *parent = 0) : QTextEdit(parent)
     {
-        highlighter = new Highlighter(this, debug);
+        highlighter = new Highlighter(this);
     }
 signals:
 

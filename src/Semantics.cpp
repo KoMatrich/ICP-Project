@@ -1,4 +1,5 @@
 #include "Semantics.h"
+#include "DebugService.h"
 
 QString UMLClass::getClassName()
 {
@@ -16,6 +17,16 @@ bool UMLClass::addAttribute(UMLAttribute new_att)
     return false;
 }
 
+void Semantics::buildSTree(GlobalStack stack)
+{
+    VitaClear();
+    for (int i = 0; i < stack.size(); ++i) {
+        VitaPrintf("%1 : %2", VF(i)VF(stack[i].size()));
+
+    }
+    auto a = 5;
+}
+
 bool Semantics::addClass(UMLClass new_class)
 {
     if (std::find(this->classes.begin(), this->classes.end(), new_class) == this->classes.end()) {
@@ -27,7 +38,7 @@ bool Semantics::addClass(UMLClass new_class)
     return false;
 }
 
-bool Semantics::eatQPair(QPair<Rule, QString> pair)
+bool Semantics::eatLexem(Lexem lex)
 {
     return true;
 }

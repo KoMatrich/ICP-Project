@@ -3,16 +3,23 @@ https://real-world-plantuml.com/?type=sequence
 
 @startuml
 
-class pepe{
-	-	name
-	pass
-#	age
-	~	iq
---
-getName()
-..
-	getAge()
-__
-	+	getBulied()
+class teacher{
+	-	firstname
+	+  lastname
+	#	faculty
+
+	teach()
+	givePoints()
+	+ getMoney()
+}
+
+class student{
+	-	firstname
+	+  lastname
+	#	study program
+	~	credits
+
+	bully()
+	+ getBulied()
 }
 @enduml

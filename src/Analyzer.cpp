@@ -1,8 +1,9 @@
 #include "Analyzer.h"
 #include "QDebug"
 #include <iostream>
-#include "TextDebug.h"
 #include <format>
+#include "DebugService.h"
+
 
 /// Returns current rule on top of line stack
 /// without poping inline rules
@@ -30,9 +31,9 @@ Lexem *Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
             lex->first = part;
             lex->second = text.mid(offset,start.matchedLength()).toLatin1();
 
-            this->debug->printText(QString("Matched:part % d / % d.start").arg(i, parts.length()));
-            this->debug->printText(QString("\t" + lex->second.toLatin1()));
-            this->debug->printText(QString("\t" + part.start.pattern().toLatin1()));
+            VitaPrintf("Matched:part %1 d / %2 d.start", VF(i)VF(parts.length()));
+            VitaPrint("\t" + lex->second);
+            VitaPrint("\t" + part.start.pattern());
 
             offset += start.matchedLength();
             return lex;
@@ -51,18 +52,17 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
     if(!end.isEmpty()){
         int match_i = end.indexIn(text,offset);
         if(match_i == offset){
-
-            this->debug->printText(QString("Matched:body.end"));
-            this->debug->printText(QString("\t" + text.mid(offset, end.matchedLength()).toLatin1()));
-            this->debug->printText(QString("\t" + current.end.pattern().toLatin1()));
+            VitaPrint("Matched:body.end");
+            VitaPrint("\t" + text.mid(offset, end.matchedLength()));
+            VitaPrint("\t" + current.end.pattern());
 
             offset += end.matchedLength();
             return 0;
         }
     }else{
         //block without ending
-        this->debug->printText(QString("Ending :body.end"));
-        this->debug->printText(QString("\t Empty patern"));
+        VitaPrint("Ending :body.end");
+        VitaPrint("\t Empty patern");
 
         return 1;
     }
@@ -161,5 +161,10 @@ void Analyzer::ClearTo(int lineNumber)
 void Analyzer::ClearAll()
 {
     global_stack.clear();
+}
+
+GlobalStack Analyzer::GetStack()
+{
+    return this->global_stack;
 }
 

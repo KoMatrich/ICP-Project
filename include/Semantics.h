@@ -2,6 +2,8 @@
 #include <QString>
 #include <QPair>
 #include "Syntax.h"
+#include "Analyzer.h"
+#include "Types.h"
 
 class UMLAttribute
 {
@@ -36,11 +38,23 @@ protected:
 
 class Semantics
 {
+private:
+    static Semantics* instance;
 public:
-    Semantics() {}
-    ~Semantics() {}
-    bool addClass(UMLClass new_class);
-    bool eatQPair(QPair<Rule, QString> pair);
+    static Semantics* getInstance()
+    {
+        if (!instance)
+            instance = new Semantics;
+        return instance;
+    }
+    void buildSTree(GlobalStack stack);
 protected:
     std::vector<UMLClass> classes;
+    bool addClass(UMLClass new_class);
+    bool eatLexem(Lexem lex);
+private:
+    Semantics() {
+        //instance = this;
+    }
+    ~Semantics() {}
 };

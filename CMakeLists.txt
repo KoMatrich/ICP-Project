@@ -1,5 +1,5 @@
 # CMakeLists.txt
-# author: Ilya Doroshenko (xdoros01)
+# author: Vitezslav Kriz (xkrizv03) & Martin Kocich (xkocic02)
 
 cmake_minimum_required (VERSION 3.16)
 

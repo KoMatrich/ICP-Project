@@ -1,11 +1,11 @@
 #include <QtWidgets>
 #include "MainWindow.h"
+#include "DebugService.h"
 
 
 MainWindow::MainWindow(const QString& fileName)
 {
 	init();
-	loadFile(fileName);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -67,9 +67,10 @@ void MainWindow::init()
 
 	//left bottom
 	debugTextEdit = new DebugTextEdit(vsplit);
+	DebugService::setEndpoint(debugTextEdit);
 
 	//left top
-	mainTextEdit = new MainTextEdit(vsplit, debugTextEdit);
+	mainTextEdit = new MainTextEdit(vsplit);
 	vsplit->addWidget(mainTextEdit);
 	
 	vsplit->addWidget(debugTextEdit);
@@ -170,8 +171,10 @@ void MainWindow::readSettings()
 	QSettings settings;
 	QPoint pos = settings.value("pos", QPoint(200, 200)).toPoint();
 	QSize size = settings.value("size", QSize(1280, 720)).toSize();
+	QString fileName = settings.value("last_file", QString("")).toString();
 	move(pos);
 	resize(size);
+	loadFile(fileName);
 }
 
 void MainWindow::writeSettings()
@@ -179,6 +182,7 @@ void MainWindow::writeSettings()
 	QSettings settings;
 	settings.setValue("pos", pos());
 	settings.setValue("size", size());
+	settings.setValue("last_file", curFile);
 }
 
 bool MainWindow::maybeSave()
