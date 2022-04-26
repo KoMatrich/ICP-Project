@@ -9,19 +9,14 @@ class QDragEnterEvent;
 class QDropEvent;
 QT_END_NAMESPACE
 
-class ERDview : public QWidget
+class ERDview : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit ERDview(QWidget *parent = 0);
-    QGraphicsView* View(){return view;}
+    enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
+
+    explicit ERDview(QObject *parent = nullptr);
 
 public slots:
     void documentWasModified();
-private:
-    QGraphicsScene *scene;
-    QGraphicsView* view;
-
-    //TODO fix this
-    QPixmap bckg = QPixmap(":images/res/grid.png");
 };

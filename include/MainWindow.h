@@ -40,7 +40,10 @@ private:
 private:
     MainTextEdit *mainTextEdit;
     DebugTextEdit *debugTextEdit;
-    ERDview *erdView;
+    
+    ERDview* erdViewScene;
+    QGraphicsView *erdView;
+
     SEQview *seqView;
 
     QString curFile;
