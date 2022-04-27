@@ -22,9 +22,14 @@ void Semantics::buildSTree(GlobalStack stack)
     VitaClear();
     for (int i = 0; i < stack.size(); ++i) {
         VitaPrintf("%1 : %2", VF(i)VF(stack[i].size()));
-
+        QString out = "[\"";
+        for (int j = 0; j < stack[i].size(); j++)
+        {
+            out.append(stack[i][j].first.type + "\", \"");
+        }
+        out.append("END\"]");
+        VitaPrint(out);
     }
-    auto a = 5;
 }
 
 bool Semantics::addClass(UMLClass new_class)

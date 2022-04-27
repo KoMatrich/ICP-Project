@@ -31,9 +31,9 @@ Lexem *Analyzer::matchBody(const QString &text, int &offset, RuleSet parts)
             lex->first = part;
             lex->second = text.mid(offset,start.matchedLength()).toLatin1();
 
-            VitaPrintf("Matched:part %1 d / %2 d.start", VF(i)VF(parts.length()));
-            VitaPrint("\t" + lex->second);
-            VitaPrint("\t" + part.start.pattern());
+            //VitaPrintf("Matched:part %1 d / %2 d.start", VF(i)VF(parts.length()));
+            //VitaPrint("\t" + lex->second);
+            //VitaPrint("\t" + part.start.pattern());
 
             offset += start.matchedLength();
             return lex;
@@ -52,17 +52,17 @@ int Analyzer::matchEnd(const QString &text, int &offset, Rule current)
     if(!end.isEmpty()){
         int match_i = end.indexIn(text,offset);
         if(match_i == offset){
-            VitaPrint("Matched:body.end");
-            VitaPrint("\t" + text.mid(offset, end.matchedLength()));
-            VitaPrint("\t" + current.end.pattern());
+            //VitaPrint("Matched:body.end");
+            //VitaPrint("\t" + text.mid(offset, end.matchedLength()));
+            //VitaPrint("\t" + current.end.pattern());
 
             offset += end.matchedLength();
             return 0;
         }
     }else{
         //block without ending
-        VitaPrint("Ending :body.end");
-        VitaPrint("\t Empty patern");
+        //VitaPrint("Ending :body.end");
+        //VitaPrint("\t Empty patern");
 
         return 1;
     }
@@ -115,7 +115,7 @@ void Analyzer::Next(int line, int &offset, const QString &text, Rule &current)
 
     if((offset==0) && (current.type==INLINE)){
         offset = SYNTAX_E;
-        qDebug() << "Previus rule didn't end well";
+        //qDebug() << "Previus rule didn't end well";
         goto SKIP;
     }
 

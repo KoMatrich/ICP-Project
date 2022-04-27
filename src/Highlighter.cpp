@@ -127,9 +127,6 @@ void Highlighter::highlightBlock(const QString &text){
     //  clear syntax stack to current line
     analyzer->ClearTo(lineNumber);
 
-    VitaClear();
-    VitaPrint("Initializing semantics");
-
     Rule rule;
 
     //  match everything possible on this line
@@ -142,11 +139,12 @@ void Highlighter::highlightBlock(const QString &text){
         if(offset > 0)
             setFormat(last_off,offset-last_off,rule.format);
 
-    }while((offset>=0)&&(offset<len));
+    } while((offset>=0)&&(offset<len));
 
+    VitaClear();
     if (offset == len) {
         // syntax check OK -> pass tree for semantic check
-        VitaPrint("Initializing semantics");
+        VitaPrint("Syntax check OK");
         //call a singleton Semantics generator
         Semantics::getInstance()->buildSTree(analyzer->GetStack());
         return;
@@ -154,13 +152,16 @@ void Highlighter::highlightBlock(const QString &text){
 
     switch(offset){
     case NO_CHECK:
+        VitaPrint("Nothing to compile!");
         setFormat(last_off,len-last_off,syntax->no_check);
         break;
     case SYNTAX_ERR:
+        VitaPrint("Syntax error!");
         setFormat(last_off,len-last_off,syntax->err);
         setCurrentBlockState(SYNTAX_E);
         break;
     case INTERNAL_E:
+        VitaPrint("Internal error!");
         setCurrentBlockState(INTERNAL_E);
         break;
     }
