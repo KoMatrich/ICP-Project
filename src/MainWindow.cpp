@@ -60,7 +60,7 @@ void MainWindow::init()
 
 	//left horizontal split
 	QSplitter* hsplit = new QSplitter(Qt::Horizontal, this);
-	
+
 	//center vertical split
 	QSplitter* vsplit = new QSplitter(Qt::Vertical, hsplit);
 	hsplit->addWidget(vsplit);
@@ -72,7 +72,7 @@ void MainWindow::init()
 	//left top
 	mainTextEdit = new MainTextEdit(vsplit);
 	vsplit->addWidget(mainTextEdit);
-	
+
 	vsplit->addWidget(debugTextEdit);
 
 	//set height proportion
@@ -187,7 +187,7 @@ void MainWindow::writeSettings()
 
 bool MainWindow::maybeSave()
 {
-	if (!mainTextEdit->document()->isModified()) 
+	if (!mainTextEdit->document()->isModified())
 		return true;
 
 	QMessageBox::StandardButton ret;

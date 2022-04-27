@@ -9,17 +9,17 @@
 
 class Highlighter : public QSyntaxHighlighter
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Highlighter(QTextEdit *parent);
+	Highlighter(QTextEdit* parent);
 
 protected:
-    void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
-    void updateCurrentBlockState();
+	void highlightBlock(const QString& text) Q_DECL_OVERRIDE;
+	void updateCurrentBlockState();
 
 private:
-    SyntaxTree* syntax;
-    Analyzer* analyzer;
-    void skipSpace(const QString text, int &offset);
+	SyntaxTree* syntax;
+	Analyzer* analyzer;
+	void skipSpace(const QString text, int& offset);
 };

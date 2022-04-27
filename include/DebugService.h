@@ -11,18 +11,18 @@
 class DebugService
 {
 private:
-    static DebugService* instance;
-    DebugTextEdit* debug = nullptr;
+	static DebugService* instance;
+	DebugTextEdit* debug = nullptr;
 
 public:
-    static DebugService* getInstance()
-    {
-        if (!instance)
-            instance = new DebugService;
-        return instance;
-    }
-    static void setEndpoint(DebugTextEdit* d);
-    static void printText(QString msg);
-    static void clearText();
-    void setDebug(DebugTextEdit* d);
+	static DebugService* getInstance()
+	{
+		if (!instance)
+			instance = new DebugService;
+		return instance;
+	}
+	static void setEndpoint(DebugTextEdit* d);
+	static void printText(QString msg);
+	static void clearText();
+	void setDebug(DebugTextEdit* d);
 };
