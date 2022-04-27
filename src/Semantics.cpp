@@ -15,15 +15,25 @@ void UMLClass::updateName(QString name)
 	this->class_name = name;
 }
 
-bool UMLClass::addAttribute(UMLAttribute new_att)
+void UMLClass::addProperty(UMLProperty new_p, bool isMethod, size_t n)
 {
-	if (std::find(this->attributes.begin(), this->attributes.end(), new_att) == this->attributes.end()) {
-		// new_att not in attributes, add it
-		this->attributes.push_back(new_att);
-		return true;
-	}
+	std::vector<UMLProperty>* search;
+	if (isMethod)
+		search = &this->methods;
+	else
+		search = &this->attributes;
 
-	return false;
+	//updating
+	if (n < (*search).size())
+	{
+		this->has_changed |= (*search)[n].updateProperty(new_p);
+	}
+	//adding
+	else
+	{
+		search->push_back(new_p);
+		this->has_changed = true;
+	}
 }
 
 void Semantics::buildSTree(GlobalStack stack)
@@ -48,7 +58,7 @@ void Semantics::buildSTree(GlobalStack stack)
 	while (this->skipTreeUntil(RuleID::R_CLASS, &i, 1))
 	{
 		QString c_name = getUMLClassName(this->stack[i][1].second);
-		auto a = c_name.toStdString();
+
 		// update class
 		if (n < this->classes.size())
 		{
@@ -64,23 +74,19 @@ void Semantics::buildSTree(GlobalStack stack)
 
 		if (++i >= this->stack.size()) break;
 
-
+		size_t a = 0;
+		size_t m = 0;
 		// get all attributes / methods
-		while (this->stack[i].size() > 2)
+		while (this->stack[i].size() == 5)
 		{
+			UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
 			
-			VitaPrint(toString(this->stack[i][2].first.id));
-			switch (this->stack[i][2].first.id)
-			{
-			case RuleID::R_METHOD:
-				break;
-			case RuleID::R_VAR:
-				break;
-			case RuleID::R_ACCESS:
-				break;
-			default:
-				break;
-			}
+
+			if (this->stack[i][4].first.id == RuleID::R_METHOD)
+				this->classes[n].addProperty(p, true, m++);
+			else
+				this->classes[n].addProperty(p, false, a++);
+
 
 			if (++i >= this->stack.size()) break;
 		}
@@ -124,4 +130,20 @@ bool Semantics::skipTreeUntil(RuleID r_id, size_t* index, size_t pos)
 		(*index)++;
 	}
 	return false;
+}
+
+bool UMLProperty::updateProperty(UMLProperty new_p)
+{
+	bool changed = false;
+	changed |= new_p.p_mod == this->p_mod;
+	changed |= new_p.p_type == this->p_type;
+	changed |= new_p.p_name == this->p_name;
+
+	if (changed) {
+		this->p_mod = new_p.p_mod;
+		this->p_type = new_p.p_type;
+		this->p_name = new_p.p_name;
+	}
+
+	return changed;
 }

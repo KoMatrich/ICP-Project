@@ -5,19 +5,25 @@
 #include "Analyzer.h"
 #include "Types.h"
 
-class UMLAttribute
+class UMLProperty
 {
 public:
-	UMLAttribute() {}
-	~UMLAttribute() {}
-	bool operator==(const UMLAttribute& rhs)
-	{
-		return this->att_name == rhs.att_name;
+	UMLProperty(QString mod, QString type, QString name) {
+		this->p_mod = mod;
+		this->p_type = type;
+		this->p_name = name;
 	}
+	~UMLProperty() {}
+	bool operator==(const UMLProperty& rhs)
+	{
+		return this->p_name == rhs.p_name;
+	}
+
+	bool updateProperty(UMLProperty new_p);
 protected:
-	QString att_mod;
-	QString att_type;
-	QString att_name;
+	QString p_mod;
+	QString p_type;
+	QString p_name;
 };
 
 class UMLClass
@@ -30,14 +36,15 @@ public:
 	QString getClassName();
 	void updateName(QString name);
 	bool has_changed;
-	bool addAttribute(UMLAttribute new_att);
+	void addProperty(UMLProperty new_p, bool isMethod, size_t n);
 	bool operator==(const UMLClass& rhs)
 	{
 		return this->class_name == rhs.class_name;
 	}
 protected:
 	QString class_name = "";
-	std::vector<UMLAttribute> attributes;
+	std::vector<UMLProperty> attributes;
+	std::vector<UMLProperty> methods;
 };
 
 class Semantics
