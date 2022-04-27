@@ -31,7 +31,7 @@ void Semantics::buildSTree(GlobalStack stack)
 	this->stack = stack;
 	VitaClear();
 	for (int i = 0; i < this->stack.size(); ++i) {
-		VitaPrintf("%1 : %2", VF(i)VF(this->stack[i].size()));
+		//VitaPrintf("%1 : %2", VF(i)VF(this->stack[i].size()));
 		QString out = "[\"";
 		for (int j = 0; j < this->stack[i].size(); j++)
 		{
@@ -44,6 +44,7 @@ void Semantics::buildSTree(GlobalStack stack)
 	size_t i = 0;
 	size_t n = 0;
 	this->skipTreeUntil(RuleID::R_UML, &i, 0);
+	// find start of a class
 	while (this->skipTreeUntil(RuleID::R_CLASS, &i, 1))
 	{
 		QString c_name = getUMLClassName(this->stack[i][1].second);
@@ -60,8 +61,30 @@ void Semantics::buildSTree(GlobalStack stack)
 			c.updateName(c_name);
 			this->addClass(c);
 		}
+
+		if (++i >= this->stack.size()) break;
+
+
+		// get all attributes / methods
+		while (this->stack[i].size() > 2)
+		{
+			
+			VitaPrint(toString(this->stack[i][2].first.id));
+			switch (this->stack[i][2].first.id)
+			{
+			case RuleID::R_METHOD:
+				break;
+			case RuleID::R_VAR:
+				break;
+			case RuleID::R_ACCESS:
+				break;
+			default:
+				break;
+			}
+
+			if (++i >= this->stack.size()) break;
+		}
 		n++;
-		i++;
 	}
 	// delete excesive classes
 	classes.resize(n);
