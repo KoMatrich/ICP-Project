@@ -1,21 +1,15 @@
 #pragma once
 
 #include <QWidget>
-#include <Graph/DragItem.h>
-
-QT_BEGIN_NAMESPACE
-class QTextEdit;
-class QDragEnterEvent;
-class QDropEvent;
-QT_END_NAMESPACE
+#include <Graph/ERDItem.h>
 
 class ERDview : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    enum Mode { InsertItem, InsertLine, InsertText, MoveItem };
-
     explicit ERDview(QObject *parent = nullptr);
+    
+    void update();
 
 public slots:
     void documentWasModified();
