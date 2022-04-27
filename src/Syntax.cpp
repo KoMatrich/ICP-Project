@@ -85,7 +85,7 @@ RuleSet const SyntaxTree::genRules() {
 	Rule type;
 	type.start = Start("String|Int|Bool|Real|Float|UInt|void");
 	type.format.setFontWeight(QFont::Bold);
-	//type.id = RuleID::R_TYPE;
+	type.id = RuleID::R_TYPE;
 	type.parts.append(method);
 	type.parts.append(var);
 

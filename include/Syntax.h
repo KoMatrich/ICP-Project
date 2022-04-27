@@ -8,7 +8,7 @@ enum class RuleType {
 };
 
 enum class RuleID {
-	R_ERR = -1, R_UML, R_CLASS, R_SEPAR, R_METHOD, R_VAR, R_ACCESS
+	R_ERR = -1, R_UML, R_CLASS, R_SEPAR, R_METHOD, R_VAR, R_ACCESS, R_TYPE
 };
 
 inline const char* toString(RuleID r)
@@ -22,6 +22,7 @@ inline const char* toString(RuleID r)
 	case RuleID::R_METHOD: return "R_METHOD";
 	case RuleID::R_VAR:    return "R_VAR";
 	case RuleID::R_ACCESS: return "R_ACCESS";
+	case RuleID::R_TYPE:   return "R_TYPE";
 	default:      return "[Unknown]";
 	}
 }
