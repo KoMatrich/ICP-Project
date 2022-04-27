@@ -13,8 +13,6 @@ ERDview::ERDview(QObject* parent)
     WItem* test2 = new WItem();
     addItem(test2);
     test2->setPos(30, 30);
-
-
 }
 
 void ERDview::update()

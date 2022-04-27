@@ -1,12 +1,12 @@
 #include <Graph/ERDItem.h>
 
-WItem::WItem():
-    hash(0),name("")
+WItem::WItem() :
+    hash(0), name("")
 {
     //TODO init
-    addline(Block(BlockType::Text, "test"));
-    addline(Block(BlockType::Separator, "--"));
-    addline(Block(BlockType::Text, "long text test"));
+    addline({ BlockType::Text, "test"});
+    addline({ BlockType::Separator, "--" });
+    addline({ BlockType::Text, "long text test" });
 
     //"constant" init
     size = Size();
@@ -34,18 +34,18 @@ void WItem::addline(const Block line)
 
 QRectF WItem::boundingRect() const
 {
-    return QRectF(QPoint(0,0), rsize);
+    return { QPoint(0,0), rsize };
 }
 
 void WItem::paint(QPainter* painter,
-                    const QStyleOptionGraphicsItem* option,
-                    QWidget* widget)
+                  const QStyleOptionGraphicsItem* option,
+                  QWidget* widget)
 {
     QLinearGradient gradient(0, 0, 0, rsize.height());
     gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, QColor(220, 255, 220));
-    gradient.setColorAt(0.8, QColor(220, 240, 220));
-    gradient.setColorAt(1.0, QColor(220, 240, 220));
+    gradient.setColorAt(0.2, { 220, 255, 220 });
+    gradient.setColorAt(0.8, { 220, 240, 220 });
+    gradient.setColorAt(1.0, { 220, 240, 220 });
 
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);
