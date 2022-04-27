@@ -108,7 +108,7 @@ bool Semantics::eatLexem(Lexem lex)
 
 QString Semantics::getUMLClassName(QString lex)
 {
-	lex.remove(QRegExp("^class\\s+"));
+	lex.remove(QRegExp("^(class|interface)\\s+"));
 	lex.remove(QRegExp("\\{$"));
 	return lex;
 }

@@ -54,7 +54,7 @@ RuleSet const SyntaxTree::genRules() {
 
 	//class
 	Rule clas;
-	clas.start = Start("class\\s+[A-Za-z0-9_]+\\{$");
+	clas.start = Start("(class|interface)\\s+[A-Za-z0-9_]+\\{$");
 	clas.type = RuleType::MULTI_LINE;
 	clas.end = End("\\}");
 	clas.format.setFontWeight(QFont::Bold);
