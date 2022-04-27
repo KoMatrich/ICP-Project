@@ -81,7 +81,7 @@ RuleSet const SyntaxTree::genRules() {
 	var.start = Start("_?[A-Za-z][A-Za-z0-9_]*");
 	var.format.setFontWeight(QFont::Bold);
 	var.format.setForeground(Qt::darkGreen);
-	var.id = RuleID::R_METHOD;
+	var.id = RuleID::R_VAR;
 	clas.parts.append(var);
 
 	//class access

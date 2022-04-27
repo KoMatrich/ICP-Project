@@ -23,16 +23,20 @@ protected:
 class UMLClass
 {
 public:
-	UMLClass() {}
+	UMLClass() {
+		has_changed = true;
+	}
 	~UMLClass() {}
 	QString getClassName();
+	void updateName(QString name);
+	bool has_changed;
 	bool addAttribute(UMLAttribute new_att);
 	bool operator==(const UMLClass& rhs)
 	{
 		return this->class_name == rhs.class_name;
 	}
 protected:
-	QString class_name;
+	QString class_name = "";
 	std::vector<UMLAttribute> attributes;
 };
 
@@ -50,8 +54,11 @@ public:
 	void buildSTree(GlobalStack stack);
 protected:
 	std::vector<UMLClass> classes;
+	GlobalStack stack;
 	bool addClass(UMLClass new_class);
 	bool eatLexem(Lexem lex);
+	bool skipTreeUntil(RuleID r_id, size_t* index, size_t pos);
+	QString getUMLClassName(QString lex);
 private:
 	Semantics() {
 		//instance = this;
