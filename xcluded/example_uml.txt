@@ -4,22 +4,22 @@ https://real-world-plantuml.com/?type=sequence
 @startuml
 
 class teacher{
-	-	firstname
-	+  lastname
-	#	faculty
+	-	String firstname
+	+ String  lastname
+	#	String faculty
 
-	teach()
-	givePoints()
-	+ getMoney()
+	- String teach()
+   + String givePoints()
+	+ void getMoney()
 }
 
 class student{
-	-	firstname
-	+  lastname
-	#	study program
-	~	credits
+	-	String firstname
+	+ String lastname
+	#	UInt study program
+	~	UInt credits
 
-	bully()
-	+ getBulied()
+	+ void bully()
+	+ void getBulied()
 }
 @enduml

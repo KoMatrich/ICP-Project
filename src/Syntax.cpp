@@ -44,7 +44,7 @@ QRegExp inline Start(const QString input) {
 RuleSet const SyntaxTree::genRules() {
 	RuleSet syntax;
 
-	//uml body
+	// uml body
 	Rule uml;
 	uml.start = Start("^@startuml$");
 	uml.type = RuleType::MULTI_LINE;
@@ -52,7 +52,7 @@ RuleSet const SyntaxTree::genRules() {
 	uml.format.setFontWeight(QFont::Bold);
 	uml.id = RuleID::R_UML;
 
-	//class
+	// class
 	Rule clas;
 	clas.start = Start("class\\s+[A-Za-z0-9_]+\\{$");
 	clas.type = RuleType::MULTI_LINE;
@@ -60,7 +60,7 @@ RuleSet const SyntaxTree::genRules() {
 	clas.format.setFontWeight(QFont::Bold);
 	clas.id = RuleID::R_CLASS;
 
-	//separators
+	// separators
 	Rule separ;
 	separ.start = Start("(\\-|=|_){2}");
 	separ.format.setFontUnderline(true);
@@ -74,24 +74,29 @@ RuleSet const SyntaxTree::genRules() {
 	method.format.setForeground(Qt::darkBlue);
 	method.id = RuleID::R_METHOD;
 
-	clas.parts.append(method);
-
-	//var
+	// var
 	Rule var;
 	var.start = Start("_?[A-Za-z][A-Za-z0-9_]*");
 	var.format.setFontWeight(QFont::Bold);
 	var.format.setForeground(Qt::darkGreen);
 	var.id = RuleID::R_VAR;
-	clas.parts.append(var);
 
-	//class access
+	// var type
 	Rule type;
-	type.start = Start("[+\\-#~]");
+	type.start = Start("String|Int|Bool|Real|Float|UInt|void");
 	type.format.setFontWeight(QFont::Bold);
+	//type.id = RuleID::R_TYPE;
 	type.parts.append(method);
 	type.parts.append(var);
-	type.id = RuleID::R_ACCESS;
-	clas.parts.append(type);
+
+	// var/method access
+	Rule access;
+	access.start = Start("[+\\-#~]");
+	access.format.setFontWeight(QFont::Bold);
+	access.parts.append(type);
+	access.id = RuleID::R_ACCESS;
+
+	clas.parts.append(access);
 
 	uml.parts.append(clas);
 
