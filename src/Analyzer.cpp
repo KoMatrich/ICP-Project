@@ -3,6 +3,7 @@
 #include <iostream>
 #include <format>
 #include "DebugService.h"
+#include "Types.h"
 
 
 /// Returns current rule on top of line stack
@@ -12,7 +13,7 @@ void inline Analyzer::getRules(Rule& current, RuleSet& parts, LineStack stack) {
 	current = Rule();
 	current.type = RuleType::MULTI_LINE;
 
-	if (stack.length() != 0) {
+	if (stack.size() != 0) {
 		current = stack.back().first;
 		parts = current.parts;
 	}
@@ -75,11 +76,11 @@ int Analyzer::matchEnd(const QString& text, int& offset, Rule current)
 /// Pops INLINE rules from LineStack
 void Analyzer::reduceStack(LineStack* stack)
 {
-	while (stack->length() != 0) {
+	while (stack->size() != 0) {
 		Rule current = stack->back().first;
 
 		if (current.end.isEmpty() && current.type != RuleType::MULTI_LINE) {
-			stack->removeLast();
+			stack->pop_back();
 		}
 		else {
 			break;
@@ -96,7 +97,7 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule& current)
 	LineStack* stack;
 	RuleSet parts;
 
-	if (global_stack.length() == line + 1) {
+	if (global_stack.size() == line + 1) {
 		//recursive call
 		stack = new LineStack(global_stack.at(line));
 	}
@@ -128,7 +129,7 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule& current)
 
 	lex = matchBody(text, offset, parts);
 	if (lex != nullptr) {
-		stack->append(*lex);
+		stack->push_back(*lex);
 		free(lex);
 		getRules(current, parts, *stack);
 		goto SKIP;
@@ -142,7 +143,7 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule& current)
 
 	result = matchEnd(text, offset, current);
 	if (result >= 0) {
-		stack->removeLast();
+		stack->pop_back();
 		goto SKIP;
 	}
 
@@ -150,20 +151,25 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule& current)
 	offset = SYNTAX_E;
 SKIP:
 	ClearTo(line);
-	global_stack.append(*stack);
+	global_stack.push_back(*stack);
 }
 
 /// Removes all LineStacks with index > line number
 /// from GlobalStack
 void Analyzer::ClearTo(int lineNumber)
 {
-	while (lineNumber < global_stack.length()) {
-		global_stack.removeLast();
-	}
+    if (lineNumber < 1) return;
+    // FIX
+    global_stack.resize(lineNumber);
+    global_stack.shrink_to_fit();
 }
 
 void Analyzer::ClearAll()
 {
+    //for (auto stack : global_stack)
+    //{
+    //    delete &stack;
+    //}
 	global_stack.clear();
 }
 
