@@ -8,67 +8,71 @@
 class UMLProperty
 {
 public:
-	UMLProperty(QString mod, QString type, QString name) {
-		this->p_mod = mod;
-		this->p_type = type;
-		this->p_name = name;
-	}
-	~UMLProperty() {}
-	bool operator==(const UMLProperty& rhs)
-	{
-		return this->p_name == rhs.p_name;
-	}
-
-	bool updateProperty(UMLProperty new_p);
+    UMLProperty() {}
+    UMLProperty(QString mod, QString type, QString name) {
+        this->p_mod = mod;
+        this->p_type = type;
+        this->p_name = name;
+    }
+    ~UMLProperty() {}
+    bool operator==(const UMLProperty& rhs)
+    {
+        return this->p_name == rhs.p_name;
+    }
+    QString toString();
+    bool updateProperty(UMLProperty new_p);
 protected:
-	QString p_mod;
-	QString p_type;
-	QString p_name;
+    QString p_mod;
+    QString p_type;
+    QString p_name;
 };
 
 class UMLClass
 {
 public:
-	UMLClass() {
-		has_changed = true;
-	}
-	~UMLClass() {}
-	QString getClassName();
-	void updateName(QString name);
-	bool has_changed;
-	void addProperty(UMLProperty new_p, bool isMethod, size_t n);
-	bool operator==(const UMLClass& rhs)
-	{
-		return this->class_name == rhs.class_name;
-	}
+    UMLClass() {
+        has_changed = true;
+    }
+    ~UMLClass() {}
+    QString getClassName();
+    void updateName(QString name);
+    bool has_changed;
+    bool has_error = false;
+    void addProperty(UMLProperty new_p, bool isMethod, size_t n);
+    void removeExceedingProperties(size_t a, size_t m);
+    void printProperties();
+    bool operator==(const UMLClass& rhs)
+    {
+        return this->class_name == rhs.class_name;
+    }
 protected:
-	QString class_name = "";
-	std::vector<UMLProperty> attributes;
-	std::vector<UMLProperty> methods;
+    QString class_name = "";
+    std::vector<UMLProperty> attributes;
+    std::vector<UMLProperty> methods;
 };
 
 class Semantics
 {
 private:
-	static Semantics* instance;
+    static Semantics* instance;
 public:
-	static Semantics* getInstance()
-	{
-		if (!instance)
-			instance = new Semantics;
-		return instance;
-	}
-	void buildSTree(GlobalStack stack);
+    static Semantics* getInstance()
+    {
+        if (!instance)
+            instance = new Semantics;
+        return instance;
+    }
+    void buildSTree(GlobalStack stack);
 protected:
-	std::vector<UMLClass> classes;
-	GlobalStack stack;
-	bool addClass(UMLClass new_class);
-	bool eatLexem(Lexem lex);
-	bool skipTreeUntil(RuleID r_id, size_t* index, size_t pos);
-	QString getUMLClassName(QString lex);
+    std::vector<UMLClass> classes;
+    GlobalStack stack;
+    void addClass(UMLClass new_class);
+    bool skipTreeUntil(RuleID r_id, size_t* index, size_t pos);
+    QString getUMLClassName(QString lex);
+    void testDuplicates();
 private:
-	Semantics() {
-		//instance = this;
-	}
-	~Semantics() {}
+    Semantics() {
+        //instance = this;
+    }
+    ~Semantics() {}
 };
