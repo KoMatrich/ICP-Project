@@ -203,6 +203,13 @@ bool MainWindow::maybeSave()
 
 void MainWindow::loadFile(const QString& fileName)
 {
+    if (!maybeSave()) {
+        //action canceled
+        return;
+    }
+
+    mainTextEdit->clear();
+
     setCurrentFile(fileName);
     if (fileName.isEmpty())return;
 
