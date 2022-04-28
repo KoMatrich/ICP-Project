@@ -74,7 +74,7 @@ void Semantics::buildSTree(GlobalStack stack)
 
     size_t i = 0;
     size_t n = 0;
-    this->skipTreeUntil(RuleID::R_UML, &i, 0); //TODO fix after new syntax was added
+    this->skipTreeUntilLastIs(RuleID::R_UML, &i, 0); //TODO fix after new syntax was added
     // find start of a class
     while (this->skipTreeUntilWhileTrue(RuleID::R_CLASS, &i, 1, RuleID::R_UML, 0))
     {
@@ -99,9 +99,9 @@ void Semantics::buildSTree(GlobalStack stack)
         size_t m = 0;
 
         // get all attributes / methods
-        while (this->skipTreeUntilWhileTrue(RuleID::R_ACCESS, &i, 2, RuleID::R_CLASS, 1)) //w´hilst...  TODO
+        while (this->skipTreeUntilWhileTrue(RuleID::R_ACCESS, &i, 2, RuleID::R_CLASS, 1))
         {
-            if (this->stack[i].size() == 5) // not full
+            if (this->stack[i].size() == 5)
             {
                 UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
 
@@ -162,7 +162,7 @@ void Semantics::testDuplicates()
     }
 }
 
-bool Semantics::skipTreeUntil(RuleID r_id, size_t* index, size_t pos)
+bool Semantics::skipTreeUntilLastIs(RuleID r_id, size_t* index, size_t pos)
 {
     while (*index < this->stack.size())
     {
@@ -182,10 +182,10 @@ bool Semantics::skipTreeUntilWhileTrue(RuleID r_id, size_t* index, size_t pos, R
         if (this->stack[*index].size() <= true_pos) return false;
         if (this->stack[*index][true_pos].first.id != true_id) return false;
 
-        if (pos + 1 == this->stack[*index].size())
-        {
+        if (stack[*index].size() > pos) {
             if (stack[*index][pos].first.id == r_id) return true;
         }
+
         (*index)++;
     }
     return false;
