@@ -14,6 +14,7 @@ interface teacher{
 }
 
 class student{
+	+  String as
 	-	String firstname
 	+ String lastname
 	#	UInt study program

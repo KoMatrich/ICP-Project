@@ -76,7 +76,7 @@ void Semantics::buildSTree(GlobalStack stack)
     size_t n = 0;
     this->skipTreeUntil(RuleID::R_UML, &i, 0); //TODO fix after new syntax was added
     // find start of a class
-    while (this->skipTreeUntil(RuleID::R_CLASS, &i, 1))
+    while (this->skipTreeUntilWhileTrue(RuleID::R_CLASS, &i, 1, RuleID::R_UML, 0))
     {
         QString c_name = getUMLClassName(this->stack[i][1].second);
 
@@ -97,18 +97,23 @@ void Semantics::buildSTree(GlobalStack stack)
 
         size_t a = 0; // always set to new index
         size_t m = 0;
+
         // get all attributes / methods
-          // size == 5 -> atribute/method
-          // size == ?? -> connector
-        while (this->stack[i].size() == 5)
+        while (this->skipTreeUntilWhileTrue(RuleID::R_ACCESS, &i, 2, RuleID::R_CLASS, 1)) //w´hilst...  TODO
         {
-            UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
+            if (this->stack[i].size() == 5) // not full
+            {
+                UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
 
-            if (this->stack[i][4].first.id == RuleID::R_METHOD)
-                this->classes[n].addProperty(p, true, m++);
+                if (this->stack[i][4].first.id == RuleID::R_METHOD)
+                    this->classes[n].addProperty(p, true, m++);
+                else
+                    this->classes[n].addProperty(p, false, a++);
+            }
             else
-                this->classes[n].addProperty(p, false, a++);
-
+            {
+                VitaPrint("[WARNING]: Incomplete property definition");
+            }
 
             if (++i >= this->stack.size()) break;
         }
@@ -119,6 +124,11 @@ void Semantics::buildSTree(GlobalStack stack)
     }
     // delete excessive classes
     classes.resize(n);
+
+    for (size_t i = 0; i < classes.size(); i++)
+    {
+        VitaPrint(classes[i].getClassName());
+    }
 
     testDuplicates();
 }
@@ -164,6 +174,23 @@ bool Semantics::skipTreeUntil(RuleID r_id, size_t* index, size_t pos)
     }
     return false;
 }
+
+bool Semantics::skipTreeUntilWhileTrue(RuleID r_id, size_t* index, size_t pos, RuleID true_id, size_t true_pos)
+{
+    while (*index < this->stack.size())
+    {
+        if (this->stack[*index].size() <= true_pos) return false;
+        if (this->stack[*index][true_pos].first.id != true_id) return false;
+
+        if (pos + 1 == this->stack[*index].size())
+        {
+            if (stack[*index][pos].first.id == r_id) return true;
+        }
+        (*index)++;
+    }
+    return false;
+}
+
 
 QString UMLProperty::toString()
 {
