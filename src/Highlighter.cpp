@@ -145,14 +145,14 @@ void Highlighter::highlightBlock(const QString& text)
     }
     while ((offset >= 0) && (offset < len));
 
-    VitaClear();
-    if (offset == len) {
-        // syntax check OK -> pass tree for semantic check
-        VitaPrint("Syntax check OK");
-        //call a singleton Semantics generator
-        Semantics::getInstance()->buildSTree(analyzer->GetStack());
-        return;
-    }
+	VitaClear();
+	if (offset == len) {
+		// syntax check OK -> pass tree for semantic check
+		VitaPrint("Syntax check OK");
+		//call a singleton Semantics generator
+		//Semantics::getInstance()->buildSTree(analyzer->GetStack());
+		return;
+	}
 
     switch (offset) {
     case NO_CHECK:

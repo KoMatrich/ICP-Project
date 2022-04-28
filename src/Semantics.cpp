@@ -74,10 +74,11 @@ void Semantics::buildSTree(GlobalStack stack)
 
     size_t i = 0;
     size_t n = 0;
-    this->skipTreeUntilLastIs(RuleID::R_UML, &i, 0); //TODO fix after new syntax was added
+    this->skipTreeUntilLastIs({ RuleID::R_UML }, &i, 0);
     // find start of a class
-    while (this->skipTreeUntilWhileTrue(RuleID::R_CLASS, &i, 1, RuleID::R_UML, 0))
+    while (this->skipTreeUntilWhileTrue({ RuleID::R_CLASS, RuleID::R_INTERFACE }, &i, 1, RuleID::R_UML, 0))
     {
+
         QString c_name = getUMLClassName(this->stack[i][1].second);
 
         // update class
@@ -99,7 +100,7 @@ void Semantics::buildSTree(GlobalStack stack)
         size_t m = 0;
 
         // get all attributes / methods
-        while (this->skipTreeUntilWhileTrue(RuleID::R_ACCESS, &i, 2, RuleID::R_CLASS, 1))
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACCESS }, &i, 2, RuleID::R_CLASS, 1))
         {
             if (this->stack[i].size() == 5)
             {
@@ -162,20 +163,20 @@ void Semantics::testDuplicates()
     }
 }
 
-bool Semantics::skipTreeUntilLastIs(RuleID r_id, size_t* index, size_t pos)
+bool Semantics::skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, size_t pos)
 {
     while (*index < this->stack.size())
     {
         if (pos + 1 == this->stack[*index].size())
         {
-            if (stack[*index][pos].first.id == r_id) return true;
+            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first.id) != std::end(rules)) return true;
         }
         (*index)++;
     }
     return false;
 }
 
-bool Semantics::skipTreeUntilWhileTrue(RuleID r_id, size_t* index, size_t pos, RuleID true_id, size_t true_pos)
+bool Semantics::skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index, size_t pos, RuleID true_id, size_t true_pos)
 {
     while (*index < this->stack.size())
     {
@@ -183,7 +184,7 @@ bool Semantics::skipTreeUntilWhileTrue(RuleID r_id, size_t* index, size_t pos, R
         if (this->stack[*index][true_pos].first.id != true_id) return false;
 
         if (stack[*index].size() > pos) {
-            if (stack[*index][pos].first.id == r_id) return true;
+            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first.id) != std::end(rules)) return true;
         }
 
         (*index)++;

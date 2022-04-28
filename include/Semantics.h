@@ -67,8 +67,8 @@ protected:
     std::vector<UMLClass> classes;
     GlobalStack stack;
     void addClass(UMLClass new_class);
-    bool skipTreeUntilLastIs(RuleID r_id, size_t* index, size_t pos);
-    bool skipTreeUntilWhileTrue(RuleID r_id, size_t* index, size_t pos, RuleID true_id, size_t true_pos);
+    bool skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, size_t pos);
+    bool skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index, size_t pos, RuleID true_id, size_t true_pos);
     QString getUMLClassName(QString lex);
     void testDuplicates();
 private:
