@@ -34,5 +34,15 @@ target_include_directories("${PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}
 target_precompile_headers("${PROJECT_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/pch.h")
 target_link_libraries("${PROJECT_NAME}" Qt5::Widgets)
 
-
 windeployqt("${PROJECT_NAME}")
+
+# Doxygen support
+find_package(Doxygen OPTIONAL_COMPONENTS)
+if(DOXYGEN_FOUND)
+	doxygen_add_docs(
+	    doxygen
+	    ${PROJECT_SOURCE_DIR}/doc
+	    COMMENT "Generate man pages"
+	)
+    message("-- Doxygen done.")
+endif()
