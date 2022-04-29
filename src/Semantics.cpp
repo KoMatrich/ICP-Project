@@ -1,5 +1,5 @@
 #include "Semantics.h"
-#include "DebugService.h"
+
 
 QString UMLClass::getClassName()
 {
@@ -169,7 +169,7 @@ void Semantics::buildSTree(GlobalStack stack)
         }
     }
     this->stack = stack;
-    this->printStack();
+    //this->printStack();
     //VitaClear();
 
     size_t i = 0;

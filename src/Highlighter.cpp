@@ -89,6 +89,7 @@ void Highlighter::skipSpace(const QString text, int& offset)
 /// Main highlighter functions
 void Highlighter::highlightBlock(const QString& text)
 {
+    //CodeService::clearBackground();
     std::string test = text.toStdString();
     auto prevState = previousBlockState();
 

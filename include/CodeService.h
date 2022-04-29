@@ -17,5 +17,6 @@ public:
 	}
 	static void setEndpoint(MainTextEdit* c);
     static void formatLine(size_t ln);
+    static void clearBackground();
 	void setCodeWindow(MainTextEdit* c);
 };

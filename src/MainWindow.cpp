@@ -141,6 +141,7 @@ void MainWindow::createActions()
     auto* fileToolBar = addToolBar(QStringLiteral("File"));
     fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
     fileToolBar->addAction(QStringLiteral("Magic"), []() {CodeService::formatLine(0); });
+    fileToolBar->addAction(QStringLiteral("Clean magic"), []() {CodeService::clearBackground(); });
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); erdView->getScene()->documentWasModified(); });
     connect(mainTextEdit, &MainTextEdit::copyAvailable,

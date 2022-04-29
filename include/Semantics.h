@@ -4,6 +4,7 @@
 #include "Syntax.h"
 #include "Analyzer.h"
 #include "Types.h"
+#include "DebugService.h"
 
 class UMLRelation
 {
