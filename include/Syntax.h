@@ -47,7 +47,7 @@ public:
 	RuleSet const getRules();
 private:
 	RuleSet const genRules();
-	RuleSet rules;
+    RuleSet syntax;
 };
 
 enum SYNTAX_STATE {

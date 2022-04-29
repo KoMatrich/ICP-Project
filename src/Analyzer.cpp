@@ -12,7 +12,6 @@ void inline Analyzer::getRules(Rule *current, RuleSet parts, LineStack stack)
 {
     parts = syntax_tree->getRules();
     *current = Rule();
-    current->type = RuleType::MULTI_LINE;
 
     if (stack.size() != 0) {
         current = stack.back().first;
