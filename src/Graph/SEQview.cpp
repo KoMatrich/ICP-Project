@@ -1,13 +1,13 @@
 #include <QtWidgets>
 #include <Graph/SEQview.h>
 
-SEQview::SEQview(QTextEdit *parent) : QWidget(parent)
+SEQview::SEQview(QTextEdit* parent) : QWidget(parent)
 {
     this->editor = parent;
     resize(200, 200);
 }
 
-void SEQview::paintEvent(QPaintEvent *)
+void SEQview::paintEvent(QPaintEvent*)
 {
     static const QPoint hourHand[3] = {
         QPoint(7, 8),

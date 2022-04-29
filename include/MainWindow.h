@@ -10,42 +10,41 @@
 class MainWindow : public QMainWindow
 {
 public:
-	MainWindow(const QString& fileName = {});
+    MainWindow(const QString& fileName = {});
 
 protected:
-	void closeEvent(QCloseEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
-	bool save();
-	bool saveAs();
-	void about();
+    bool save();
+    bool saveAs();
+    void about();
 
 private:
-	void init();
+    void init();
 
-	void createActions();
-	void createStatusBar();
+    void createActions();
+    void createStatusBar();
 
-	void readSettings();
-	void writeSettings();
-	bool maybeSave();
+    void readSettings();
+    void writeSettings();
+    bool maybeSave();
 
-	void loadFile(const QString& fileName);
-	bool saveFile(const QString& fileName);
+    void loadFile(const QString& fileName);
+    bool saveFile(const QString& fileName);
 
-	void setCurrentFile(const QString& fileName);
+    void setCurrentFile(const QString& fileName);
 
-	QString strippedName(const QString& fullFileName);
+    QString strippedName(const QString& fullFileName);
 
 private:
-	MainTextEdit* mainTextEdit;
-	DebugTextEdit* debugTextEdit;
+    MainTextEdit* mainTextEdit;
+    DebugTextEdit* debugTextEdit;
 
-	ERDview* erdViewScene;
-	QGraphicsView* erdView;
+    ERDView* erdView;
 
-	SEQview* seqView;
+    SEQview* seqView;
 
-	QString curFile;
-	bool isUntitled;
+    QString curFile;
+    bool isUntitled;
 };

@@ -85,18 +85,7 @@ void MainWindow::init()
     hsplit->addWidget(tabs);
 
     //right first
-    erdViewScene = new ERDview(mainTextEdit);
-    erdView = new QGraphicsView(erdViewScene);
-    erdView = new QGraphicsView(erdViewScene);
-    erdView->setRenderHint(QPainter::Antialiasing);
-    //TODO fix this background
-    QPixmap bckg = QPixmap(":images/res/grid.png");
-    erdView->setBackgroundBrush(bckg);
-    erdView->setCacheMode(QGraphicsView::CacheBackground);
-    erdView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-    erdView->setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
-    erdView->setInteractive(true);
-    erdView->setDragMode(QGraphicsView::ScrollHandDrag);
+    erdView = new ERDView(mainTextEdit);
     tabs->addTab(erdView, "Class");
 
     //right second
@@ -151,7 +140,7 @@ void MainWindow::createActions()
     fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
-            [this]() { setWindowModified(true); erdViewScene->documentWasModified(); });
+            [this]() { setWindowModified(true); erdView->getScene()->documentWasModified(); });
     connect(mainTextEdit, &MainTextEdit::copyAvailable,
             [cutAct](bool s) {cutAct->setEnabled(s); });
     connect(mainTextEdit, &MainTextEdit::copyAvailable,

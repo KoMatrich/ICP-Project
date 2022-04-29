@@ -1,7 +1,7 @@
 #include <Graph/ERDview.h>
 #include <Graph/ERDItem.h>
 
-ERDview::ERDview(QObject* parent)
+ERDScene::ERDScene(QObject* parent)
     : QGraphicsScene(parent)
 {
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);
@@ -15,14 +15,14 @@ ERDview::ERDview(QObject* parent)
     test2->setPos(30, 30);
 }
 
-void ERDview::update()
+void ERDScene::update()
 {
     QList<WItem*> inputList;
 
     //create backup of items to iterate over them safely
     auto itemList = items();
 
-    for(auto itemL : itemList) {
+    for (auto itemL : itemList) {
         auto LItem = static_cast<WItem*>(itemL);
         bool found = false;
 
@@ -59,7 +59,21 @@ void ERDview::update()
     }
 }
 
-void ERDview::documentWasModified()
+void ERDScene::documentWasModified()
 {
-    update();
+    //update();
+}
+
+ERDView::ERDView(QObject* parent)
+{
+    setScene(&scene);
+    setRenderHint(QPainter::Antialiasing);
+    //TODO fix this background
+    QPixmap bckg = QPixmap(":images/res/grid.png");
+    setBackgroundBrush(bckg);
+    setCacheMode(QGraphicsView::CacheBackground);
+    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+    setInteractive(true);
+    setDragMode(QGraphicsView::ScrollHandDrag);
 }
