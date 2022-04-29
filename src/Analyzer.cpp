@@ -8,13 +8,13 @@
 
 /// Returns current rule on top of line stack
 /// without poping inline rules
-void inline Analyzer::getRules(Rule* current, RuleSet& parts, LineStack stack)
+void inline Analyzer::getRules(Rule** current, RuleSet& parts, LineStack stack)
 {
     parts = syntax_tree->getRules();
 
     if (stack.size() != 0) {
-        current = stack.back().first;
-        parts = current->parts;
+        *current = stack.back().first;
+        parts = (*current)->parts;
     }
 }
 
@@ -89,7 +89,7 @@ void Analyzer::reduceStack(LineStack* stack)
 /// Offset is lengh of match, if lexem is found.
 /// Offset is unchenged on empty rule match
 /// (used as last rule when matching)
-void Analyzer::Next(int line, int& offset, const QString& text, Rule* current)
+void Analyzer::Next(int line, int& offset, const QString& text, Rule** current)
 {
     LineStack stack;
     RuleSet parts;
@@ -113,8 +113,8 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule* current)
     Lexem* lex = nullptr;
     int result;
 
-    if (current != nullptr)
-        if ((offset == 0) && (current->type == RuleType::INLINE)) {
+    if (*current != nullptr)
+        if ((offset == 0) && ((*current)->type == RuleType::INLINE)) {
             offset = SYNTAX_E;
             //qDebug() << "Previus rule didn't end well";
             goto SKIP;
@@ -137,8 +137,8 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule* current)
         goto SKIP;
     }
 
-    if (current != nullptr) {
-        result = matchEnd(text, offset, current);
+    if (*current != nullptr) {
+        result = matchEnd(text, offset, *current);
         if (result >= 0) {
             stack.pop_back();
             goto SKIP;
