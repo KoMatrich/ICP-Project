@@ -163,7 +163,10 @@ void Semantics::buildSTree(GlobalStack stack)
 {
     if (stack.size() == 1)
     {
-        VitaPrint("Write some code or open a document to get started.");
+        if (stack[0].size() == 0)
+        {
+            VitaPrint("Write some code or open a document to get started.");
+        }
     }
     this->stack = stack;
     this->printStack();
