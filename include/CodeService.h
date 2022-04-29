@@ -16,5 +16,6 @@ public:
 		return instance;
 	}
 	static void setEndpoint(MainTextEdit* c);
+    static void formatLine(size_t ln);
 	void setCodeWindow(MainTextEdit* c);
 };
