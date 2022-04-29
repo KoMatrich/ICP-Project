@@ -8,9 +8,14 @@ WItem::WItem() :
     addline({ BlockType::Separator, "--" });
     addline({ BlockType::Text, "long text test" });
 
-    //"constant" init
+    //"constant" init //QGraphicsWidget 
     size = Size();
     rsize = RSize();
+    
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+	setFlag(QGraphicsItem::ItemIsFocusable, true);
+	setFlag(QGraphicsItem::ItemIsSelectable, true);
+	setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
 }
 
 //adds new data to item
