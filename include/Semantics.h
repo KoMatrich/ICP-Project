@@ -9,7 +9,8 @@ class UMLProperty
 {
 public:
     UMLProperty() {}
-    UMLProperty(QString mod, QString type, QString name) {
+    UMLProperty(QString mod, QString type, QString name)
+    {
         this->p_mod = mod;
         this->p_type = type;
         this->p_name = name;
@@ -30,7 +31,8 @@ protected:
 class UMLClass
 {
 public:
-    UMLClass() {
+    UMLClass()
+    {
         has_changed = true;
     }
     ~UMLClass() {}
@@ -63,6 +65,7 @@ public:
         return instance;
     }
     void buildSTree(GlobalStack stack);
+    std::vector<UMLClass> getClasses() { return classes; }
 protected:
     std::vector<UMLClass> classes;
     GlobalStack stack;
@@ -73,7 +76,8 @@ protected:
     void testDuplicates();
     void printStack();
 private:
-    Semantics() {
+    Semantics()
+    {
         //instance = this;
     }
     ~Semantics() {}

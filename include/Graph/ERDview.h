@@ -13,6 +13,9 @@ public:
 
 public slots:
     void documentWasModified();
+protected:
+    void add(UMLClass const clas);
+    void rem(uint index);
 };
 
 class ERDView : public QGraphicsView

@@ -1,67 +1,61 @@
 #include <Graph/ERDview.h>
 #include <Graph/ERDItem.h>
+#include "Semantics.h"
 
 ERDScene::ERDScene(QObject* parent)
     : QGraphicsScene(parent)
 {
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);
-
-    WItem* test1 = new WItem();
-    addItem(test1);
-    test1->setPos(0, 0);
-
-    WItem* test2 = new WItem();
-    addItem(test2);
-    test2->setPos(30, 30);
 }
 
 void ERDScene::update()
 {
-    QList<WItem*> inputList;
+    auto sem = Semantics::getInstance();
+    auto classes = sem->getClasses();
 
-    //create backup of items to iterate over them safely
-    auto itemList = items();
+    int offset = 0;
 
-    for (auto itemL : itemList) {
-        auto LItem = static_cast<WItem*>(itemL);
-        bool found = false;
-
-        //match loop
-        //faster thanks for list shortening
-        for (auto IItem : inputList) {
-            if (LItem->name != IItem->name)
-                continue;
-
-            //item has same name
-            if (LItem->hash != IItem->hash) {
-                //current element is not updated
-                //remove from display
-                removeItem(LItem);
-            } else {
-                //current element is updated
-                //remove from input items
-                inputList.removeAt(inputList.indexOf(IItem));
-            }
-            //found something leave match loop
-            break;
-        }
-
-        if (!found) {
-            //item is not in input
-            //remove item
-            removeItem(LItem);
-        }
+    //remove all excessive items
+    while (items().count() > classes.size()) {
+        items().removeLast();
     }
 
-    //create new items that are missing
-    for (auto IItem : inputList) {
-        addItem(IItem);
+    uint index = 0;
+    //add or change existing items
+    while (!classes.empty()) {
+        auto clas = classes.back();
+        if (index >= items().count()) {
+            //item doesn't exists
+            //new item
+            add(clas);
+        } else if (clas.has_changed) {
+            //item exists and has changed
+            rem(index);
+            //create new
+            add(clas);
+        }//else nothing
+
+        classes.pop_back();
     }
+}
+
+void ERDScene::add(UMLClass const clas)
+{
+    WItem* item = new WItem{ clas };
+    addItem(item);
+}
+
+void ERDScene::rem(uint index)
+{
+    //remove old from display
+    items().removeAt(index);
+    //deletes old
+    delete items().at(index);
 }
 
 void ERDScene::documentWasModified()
 {
-    //update();
+    update();
 }
 
 ERDView::ERDView(QObject* parent)

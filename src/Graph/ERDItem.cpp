@@ -1,21 +1,19 @@
 #include <Graph/ERDItem.h>
 
-WItem::WItem() :
-    hash(0), name("")
+WItem::WItem(UMLClass clas)
 {
-    //TODO init
-    addline({ BlockType::Text, "test"});
-    addline({ BlockType::Separator, "--" });
-    addline({ BlockType::Text, "long text test" });
+    addline({ BlockType::Text, clas.getClassName() });
+    addline({ BlockType::SepSingle ,"" });
+    //addline({ BlockType::Text,  });
 
     //"constant" init //QGraphicsWidget 
     size = Size();
     rsize = RSize();
-    
+
     setFlag(QGraphicsItem::ItemIsMovable, true);
-	setFlag(QGraphicsItem::ItemIsFocusable, true);
-	setFlag(QGraphicsItem::ItemIsSelectable, true);
-	setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setFlag(QGraphicsItem::ItemIsFocusable, true);
+    setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
 }
 
 //adds new data to item
@@ -29,7 +27,9 @@ void WItem::addline(const Block line)
         line_h = qMax(line_h, text.height());
         line_c++;
         break;
-    case BlockType::Separator:
+    case BlockType::SepSingle:
+    case BlockType::SepBold:
+    case BlockType::SepDouble:
         separator_c++;
         break;
     default:
@@ -66,8 +66,8 @@ void WItem::paint(QPainter* painter,
 void WItem::PaintBlocks(QPainter* paint)
 {
     for (Block line : blocks) {
-        if (line.type == BlockType::Separator) {
-            paintSeparator(paint, line);
+        if (line.type != BlockType::Text) {
+            paintSeparator(paint, line.type);
         } else {
             paintText(paint, line);
         }
@@ -82,17 +82,16 @@ void WItem::paintText(QPainter* paint, Block line)
 }
 
 //paints separator block
-void WItem::paintSeparator(QPainter* paint, Block line)
+void WItem::paintSeparator(QPainter* paint, BlockType type)
 {
-    QChar c = *line.data.data();
-    switch (c.toLatin1()) {
-    case '-':
+    switch (type) {
+    case BlockType::SepSingle:
         paint->drawLine(points()[0], points()[1]);
         break;
-    case '_':
+    case BlockType::SepBold:
         paint->drawPolygon(points(), 4);
         break;
-    case '=':
+    case BlockType::SepDouble:
         paint->drawLine(points()[0], points()[1]);
         paint->drawLine(points()[2], points()[3]);
         break;
