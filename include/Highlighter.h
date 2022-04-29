@@ -6,16 +6,16 @@
 #include <QDebug>
 #include "Analyzer.h"
 #include "TextDebug.h"
+#include "HighlightService.h"
+#include "Semantics.h"
 
 class Highlighter : public QSyntaxHighlighter
 {
-	Q_OBJECT
-
 public:
 	Highlighter(QTextEdit* parent);
 
 protected:
-	void highlightBlock(const QString& text) Q_DECL_OVERRIDE;
+	void highlightBlock(const QString& text) override;
 	void updateCurrentBlockState();
 
 private:

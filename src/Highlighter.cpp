@@ -1,5 +1,6 @@
 #include "Highlighter.h"
 #include "DebugService.h"
+#include "CodeService.h"
 
 Highlighter::Highlighter(QTextEdit* parent)
     : QSyntaxHighlighter(parent->document())
@@ -89,7 +90,9 @@ void Highlighter::skipSpace(const QString text, int& offset)
 /// Main highlighter functions
 void Highlighter::highlightBlock(const QString& text)
 {
-    //CodeService::clearBackground();
+    if (!HighlightService::getEnabled()) return;
+
+    CodeService::clearBackground();
     std::string test = text.toStdString();
     auto prevState = previousBlockState();
 

@@ -1,6 +1,5 @@
 #include "Semantics.h"
 
-
 QString UMLClass::getClassName()
 {
     return this->class_name;
@@ -161,6 +160,10 @@ void Semantics::testRelations()
 
 void Semantics::buildSTree(GlobalStack stack)
 {
+    HighlightService::setEnabled(false);
+
+    
+
     if (stack.size() == 1)
     {
         if (stack[0].size() == 0)
@@ -288,6 +291,7 @@ void Semantics::buildSTree(GlobalStack stack)
     //    VitaPrint(QString::number(this->classes[i].getXPos()));
     //    VitaPrint(QString::number(this->classes[i].getYPos()));
     //}
+    HighlightService::setEnabled(true);
 }
 
 void Semantics::addClass(UMLClass new_class)

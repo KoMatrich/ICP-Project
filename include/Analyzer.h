@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Syntax.h"
-#include "Semantics.h"
+//#include "Semantics.h"
 #include <QString>
 #include "TextDebug.h"
 #include "Types.h"
