@@ -76,13 +76,14 @@ void UMLClass::addRelation(UMLRelation new_p, size_t n)
     }
 }
 
-bool UMLClass::updatePosition(int pos, bool is_x)
+bool UMLClass::updatePosition(int pos, bool is_x, size_t i)
 {
     if (is_x)
     {
         if (this->x_set)
         {
             this->setErrorFlag(true);
+            CodeService::formatLine(i, HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Duplicate x coordinate, please fix in the code edit.");
             return false;
         }
@@ -94,6 +95,7 @@ bool UMLClass::updatePosition(int pos, bool is_x)
         if (this->y_set)
         {
             this->setErrorFlag(true);
+            CodeService::formatLine(i, HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Duplicate y coordinate, please fix in the code edit.");
             return false;
         }
@@ -152,7 +154,8 @@ void Semantics::testRelations()
             else
             {
                 classes[i].setErrorFlag(true);
-                VitaPrint("[WARNING]: Unknown entity relation:" + rel[j].toString());
+                CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
+                VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
             }
         }
     }
@@ -160,13 +163,10 @@ void Semantics::testRelations()
 
 void Semantics::buildSTree(GlobalStack stack)
 {
-    if (stack.size() > 1) {
-        HighlightService::setEnabled(false);
-        CodeService::clearBackground();
-        CodeService::formatLine(3);
-        CodeService::formatLine(6);
-        HighlightService::setEnabled(true);
-    }
+    if (stack.size() <= 1) return;
+
+    HighlightService::setEnabled(false);
+    CodeService::clearBackground();
 
     if (stack.size() == 1)
     {
@@ -199,12 +199,14 @@ void Semantics::buildSTree(GlobalStack stack)
             classes[n].updateName(c_name);
             classes[n].setErrorFlag(false);
             classes[n].removePosFlags();
+            classes[n].pos = i;
         }
         // create class
         else
         {
             UMLClass c = UMLClass();
             c.updateName(c_name);
+            c.pos = i;
             this->addClass(c);
         }
 
@@ -224,6 +226,7 @@ void Semantics::buildSTree(GlobalStack stack)
             if (this->stack[i].size() == 7)
             {
                 UMLProperty p = UMLProperty(this->stack[i][4].second, this->stack[i][5].second, this->stack[i][6].second);
+                p.pos = i;
 
                 if (this->stack[i][6].first->id == RuleID::R_METHOD)
                     this->classes[n].addProperty(p, true, m++);
@@ -232,6 +235,7 @@ void Semantics::buildSTree(GlobalStack stack)
             }
             else
             {
+                CodeService::formatLine(i, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Incomplete property definition (skipped)");
             }
 
@@ -247,11 +251,13 @@ void Semantics::buildSTree(GlobalStack stack)
             if (this->stack[i].size() == 8)
             {
                 UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
+                rel.pos = 1;
 
                 this->classes[n].addRelation(rel, r++);
             }
             else
             {
+                CodeService::formatLine(i, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Incomplete relation definition (skipped)");
             }
 
@@ -269,12 +275,13 @@ void Semantics::buildSTree(GlobalStack stack)
             {
                 int pos = this->stack[i][5].second.toInt();
                 // this can lead to error
-                if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS))
+                if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS, i))
                     void;
-                    //return;
+                //return;
             }
             else
             {
+                CodeService::formatLine(i, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Incomplete position definition (skipped)");
             }
 
@@ -295,6 +302,8 @@ void Semantics::buildSTree(GlobalStack stack)
     //    VitaPrint(QString::number(this->classes[i].getXPos()));
     //    VitaPrint(QString::number(this->classes[i].getYPos()));
     //}
+
+    HighlightService::setEnabled(true);
 }
 
 void Semantics::addClass(UMLClass new_class)
@@ -386,7 +395,7 @@ bool UMLProperty::updateProperty(UMLProperty new_p)
 
 QString UMLRelation::toString()
 {
-    
+
     return QString("in relation " + QString(RuleIDtoString(this->type)) + " with " + this->entity);
 }
 

@@ -1,5 +1,9 @@
 #pragma once
 
+enum class HLevel {
+    LEVEL_WARN, LEVEL_ERROR
+};
+
 class CodeService
 {
 private:
@@ -14,7 +18,7 @@ public:
 		return instance;
 	}
 	static void setEndpoint(QTextEdit* c);
-    static void formatLine(size_t ln);
+    static void formatLine(size_t ln, HLevel level);
     static void clearBackground();
 	void setCodeWindow(QTextEdit* c);
 };

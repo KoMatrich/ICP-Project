@@ -11,6 +11,8 @@
 class UMLRelation
 {
 public:
+    size_t pos = 0;
+
     UMLRelation() {}
     UMLRelation(QString entity, RuleID type) {
         this->entity = entity;
@@ -30,6 +32,8 @@ protected:
 class UMLProperty
 {
 public:
+    size_t pos = 0;
+
     UMLProperty() {}
     UMLProperty(QString mod, QString type, QString name)
     {
@@ -57,6 +61,7 @@ public:
     ~UMLClass() {}
     QString getClassName();
     void updateName(QString name);
+    size_t pos = 0;
     bool has_changed = true;
     inline std::vector<UMLProperty> getAttributes() { return attributes; }
     inline std::vector<UMLProperty> getMethods() { return methods; }
@@ -65,7 +70,7 @@ public:
     inline int getYPos() { return y; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
-    bool updatePosition(int pos, bool is_x);
+    bool updatePosition(int pos, bool is_x, size_t i);
     void removeExceedingProperties(size_t a, size_t m);
     void removeExceedingRelations(size_t r);
     void printProperties();

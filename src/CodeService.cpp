@@ -16,12 +16,22 @@ void CodeService::clearBackground()
 
 }
 
-void CodeService::formatLine(size_t ln)
+void CodeService::formatLine(size_t ln, HLevel level)
 {
     QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     QTextBlockFormat f;
-    f.setBackground(QColor(250,165,165));
+    switch (level)
+    {
+    case HLevel::LEVEL_WARN:
+        f.setBackground(QColor(255, 225, 185));
+        break;
+    case HLevel::LEVEL_ERROR:
+        f.setBackground(QColor(250, 165, 165));
+        break;
+    default:
+        break;
+    }
     cursor.select(QTextCursor::LineUnderCursor);
     cursor.setBlockFormat(f);
 }
