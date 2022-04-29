@@ -143,7 +143,7 @@ void MainWindow::createActions()
     fileToolBar->addAction(QStringLiteral("Magic"), []() {CodeService::formatLine(0); });
     fileToolBar->addAction(QStringLiteral("Clean magic"), []() {CodeService::clearBackground(); });
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
-            [this]() { setWindowModified(true); erdView->getScene()->documentWasModified(); });
+            [this]() { setWindowModified(true); erdView->update(); });
     connect(mainTextEdit, &MainTextEdit::copyAvailable,
             [cutAct](bool s) {cutAct->setEnabled(s); });
     connect(mainTextEdit, &MainTextEdit::copyAvailable,

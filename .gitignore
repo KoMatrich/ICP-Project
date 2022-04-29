@@ -114,3 +114,6 @@ dkms.conf
 
 #settings
 CMakeSettings.json
+
+#documentation
+doc

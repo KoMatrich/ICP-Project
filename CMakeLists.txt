@@ -12,7 +12,7 @@ else(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g")
 endif()
 
-#set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
@@ -21,10 +21,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 include(windeployqt.cmake)
 
 file(GLOB_RECURSE vsrc "src/*.cpp")
-file(GLOB_RECURSE vrec "resources/*.ui")
+file(GLOB_RECURSE vrec "resources.qrc" "resources/*")
 file(GLOB_RECURSE vhead "include/*.h" "include/*.hpp")
-
-qt5_add_resources(resources.qrc)
 
 add_executable ("${PROJECT_NAME}"  "${vsrc}" "${vrec}" "${vhead}")
 

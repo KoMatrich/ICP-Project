@@ -11,10 +11,8 @@ class ERDScene : public QGraphicsScene
 public:
     explicit ERDScene(QObject* parent = nullptr);
 
-    void update();
-
 public slots:
-    void documentWasModified();
+    void update();
 private:
     void add(UMLClass const clas);
     void rem(uint index);
@@ -26,7 +24,8 @@ class ERDView : public QGraphicsView
 public:
     ERDView(QObject* parent = nullptr);
     ERDScene* getScene() { return &scene; }
-    void resizeFit();
+public slots:
+    void update();
 private:
     ERDScene scene;
 };

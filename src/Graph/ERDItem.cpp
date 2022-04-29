@@ -74,6 +74,21 @@ void WItem::paint(QPainter* painter,
     PaintBlocks(painter);
 }
 
+QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
+{
+    if (change == ItemPositionChange && scene()) {
+        //snap to grid
+        QPointF newPos = value.toPointF();
+        if (QApplication::mouseButtons() == Qt::LeftButton) {
+            qreal x = round(newPos.x() / GRID_S) * GRID_S;
+            qreal y = round(newPos.y() / GRID_S) * GRID_S;
+            return QPointF(x, y);
+        } else
+            return newPos;
+    } else
+        return QGraphicsItem::itemChange(change, value);
+}
+
 //paints block of item
 void WItem::PaintBlocks(QPainter* paint)
 {
