@@ -275,8 +275,8 @@ void Semantics::buildSTree(GlobalStack stack)
     for (size_t i = 0; i < this->classes.size(); i++)
     {
         VitaPrint(this->classes[i].getClassName());
-        VitaPrint(this->classes[i].);
-        VitaPrint(this->classes[i].getClassName());
+        VitaPrint(this->classes[i].getXPos());
+        VitaPrint(this->classes[i].getYPos());
     }
 }
 
