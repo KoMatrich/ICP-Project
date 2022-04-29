@@ -137,7 +137,7 @@ void Highlighter::highlightBlock(const QString& text)
         skipSpace(text, offset);
 
         last_off = offset;
-        analyzer->Next(lineNumber, offset, text, rule);
+        analyzer->Next(lineNumber, offset, text, &rule);
 
         if (offset > 0)
             setFormat(last_off, offset - last_off, rule.format);
