@@ -15,8 +15,8 @@ interface teacher{
 }
 
 class student{
-	x: 20
-	y: 60
+	x: 120
+	y: 0
 	+  String as
 	-	String firstname
 	+ String lastname

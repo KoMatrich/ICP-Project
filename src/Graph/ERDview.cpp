@@ -1,6 +1,4 @@
-#include <Graph/ERDview.h>
-#include <Graph/ERDItem.h>
-#include "Semantics.h"
+#include "Graph/ERDview.h"
 
 ERDScene::ERDScene(QObject* parent)
     : QGraphicsScene(parent)
@@ -17,13 +15,13 @@ void ERDScene::update()
 
     //remove all excessive items
     while (items().count() > classes.size()) {
-        rem(items().count()-1);
+        rem(items().count() - 1);
     }
 
     uint index = 0;
     //add or change existing items
     while (!classes.empty()) {
-        auto clas = classes.back();
+        UMLClass clas = classes.back();
         if (index >= items().count()) {
             //item doesn't exists
             //new item
@@ -62,6 +60,7 @@ void ERDScene::documentWasModified()
 ERDView::ERDView(QObject* parent)
 {
     setScene(&scene);
+
     setRenderHint(QPainter::Antialiasing);
     //TODO fix this background
     QPixmap bckg = QPixmap(":images/res/grid.png");

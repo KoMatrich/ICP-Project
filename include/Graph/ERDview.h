@@ -1,7 +1,9 @@
 #pragma once
 
 #include <QWidget>
-#include <Graph/ERDItem.h>
+#include "Graph/ERDItem.h"
+#include "Graph/ERDItem.h"
+#include "Semantics.h"
 
 class ERDScene : public QGraphicsScene
 {
@@ -13,7 +15,7 @@ public:
 
 public slots:
     void documentWasModified();
-protected:
+private:
     void add(UMLClass const clas);
     void rem(uint index);
 };
@@ -24,6 +26,7 @@ class ERDView : public QGraphicsView
 public:
     ERDView(QObject* parent = nullptr);
     ERDScene* getScene() { return &scene; }
+    void resizeFit();
 private:
     ERDScene scene;
 };

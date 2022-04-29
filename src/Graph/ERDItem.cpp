@@ -15,6 +15,8 @@ WItem::WItem(UMLClass clas)
         addline({ BlockType::Text,met.toString() });
     }
 
+    setPos({ qreal(clas.getXPos()),qreal(clas.getYPos()) });
+
     //"constant" init //QGraphicsWidget 
     size = Size();
     rsize = RSize();
