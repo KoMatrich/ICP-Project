@@ -42,7 +42,8 @@ void Highlighter::updateCurrentBlockState()
         if (currentBlockState() == -1) {
             //new block
             state = 0;
-        } else {
+        }
+        else {
             //just edit
             int dif = currentBlockState() / 2 - prevState / 2;
             if (dif == 0)
@@ -51,14 +52,16 @@ void Highlighter::updateCurrentBlockState()
                 state = state_modify(prevState + 2);
         }
         setCurrentBlockState(state);
-    } else {
+    }
+    else {
         //not first
         int state;
         int dif = currentBlockState() / 2 - prevState / 2;
         if (dif == 1) {
             //just change
             state = state_modify(currentBlockState());
-        } else {
+        }
+        else {
             //line before was delete/removed/added
             state = state_modify(prevState + 2);
         }
@@ -110,13 +113,13 @@ void Highlighter::highlightBlock(const QString& text)
     }
 
     //normal operation
-    if (text.isEmpty()) {
-        //empty line copy previous number
-        //dont do any syntax check
-        int state = prevState;
-        setCurrentBlockState(state);
-        return;
-    }
+    //if (text.isEmpty()) {
+    //    //empty line copy previous number
+    //    //dont do any syntax check
+    //    int state = prevState;
+    //    setCurrentBlockState(state);
+    //    return;
+    //}
 
     //update line number
     updateCurrentBlockState();
@@ -143,8 +146,7 @@ void Highlighter::highlightBlock(const QString& text)
         if (offset > 0)
             setFormat(last_off, offset - last_off, rule->format);
 
-    }
-    while ((offset >= 0) && (offset < len));
+    } while ((offset >= 0) && (offset < len));
 
     VitaClear();
     if (offset == len) {
