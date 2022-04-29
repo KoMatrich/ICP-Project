@@ -50,20 +50,20 @@ protected:
 class UMLClass
 {
 public:
-    UMLClass()
-    {
-        has_changed = true;
-    }
+    UMLClass() {}
     ~UMLClass() {}
     QString getClassName();
     void updateName(QString name);
-    bool has_changed;
+    bool has_changed = true;
     bool has_error = false;
-    std::vector<UMLProperty> getAttributes();
-    std::vector<UMLProperty> getMethods();
-    std::vector<UMLRelation> getRelations();
+    std::vector<UMLProperty> getAttributes() { return attributes; }
+    std::vector<UMLProperty> getMethods() { return methods; }
+    std::vector<UMLRelation> getRelations() { return relations; }
+    int getXPos() { return x; }
+    int getYPos() { return y; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
+    bool updatePosition(int pos, bool is_x);
     void removeExceedingProperties(size_t a, size_t m);
     void removeExceedingRelations(size_t r);
     void printProperties();
@@ -76,6 +76,10 @@ protected:
     std::vector<UMLProperty> attributes;
     std::vector<UMLProperty> methods;
     std::vector<UMLRelation> relations;
+    int x = 0;
+    int y = 0;
+    bool x_set = false;
+    bool y_set = false;
 };
 
 class Semantics

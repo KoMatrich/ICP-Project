@@ -153,6 +153,25 @@ RuleSet const SyntaxTree::genRules()
     generalization->format.setFontItalic(true);
     generalization->id = RuleID::R_GEN;
 
+    // position
+    Rule* position = new Rule();
+    position->start = Start("\\-?\\d+");
+    position->format.setForeground(Qt::darkMagenta);
+    position->id = RuleID::R_POSVAL;
+
+    // x pos
+    Rule* x_pos = new Rule();
+    x_pos->start = Start("x:");
+    x_pos->format.setFontWeight(QFont::Bold);
+    x_pos->id = RuleID::R_XPOS;
+
+    // y pos
+    Rule* y_pos = new Rule();
+    y_pos->start = Start("y:");
+    y_pos->format.setFontWeight(QFont::Bold);
+    y_pos->id = RuleID::R_YPOS;
+
+
     // parts appending
 
     with->parts.push_back(entity_name2);
@@ -170,7 +189,11 @@ RuleSet const SyntaxTree::genRules()
     in_kw->parts.push_back(composition);
     in_kw->parts.push_back(generalization);
     access->parts.push_back(type);
+    x_pos->parts.push_back(position);
+    y_pos->parts.push_back(position);
 
+    entity_block->parts.push_back(x_pos);
+    entity_block->parts.push_back(y_pos);
     entity_block->parts.push_back(in_kw);
     entity_block->parts.push_back(access);
 

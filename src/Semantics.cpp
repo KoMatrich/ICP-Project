@@ -77,6 +77,31 @@ void UMLClass::addRelation(UMLRelation new_p, size_t n)
     }
 }
 
+bool UMLClass::updatePosition(int pos, bool is_x)
+{
+    if (is_x)
+    {
+        if (this->x_set)
+        {
+            VitaPrint("[ERROR]: Duplicate x coordinate, please fix in the code edit.");
+            return false;
+        }
+        this->y_set = true;
+        this->y = pos;
+    }
+    else
+    {
+        if (this->y_set)
+        {
+            VitaPrint("[ERROR]: Duplicate y coordinate, please fix in the code edit.");
+            return false;
+        }
+        this->y_set = true;
+        this->y = pos;
+    }
+    return true;
+}
+
 void UMLClass::printProperties()
 {
     for (size_t i = 0; i < attributes.size(); i++)
@@ -217,6 +242,28 @@ void Semantics::buildSTree(GlobalStack stack)
 
         this->classes[n].removeExceedingRelations(r);
 
+        i = saved_i;
+
+        // get all positions
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_XPOS, RuleID::R_YPOS }, &i, 4, RuleID::R_ENTITYBLOCK, 3))
+        {
+            if (this->stack[i].size() == 6)
+            {
+                int pos = this->stack[i][5].second.toInt();
+                // this can lead to error
+                if (this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS))
+                    return;
+            }
+            else
+            {
+                VitaPrint("[WARNING]: Incomplete position definition (skipped)");
+            }
+
+            if (++i >= this->stack.size()) break;
+        }
+
+        this->classes[n].removeExceedingRelations(r);
+
         n++;
     }
     // delete excessive classes
@@ -224,6 +271,13 @@ void Semantics::buildSTree(GlobalStack stack)
 
     testDuplicates();
     testRelations();
+
+    for (size_t i = 0; i < this->classes.size(); i++)
+    {
+        VitaPrint(this->classes[i].getClassName());
+        VitaPrint(this->classes[i].);
+        VitaPrint(this->classes[i].getClassName());
+    }
 }
 
 void Semantics::addClass(UMLClass new_class)
@@ -350,12 +404,3 @@ bool UMLRelation::updateRelationConnectors(size_t new_id)
     return changed;
 }
 
-std::vector<UMLProperty> UMLClass::getAttributes() {
-    return this->attributes;
-}
-std::vector<UMLProperty> UMLClass::getMethods() {
-    return this->methods;
-}
-std::vector<UMLRelation> UMLClass::getRelations() {
-    return this->relations;
-}
