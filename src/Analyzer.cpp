@@ -44,7 +44,11 @@ Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
     return nullptr;
 }
 
-///If found returns 0, else -1
+/// <returns>
+/// 0  if end is matched
+/// 1  if end is empty
+/// -1 if end is not found
+/// </returns>
 int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
 {
     //not in any rule
@@ -66,7 +70,6 @@ int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
         //block without ending
         //VitaPrint("Ending :body.end");
         //VitaPrint("\t Empty patern");
-
         return 1;
     }
 
