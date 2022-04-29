@@ -131,29 +131,29 @@ void Highlighter::highlightBlock(const QString& text)
     //  clear syntax stack to current line
     analyzer->ClearTo(lineNumber);
 
-    Rule rule;
+    Rule* rule = nullptr;
 
     //  match everything possible on this line
     do {
         skipSpace(text, offset);
 
         last_off = offset;
-        analyzer->Next(lineNumber, offset, text, &rule);
+        analyzer->Next(lineNumber, offset, text, rule);
 
         if (offset > 0)
-            setFormat(last_off, offset - last_off, rule.format);
+            setFormat(last_off, offset - last_off, rule->format);
 
     }
     while ((offset >= 0) && (offset < len));
 
-	VitaClear();
-	if (offset == len) {
-		// syntax check OK -> pass tree for semantic check
-		VitaPrint("Syntax check OK");
-		//call a singleton Semantics generator
-		//Semantics::getInstance()->buildSTree(analyzer->GetStack());
-		return;
-	}
+    VitaClear();
+    if (offset == len) {
+        // syntax check OK -> pass tree for semantic check
+        VitaPrint("Syntax check OK");
+        //call a singleton Semantics generator
+        //Semantics::getInstance()->buildSTree(analyzer->GetStack());
+        return;
+    }
 
     switch (offset) {
     case NO_CHECK:
