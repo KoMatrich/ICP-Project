@@ -15,5 +15,5 @@ protected:
     HighlightService(const HighlightService&) {}; // Prevent construction by copying
     HighlightService& operator=(const HighlightService&) {}; // Prevent assignment
     ~HighlightService() {}; // Prevent unwanted destruction
-    bool enabled;
+    bool enabled = true;
 };

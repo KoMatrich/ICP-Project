@@ -6,7 +6,7 @@
 #include "Types.h"
 #include "DebugService.h"
 #include "HighlightService.h"
-//#include "CodeService.h"
+#include "CodeService.h"
 
 class UMLRelation
 {

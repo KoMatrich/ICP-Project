@@ -160,9 +160,13 @@ void Semantics::testRelations()
 
 void Semantics::buildSTree(GlobalStack stack)
 {
-    HighlightService::setEnabled(false);
-
-    
+    if (stack.size() > 1) {
+        HighlightService::setEnabled(false);
+        CodeService::clearBackground();
+        CodeService::formatLine(3);
+        CodeService::formatLine(6);
+        HighlightService::setEnabled(true);
+    }
 
     if (stack.size() == 1)
     {
@@ -291,7 +295,6 @@ void Semantics::buildSTree(GlobalStack stack)
     //    VitaPrint(QString::number(this->classes[i].getXPos()));
     //    VitaPrint(QString::number(this->classes[i].getYPos()));
     //}
-    HighlightService::setEnabled(true);
 }
 
 void Semantics::addClass(UMLClass new_class)

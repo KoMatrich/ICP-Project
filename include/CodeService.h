@@ -1,12 +1,10 @@
 #pragma once
 
-#include "TextCode.h"
-
 class CodeService
 {
 private:
 	static CodeService* instance;
-    MainTextEdit* code = nullptr;
+    QTextEdit* code = nullptr;
 
 public:
 	static CodeService* getInstance()
@@ -15,8 +13,8 @@ public:
 			instance = new CodeService;
 		return instance;
 	}
-	static void setEndpoint(MainTextEdit* c);
+	static void setEndpoint(QTextEdit* c);
     static void formatLine(size_t ln);
     static void clearBackground();
-	void setCodeWindow(MainTextEdit* c);
+	void setCodeWindow(QTextEdit* c);
 };

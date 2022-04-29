@@ -1,13 +1,13 @@
 #include "CodeService.h"
 
-void CodeService::setEndpoint(MainTextEdit* c)
+void CodeService::setEndpoint(QTextEdit* c)
 {
     CodeService::getInstance()->setCodeWindow(c);
 }
 
 void CodeService::clearBackground()
 {
-    MainTextEdit* editor = CodeService::getInstance()->code;
+    QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor = editor->textCursor();
     QTextBlockFormat f;
     f.setBackground(Qt::transparent);
@@ -18,16 +18,15 @@ void CodeService::clearBackground()
 
 void CodeService::formatLine(size_t ln)
 {
-    ln = 5;
-    MainTextEdit* editor = CodeService::getInstance()->code;
-    QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln - 1));
+    QTextEdit* editor = CodeService::getInstance()->code;
+    QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     QTextBlockFormat f;
     f.setBackground(QColor(250,165,165));
     cursor.select(QTextCursor::LineUnderCursor);
     cursor.setBlockFormat(f);
 }
 
-void CodeService::setCodeWindow(MainTextEdit* c)
+void CodeService::setCodeWindow(QTextEdit* c)
 {
 	this->code = c;
 }
