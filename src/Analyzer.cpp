@@ -47,6 +47,9 @@ Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
 ///If found returns 0, else -1
 int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
 {
+    //not in any rule
+    if (current == nullptr) return -1;
+
     //find end of current block
     QRegExp end = current->end;
     if (!end.isEmpty()) {
@@ -137,12 +140,10 @@ void Analyzer::Next(int line, int& offset, const QString& text, Rule** current)
         goto SKIP;
     }
 
-    if (*current != nullptr) {
-        result = matchEnd(text, offset, *current);
-        if (result >= 0) {
-            stack.pop_back();
-            goto SKIP;
-        }
+    result = matchEnd(text, offset, *current);
+    if (result >= 0) {
+        stack.pop_back();
+        goto SKIP;
     }
 
     //nothing found but text is still remaining
