@@ -28,6 +28,7 @@ WItem::WItem(UMLClass clas)
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsFocusable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemClipsToShape, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
 }
 
@@ -86,7 +87,7 @@ void WItem::PaintBlocks(QPainter* paint)
 //paints text block
 void WItem::paintText(QPainter* paint, Block line)
 {
-    paint->drawText(QRect(OFFSET, 0, width, line_h), Qt::AlignLeft, line.data);
+    paint->drawText(QRect(OFFSET, 0, width + OFFSET, line_h), Qt::AlignLeft, line.data);
     paint->translate(0, line_h);
 }
 
