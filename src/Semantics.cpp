@@ -66,11 +66,28 @@ void UMLClass::printProperties()
     }
 }
 
+void Semantics::printStack()
+{
+    for (size_t i = 0; i < this->stack.size(); i++)
+    {
+        QString out = QString("# %1: ").arg(i);
+
+        if (this->stack[i].size() > 0) out.append(toString(this->stack[i][0].first->id));
+
+        for (size_t j = 1; j < this->stack[i].size(); j++)
+        {
+            out.append(", ");
+            out.append(toString(this->stack[i][j].first->id));
+        }
+        VitaPrint(out);
+    }
+}
 
 void Semantics::buildSTree(GlobalStack stack)
 {
     this->stack = stack;
-    VitaClear();
+    this->printStack();
+    //VitaClear();
 
     size_t i = 0;
     size_t n = 0;
@@ -78,9 +95,14 @@ void Semantics::buildSTree(GlobalStack stack)
     // find start of a class
     while (this->skipTreeUntilWhileTrue({ RuleID::R_CLASS, RuleID::R_INTERFACE }, &i, 1, RuleID::R_UML, 0))
     {
+        if (this->stack[i].size() < 4)
+        {
+            i++;
+            continue;
+        }
 
-        QString c_name = getUMLClassName(this->stack[i][1].second);
-
+        QString c_name = getUMLClassName(this->stack[i][2].second);
+        auto aaa = c_name.toStdString();
         // update class
         if (n < this->classes.size())
         {
@@ -100,13 +122,13 @@ void Semantics::buildSTree(GlobalStack stack)
         size_t m = 0;
 
         // get all attributes / methods
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACCESS }, &i, 2, RuleID::R_CLASS, 1))
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACCESS }, &i, 4, RuleID::R_ENTITYBLOCK, 3))
         {
-            if (this->stack[i].size() == 5)
+            if (this->stack[i].size() == 7)
             {
-                UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
+                UMLProperty p = UMLProperty(this->stack[i][4].second, this->stack[i][5].second, this->stack[i][6].second);
 
-                if (this->stack[i][4].first->id == RuleID::R_METHOD)
+                if (this->stack[i][6].first->id == RuleID::R_METHOD)
                     this->classes[n].addProperty(p, true, m++);
                 else
                     this->classes[n].addProperty(p, false, a++);
@@ -125,11 +147,6 @@ void Semantics::buildSTree(GlobalStack stack)
     }
     // delete excessive classes
     classes.resize(n);
-
-    for (size_t i = 0; i < classes.size(); i++)
-    {
-        VitaPrint(classes[i].getClassName());
-    }
 
     testDuplicates();
 }
@@ -150,14 +167,21 @@ void Semantics::testDuplicates()
 {
     if (classes.size() < 2) return; //no duplicates possible
 
+    for (size_t i = 0; i < classes.size(); i++)
+    {
+        classes[i].has_error = false;
+    }
+
     for (size_t i = 0; i < classes.size() - 1; i++)
     {
         for (size_t j = i + 1; j < classes.size(); j++)
         {
             if (classes[i] == classes[j]) {
+                if (!classes[i].has_error)
+                    VitaPrint("[Semantic error] Duplicate entity name: " + classes[i].getClassName());
+
                 classes[i].has_error = true;
                 classes[j].has_error = true;
-                VitaPrint("[Semantic error] Duplicate entity name: " + classes[i].getClassName());
             }
         }
     }
