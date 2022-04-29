@@ -15,7 +15,7 @@ enum class RuleID {
 	R_ERR = -1, R_UML, R_CLASS, R_INTERFACE, R_ENTITYBLOCK, R_ENTITYNAME, R_METHOD, R_ATTRIBUTE, R_TYPE, R_ACCESS, R_IN, R_ASS, R_AGG, R_COM, R_GEN
 };
 
-inline const char* toString(RuleID r)
+inline const char* RuleIDtoString(RuleID r)
 {
 	switch (r)
 	{

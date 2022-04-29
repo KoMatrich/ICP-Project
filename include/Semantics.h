@@ -5,6 +5,25 @@
 #include "Analyzer.h"
 #include "Types.h"
 
+class UMLRelation
+{
+public:
+    UMLRelation() {}
+    UMLRelation(QString entity, RuleID type) {
+        this->entity = entity;
+        this->type = type;
+    }
+    ~UMLRelation() {}
+    QString toString();
+    QString getEntity();
+    bool updateRelationParams(UMLRelation new_r);
+    bool updateRelationConnectors(size_t new_id);
+protected:
+    QString entity;
+    RuleID type;
+    size_t id = -1;
+};
+
 class UMLProperty
 {
 public:
@@ -40,8 +59,13 @@ public:
     void updateName(QString name);
     bool has_changed;
     bool has_error = false;
+    std::vector<UMLProperty> getAttributes();
+    std::vector<UMLProperty> getMethods();
+    std::vector<UMLRelation> getRelations();
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
+    void addRelation(UMLRelation new_r, size_t n);
     void removeExceedingProperties(size_t a, size_t m);
+    void removeExceedingRelations(size_t r);
     void printProperties();
     bool operator==(const UMLClass& rhs)
     {
@@ -51,6 +75,7 @@ protected:
     QString class_name = "";
     std::vector<UMLProperty> attributes;
     std::vector<UMLProperty> methods;
+    std::vector<UMLRelation> relations;
 };
 
 class Semantics
@@ -74,6 +99,7 @@ protected:
     bool skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index, size_t pos, RuleID true_id, size_t true_pos);
     QString getUMLClassName(QString lex);
     void testDuplicates();
+    void testRelations();
     void printStack();
 private:
     Semantics()

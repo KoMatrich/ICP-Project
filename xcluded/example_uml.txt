@@ -3,7 +3,8 @@ https://real-world-plantuml.com/?type=sequence
 
 @startuml
 
-interface student{
+interface teacher{
+	in assoc with student
 	+	String firstname
 	+ String  lastname
 	#	String faculty
@@ -22,5 +23,10 @@ class student{
 
 	+ void bully()
 	+ void getBulied()
+}
+
+class Martin{
+	in gen with student
+	in ass with Martin
 }
 @enduml

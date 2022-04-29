@@ -54,6 +54,29 @@ void UMLClass::removeExceedingProperties(size_t a, size_t m)
     }
 }
 
+void UMLClass::removeExceedingRelations(size_t r)
+{
+    if (this->relations.size() > r) {
+        this->attributes.resize(r);
+        this->has_changed = true;
+    }
+}
+
+void UMLClass::addRelation(UMLRelation new_p, size_t n)
+{
+    //updating
+    if (n < this->relations.size())
+    {
+        this->has_changed |= this->relations[n].updateRelationParams(new_p);
+    }
+    //adding
+    else
+    {
+        this->relations.push_back(new_p);
+        this->has_changed = true;
+    }
+}
+
 void UMLClass::printProperties()
 {
     for (size_t i = 0; i < attributes.size(); i++)
@@ -72,14 +95,39 @@ void Semantics::printStack()
     {
         QString out = QString("# %1: ").arg(i);
 
-        if (this->stack[i].size() > 0) out.append(toString(this->stack[i][0].first->id));
+        if (this->stack[i].size() > 0) out.append(RuleIDtoString(this->stack[i][0].first->id));
 
         for (size_t j = 1; j < this->stack[i].size(); j++)
         {
             out.append(", ");
-            out.append(toString(this->stack[i][j].first->id));
+            out.append(RuleIDtoString(this->stack[i][j].first->id));
         }
         VitaPrint(out);
+    }
+}
+
+void Semantics::testRelations()
+{
+    for (size_t i = 0; i < classes.size(); i++)
+    {
+        auto rel = classes[i].getRelations();
+        for (size_t j = 0; j < rel.size(); j++)
+        {
+            UMLClass c;
+            c.updateName(rel[j].getEntity());
+
+            auto search = std::find(std::begin(this->classes), std::end(this->classes), c);
+
+            if (search != std::end(this->classes)) {
+                size_t index = search - this->classes.begin();
+                classes[i].has_changed |= rel[j].updateRelationConnectors(index);
+            }
+            //not found entity
+            else
+            {
+                VitaPrint("[WARNING]: Unknown entity relation:" + rel[j].toString());
+            }
+        }
     }
 }
 
@@ -118,8 +166,13 @@ void Semantics::buildSTree(GlobalStack stack)
 
         if (++i >= this->stack.size()) break;
 
-        size_t a = 0; // always set to new index
+        // we will iterate twice
+        size_t saved_i = i;
+
+        // always set to new index
+        size_t a = 0;
         size_t m = 0;
+        size_t r = 0;
 
         // get all attributes / methods
         while (this->skipTreeUntilWhileTrue({ RuleID::R_ACCESS }, &i, 4, RuleID::R_ENTITYBLOCK, 3))
@@ -135,13 +188,33 @@ void Semantics::buildSTree(GlobalStack stack)
             }
             else
             {
-                VitaPrint("[WARNING]: Incomplete property definition");
+                VitaPrint("[WARNING]: Incomplete property definition (skipped)");
+            }
+
+            if (++i >= this->stack.size()) break;
+        }
+        this->classes[n].removeExceedingProperties(a, m);
+
+        i = saved_i;
+
+        // get all relations
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_IN }, &i, 4, RuleID::R_ENTITYBLOCK, 3))
+        {
+            if (this->stack[i].size() == 8)
+            {
+                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
+
+                this->classes[n].addRelation(rel, r++);
+            }
+            else
+            {
+                VitaPrint("[WARNING]: Incomplete relation definition (skipped)");
             }
 
             if (++i >= this->stack.size()) break;
         }
 
-        this->classes[n].removeExceedingProperties(a, m);
+        this->classes[n].removeExceedingRelations(r);
 
         n++;
     }
@@ -149,6 +222,7 @@ void Semantics::buildSTree(GlobalStack stack)
     classes.resize(n);
 
     testDuplicates();
+    testRelations();
 }
 
 void Semantics::addClass(UMLClass new_class)
@@ -236,4 +310,51 @@ bool UMLProperty::updateProperty(UMLProperty new_p)
     }
 
     return changed;
+}
+
+QString UMLRelation::toString()
+{
+    
+    return QString("in relation " + QString(RuleIDtoString(this->type)) + " with " + this->entity);
+}
+
+QString UMLRelation::getEntity()
+{
+    return this->entity;
+}
+
+bool UMLRelation::updateRelationParams(UMLRelation new_r)
+{
+    bool changed = false;
+    changed |= new_r.entity == this->entity;
+    changed |= new_r.type == this->type;
+
+    if (changed) {
+        this->entity = new_r.entity;
+        this->type = new_r.type;
+    }
+
+    return changed;
+}
+
+bool UMLRelation::updateRelationConnectors(size_t new_id)
+{
+    bool changed = false;
+    changed |= new_id == this->id;
+
+    if (changed) {
+        this->id = new_id;
+    }
+
+    return changed;
+}
+
+std::vector<UMLProperty> UMLClass::getAttributes() {
+    return this->attributes;
+}
+std::vector<UMLProperty> UMLClass::getMethods() {
+    return this->methods;
+}
+std::vector<UMLRelation> UMLClass::getRelations() {
+    return this->relations;
 }
