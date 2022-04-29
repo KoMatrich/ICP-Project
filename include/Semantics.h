@@ -55,23 +55,30 @@ public:
     QString getClassName();
     void updateName(QString name);
     bool has_changed = true;
-    bool has_error = false;
-    std::vector<UMLProperty> getAttributes() { return attributes; }
-    std::vector<UMLProperty> getMethods() { return methods; }
-    std::vector<UMLRelation> getRelations() { return relations; }
-    int getXPos() { return x; }
-    int getYPos() { return y; }
+    inline std::vector<UMLProperty> getAttributes() { return attributes; }
+    inline std::vector<UMLProperty> getMethods() { return methods; }
+    inline std::vector<UMLRelation> getRelations() { return relations; }
+    inline int getXPos() { return x; }
+    inline int getYPos() { return y; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
     bool updatePosition(int pos, bool is_x);
     void removeExceedingProperties(size_t a, size_t m);
     void removeExceedingRelations(size_t r);
     void printProperties();
+    void setErrorFlag(bool e) { has_changed |= (had_error != e); had_error = has_error; has_error = e; }
+    inline bool getErrorFlag() { return has_error; }
+    inline void removePosFlags() { x_set = false; y_set = false; }
+    inline bool getDuplicateFlag() { return duplicate; }
+    inline void setDuplicateFlag(bool d) { duplicate = d; }
     bool operator==(const UMLClass& rhs)
     {
         return this->class_name == rhs.class_name;
     }
 protected:
+    bool duplicate = false;
+    bool has_error = false;
+    bool had_error = true;
     QString class_name = "";
     std::vector<UMLProperty> attributes;
     std::vector<UMLProperty> methods;

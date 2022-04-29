@@ -10,7 +10,7 @@ WItem::WItem(UMLClass clas)
     size = Size();
     rsize = RSize();
 
-    if (clas.has_error) {
+    if (clas.getErrorFlag()) {
         fill = red();
     } else {
         fill = green();

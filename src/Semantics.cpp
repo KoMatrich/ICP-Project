@@ -83,16 +83,18 @@ bool UMLClass::updatePosition(int pos, bool is_x)
     {
         if (this->x_set)
         {
+            this->setErrorFlag(true);
             VitaPrint("[ERROR]: Duplicate x coordinate, please fix in the code edit.");
             return false;
         }
-        this->y_set = true;
-        this->y = pos;
+        this->x_set = true;
+        this->x = pos;
     }
     else
     {
         if (this->y_set)
         {
+            this->setErrorFlag(true);
             VitaPrint("[ERROR]: Duplicate y coordinate, please fix in the code edit.");
             return false;
         }
@@ -150,7 +152,7 @@ void Semantics::testRelations()
             //not found entity
             else
             {
-                classes[i].has_error = true;
+                classes[i].setErrorFlag(true);
                 VitaPrint("[WARNING]: Unknown entity relation:" + rel[j].toString());
             }
         }
@@ -181,6 +183,8 @@ void Semantics::buildSTree(GlobalStack stack)
         if (n < this->classes.size())
         {
             classes[n].updateName(c_name);
+            classes[n].setErrorFlag(false);
+            classes[n].removePosFlags();
         }
         // create class
         else
@@ -251,8 +255,9 @@ void Semantics::buildSTree(GlobalStack stack)
             {
                 int pos = this->stack[i][5].second.toInt();
                 // this can lead to error
-                if (this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS))
-                    return;
+                if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS))
+                    void;
+                    //return;
             }
             else
             {
@@ -262,8 +267,6 @@ void Semantics::buildSTree(GlobalStack stack)
             if (++i >= this->stack.size()) break;
         }
 
-        this->classes[n].removeExceedingRelations(r);
-
         n++;
     }
     // delete excessive classes
@@ -272,12 +275,12 @@ void Semantics::buildSTree(GlobalStack stack)
     testDuplicates();
     testRelations();
 
-    for (size_t i = 0; i < this->classes.size(); i++)
-    {
-        VitaPrint(this->classes[i].getClassName());
-        VitaPrint(this->classes[i].getXPos());
-        VitaPrint(this->classes[i].getYPos());
-    }
+    //for (size_t i = 0; i < this->classes.size(); i++)
+    //{
+    //    VitaPrint(this->classes[i].getClassName());
+    //    VitaPrint(QString::number(this->classes[i].getXPos()));
+    //    VitaPrint(QString::number(this->classes[i].getYPos()));
+    //}
 }
 
 void Semantics::addClass(UMLClass new_class)
@@ -298,7 +301,7 @@ void Semantics::testDuplicates()
 
     for (size_t i = 0; i < classes.size(); i++)
     {
-        classes[i].has_error = false;
+        classes[i].setDuplicateFlag(false);
     }
 
     for (size_t i = 0; i < classes.size() - 1; i++)
@@ -306,11 +309,11 @@ void Semantics::testDuplicates()
         for (size_t j = i + 1; j < classes.size(); j++)
         {
             if (classes[i] == classes[j]) {
-                if (!classes[i].has_error)
-                    VitaPrint("[Semantic error] Duplicate entity name: " + classes[i].getClassName());
+                if (!classes[i].getDuplicateFlag())
+                    VitaPrint("[ERROR] Duplicate entity name: " + classes[i].getClassName());
 
-                classes[i].has_error = true;
-                classes[j].has_error = true;
+                classes[i].setErrorFlag(true);
+                classes[j].setErrorFlag(true);
             }
         }
     }
