@@ -3,8 +3,17 @@
 WItem::WItem(UMLClass clas)
 {
     addline({ BlockType::Text, clas.getClassName() });
+    addline({ BlockType::SepDouble ,"" });
+    auto atrs = clas.getAttributes();
+    for (auto atr : atrs) {
+        addline({ BlockType::Text,atr.toString() });
+    }
+
     addline({ BlockType::SepSingle ,"" });
-    //addline({ BlockType::Text,  });
+    auto mets = clas.getMethods();
+    for (auto met : mets) {
+        addline({ BlockType::Text,met.toString() });
+    }
 
     //"constant" init //QGraphicsWidget 
     size = Size();
@@ -127,8 +136,8 @@ constexpr QPoint* WItem::points()
     QPoint points[]{
         QPoint(0,0),
         QPoint(rsize.width(),0),
-        QPoint(rsize.width(),rsize.height()),
-        QPoint(0,rsize.height())
+        QPoint(rsize.width(),SEPARATOR_H),
+        QPoint(0,SEPARATOR_H)
     };
 
     for (auto point : points) {
