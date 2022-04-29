@@ -125,6 +125,7 @@ void Semantics::testRelations()
             //not found entity
             else
             {
+                classes[i].has_error = true;
                 VitaPrint("[WARNING]: Unknown entity relation:" + rel[j].toString());
             }
         }
@@ -134,7 +135,7 @@ void Semantics::testRelations()
 void Semantics::buildSTree(GlobalStack stack)
 {
     this->stack = stack;
-    this->printStack();
+    //this->printStack();
     //VitaClear();
 
     size_t i = 0;
