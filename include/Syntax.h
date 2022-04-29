@@ -24,6 +24,8 @@ inline const char* toString(RuleID r)
 	}
 }
 
+
+
 struct Rule
 {
 	QRegExp start;
@@ -32,9 +34,10 @@ struct Rule
 	RuleType type = RuleType::INLINE;
 	RuleID id = RuleID::R_ERR;
     RuleWhitespace wh = RuleWhitespace::W_REQUIRED;
-	QVector<Rule> parts;
+    QVector<Rule *> parts;
 };
-typedef QVector<Rule> RuleSet;
+
+typedef QVector<Rule *> RuleSet;
 
 class SyntaxTree {
 public:

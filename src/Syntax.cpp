@@ -152,33 +152,33 @@ RuleSet const SyntaxTree::genRules() {
 
     // parts appending
 
-    with.parts.append(entity_name2);
+    with.parts.append(&entity_name2);
 
-    association.parts.append(with);
-    aggregation.parts.append(with);
-    composition.parts.append(with);
-    generalization.parts.append(with);
+    association.parts.append(&with);
+    aggregation.parts.append(&with);
+    composition.parts.append(&with);
+    generalization.parts.append(&with);
 
-    type.parts.append(method);
-    type.parts.append(attribute);
+    type.parts.append(&method);
+    type.parts.append(&attribute);
 
-    in_kw.parts.append(association);
-    in_kw.parts.append(aggregation);
-    in_kw.parts.append(composition);
-    in_kw.parts.append(generalization);
-    access.parts.append(type);
+    in_kw.parts.append(&association);
+    in_kw.parts.append(&aggregation);
+    in_kw.parts.append(&composition);
+    in_kw.parts.append(&generalization);
+    access.parts.append(&type);
 
-    entity_block.parts.append(in_kw);
-    entity_block.parts.append(access);
+    entity_block.parts.append(&in_kw);
+    entity_block.parts.append(&access);
 
-    entity_name.parts.append(entity_block);
+    entity_name.parts.append(&entity_block);
 
-    class_keyword.parts.append(entity_name);
-    interface_keyword.parts.append(entity_name);
+    class_keyword.parts.append(&entity_name);
+    interface_keyword.parts.append(&entity_name);
 
-	uml.parts.append(class_keyword);
-    uml.parts.append(interface_keyword);
-	syntax.append(uml);
+	uml.parts.append(&class_keyword);
+    uml.parts.append(&interface_keyword);
+	syntax.append(&uml);
 
 	return syntax;
 }

@@ -106,7 +106,7 @@ void Semantics::buildSTree(GlobalStack stack)
             {
                 UMLProperty p = UMLProperty(this->stack[i][2].second, this->stack[i][3].second, this->stack[i][4].second);
 
-                if (this->stack[i][4].first.id == RuleID::R_METHOD)
+                if (this->stack[i][4].first->id == RuleID::R_METHOD)
                     this->classes[n].addProperty(p, true, m++);
                 else
                     this->classes[n].addProperty(p, false, a++);
@@ -169,7 +169,7 @@ bool Semantics::skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, si
     {
         if (pos + 1 == this->stack[*index].size())
         {
-            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first.id) != std::end(rules)) return true;
+            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first->id) != std::end(rules)) return true;
         }
         (*index)++;
     }
@@ -181,10 +181,10 @@ bool Semantics::skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index,
     while (*index < this->stack.size())
     {
         if (this->stack[*index].size() <= true_pos) return false;
-        if (this->stack[*index][true_pos].first.id != true_id) return false;
+        if (this->stack[*index][true_pos].first->id != true_id) return false;
 
         if (stack[*index].size() > pos) {
-            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first.id) != std::end(rules)) return true;
+            if (std::find(std::begin(rules), std::end(rules), stack[*index][pos].first->id) != std::end(rules)) return true;
         }
 
         (*index)++;
