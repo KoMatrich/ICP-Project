@@ -24,7 +24,7 @@ void inline Analyzer::getRules(Rule *current, RuleSet parts, LineStack stack)
 Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
 {
     //find start of sub block
-    for (int i = 0; i < parts.length(); i++) {
+    for (int i = 0; i < parts.size(); i++) {
         Rule *part = parts.at(i);
         QRegExp start = part->start;
         int match_i = start.indexIn(text, offset);

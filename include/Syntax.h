@@ -34,10 +34,10 @@ struct Rule
 	RuleType type = RuleType::INLINE;
 	RuleID id = RuleID::R_ERR;
     RuleWhitespace wh = RuleWhitespace::W_REQUIRED;
-    QVector<Rule *> parts;
+    std::vector<Rule *> parts;
 };
 
-typedef QVector<Rule *> RuleSet;
+typedef std::vector<Rule *> RuleSet;
 
 class SyntaxTree {
 public:
