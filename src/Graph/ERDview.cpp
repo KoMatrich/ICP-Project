@@ -52,22 +52,22 @@ void ERDScene::rem(uint index)
     delete items().at(index);
 }
 
-void ERDScene::documentWasModified()
-{
-    update();
-}
-
 ERDView::ERDView(QObject* parent)
 {
     setScene(&scene);
-
     setRenderHint(QPainter::Antialiasing);
     //TODO fix this background
-    QPixmap bckg = QPixmap(":images/res/grid.png");
+    const QPixmap bckg = QPixmap(":/images/resources/grid.png");
     setBackgroundBrush(bckg);
-    setCacheMode(QGraphicsView::CacheBackground);
-    setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
-    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
+    //setCacheMode(QGraphicsView::CacheBackground);//dont use! visual glitches
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setInteractive(true);
+    setResizeAnchor(QGraphicsView::AnchorViewCenter);
     setDragMode(QGraphicsView::ScrollHandDrag);
+    setAlignment(Qt::AlignCenter);
+}
+
+void ERDView::update()
+{
+    scene.update();
 }
