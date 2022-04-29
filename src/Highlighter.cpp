@@ -110,6 +110,7 @@ void Highlighter::highlightBlock(const QString& text)
         //start of file
         //reset analyzer
         analyzer->ClearAll();
+
     }
 
     //normal operation
@@ -151,7 +152,6 @@ void Highlighter::highlightBlock(const QString& text)
     VitaClear();
     if (offset == len) {
         // syntax check OK -> pass tree for semantic check
-        VitaPrint("Syntax check OK");
         //call a singleton Semantics generator
         Semantics::getInstance()->buildSTree(analyzer->GetStack());
         return;

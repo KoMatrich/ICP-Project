@@ -1,9 +1,11 @@
 #include <QApplication>
 #include "MainWindow.h"
 #include "DebugService.h"
+#include "CodeService.h"
 
 Semantics* Semantics::instance = nullptr;
 DebugService* DebugService::instance = nullptr;
+CodeService* CodeService::instance = nullptr;
 
 class App
 {

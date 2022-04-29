@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "MainWindow.h"
 #include "DebugService.h"
-
+#include "CodeService.h"
 
 MainWindow::MainWindow(const QString& fileName)
 {
@@ -69,6 +69,8 @@ void MainWindow::init()
 
     //left top
     mainTextEdit = new MainTextEdit(vsplit);
+    CodeService::setEndpoint(mainTextEdit);
+
     vsplit->addWidget(mainTextEdit);
 
     vsplit->addWidget(debugTextEdit);

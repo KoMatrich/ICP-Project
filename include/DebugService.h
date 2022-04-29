@@ -13,6 +13,7 @@ class DebugService
 private:
 	static DebugService* instance;
 	DebugTextEdit* debug = nullptr;
+    void setDebug(DebugTextEdit* d);
 
 public:
 	static DebugService* getInstance()
@@ -24,5 +25,4 @@ public:
 	static void setEndpoint(DebugTextEdit* d);
 	static void printText(QString msg);
 	static void clearText();
-	void setDebug(DebugTextEdit* d);
 };
