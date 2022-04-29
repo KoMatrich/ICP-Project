@@ -10,6 +10,12 @@ WItem::WItem(UMLClass clas)
     size = Size();
     rsize = RSize();
 
+    if (clas.has_error) {
+        fill = red();
+    } else {
+        fill = green();
+    }
+
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsFocusable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -46,15 +52,9 @@ void WItem::paint(QPainter* painter,
                   const QStyleOptionGraphicsItem* option,
                   QWidget* widget)
 {
-    QLinearGradient gradient(0, 0, 0, rsize.height());
-    gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, { 220, 255, 220 });
-    gradient.setColorAt(0.8, { 220, 240, 220 });
-    gradient.setColorAt(1.0, { 220, 240, 220 });
-
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);
-    painter->setBrush(gradient);
+    painter->setBrush(fill);
     painter->drawRoundedRect(boundingRect(), RADIUS, RADIUS);
 
     //draw text in frame
@@ -100,6 +100,26 @@ void WItem::paintSeparator(QPainter* paint, BlockType type)
         break;
     }
     paint->translate(0, SEPARATOR_H);
+}
+
+QLinearGradient WItem::green()
+{
+    QLinearGradient gradient(0, 0, 0, RSize().height());
+    gradient.setColorAt(0.0, Qt::white);
+    gradient.setColorAt(0.2, { 220, 255, 220 });
+    gradient.setColorAt(0.8, { 220, 240, 220 });
+    gradient.setColorAt(1.0, { 220, 240, 220 });
+    return gradient;
+}
+
+QLinearGradient WItem::red()
+{
+    QLinearGradient gradient(0, 0, 0, RSize().height());
+    gradient.setColorAt(0.0, Qt::white);
+    gradient.setColorAt(0.2, { 255, 220, 220 });
+    gradient.setColorAt(0.8, { 240, 220, 220 });
+    gradient.setColorAt(1.0, { 240, 220, 220 });
+    return gradient;
 }
 
 constexpr QPoint* WItem::points()

@@ -17,7 +17,7 @@ void ERDScene::update()
 
     //remove all excessive items
     while (items().count() > classes.size()) {
-        items().removeLast();
+        rem(items().count()-1);
     }
 
     uint index = 0;
@@ -35,6 +35,7 @@ void ERDScene::update()
             add(clas);
         }//else nothing
 
+        index++;
         classes.pop_back();
     }
 }

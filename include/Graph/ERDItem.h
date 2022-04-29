@@ -38,10 +38,10 @@ private:
     const int RADIUS{ 5 };
     const int SEPARATOR_H{ 3 };
 
+    //automatic var
+    QLinearGradient fill;
     int width{ 0 };
-
     int separator_c{ 0 };
-
     int line_h{ 0 };
     int line_c{ 0 };
 
@@ -66,4 +66,7 @@ private:
     void PaintBlocks(QPainter* paint);
     void paintText(QPainter* paint, Block line);
     void paintSeparator(QPainter* paint, BlockType type);
+
+    QLinearGradient green();
+    QLinearGradient red();
 };
