@@ -3,7 +3,7 @@ https://real-world-plantuml.com/?type=sequence
 
 @startuml
 
-interface teacher{
+interface student{
 	+	String firstname
 	+ String  lastname
 	#	String faculty
