@@ -151,7 +151,7 @@ void Highlighter::highlightBlock(const QString& text)
         // syntax check OK -> pass tree for semantic check
         VitaPrint("Syntax check OK");
         //call a singleton Semantics generator
-        //Semantics::getInstance()->buildSTree(analyzer->GetStack());
+        Semantics::getInstance()->buildSTree(analyzer->GetStack());
         return;
     }
 

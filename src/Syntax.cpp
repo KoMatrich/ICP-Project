@@ -55,13 +55,13 @@ RuleSet const SyntaxTree::genRules() {
     Rule *class_keyword = new Rule();
     class_keyword->start = Start("class");
     class_keyword->format.setFontWeight(QFont::Bold);
-    class_keyword->id = RuleID::R_ENTITYNAME;
+    class_keyword->id = RuleID::R_CLASS;
 
     // interface keyword
     Rule *interface_keyword = new Rule();
     interface_keyword->start = Start("interface");
     interface_keyword->format.setFontWeight(QFont::Bold);
-    interface_keyword->id = RuleID::R_ENTITYNAME;
+    interface_keyword->id = RuleID::R_INTERFACE;
 
     // entity name
     Rule *entity_name = new Rule();

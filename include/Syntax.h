@@ -19,7 +19,22 @@ inline const char* toString(RuleID r)
 {
 	switch (r)
 	{
-    
+    case RuleID::R_ERR: return "R_ERR"; break;
+    case RuleID::R_UML: return "R_UML"; break;
+    case RuleID::R_CLASS: return "R_CLASS"; break;
+    case RuleID::R_INTERFACE: return "R_INTERFACE"; break;
+    case RuleID::R_ENTITYBLOCK: return "R_ENTITYBLOCK"; break;
+    case RuleID::R_ENTITYNAME: return "R_ENTITYNAME"; break;
+    case RuleID::R_METHOD: return "R_METHOD"; break;
+    case RuleID::R_ATTRIBUTE: return "R_ATTRIBUTE"; break;
+    case RuleID::R_TYPE: return "R_TYPE"; break;
+    case RuleID::R_ACCESS: return "R_ACCESS"; break;
+    case RuleID::R_IN: return "R_IN"; break;
+    case RuleID::R_ASS: return "R_ASS"; break;
+    case RuleID::R_AGG: return "R_AGG"; break;
+    case RuleID::R_COM: return "R_COM"; break;
+    case RuleID::R_GEN: return "R_GEN"; break;
+
 	default:      return "[Unknown]";
 	}
 }
