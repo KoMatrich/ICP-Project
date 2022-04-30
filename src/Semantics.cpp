@@ -117,6 +117,22 @@ void UMLClass::printProperties()
     }
 }
 
+bool UMLClass::updateInherited(bool isMethod, std::vector<UMLProperty> src)
+{
+    for (UMLProperty p : src)
+    {
+        if (p.getType() != QString("-"))
+        {
+            if (isMethod)
+                this->inheritedMethods.push_back(p);
+            else
+                this->inheritedAttributes.push_back(p);
+        }
+    }
+    return false;
+}
+
+
 void Semantics::printStack()
 {
     for (size_t i = 0; i < this->stack.size(); i++)
@@ -134,11 +150,39 @@ void Semantics::printStack()
     }
 }
 
+void Semantics::testProperties()
+{
+    for (UMLClass& c : classes)
+    {
+        auto att = c.getAttributes();
+
+        for (size_t i = 0; i < att.size(); i++)
+        {
+            att[i].setDuplicateFlag(false);
+        }
+
+        for (size_t i = 0; i < att.size() - 1; i++)
+        {
+            for (size_t j = i + 1; j < att.size(); j++)
+            {
+                if (att[i] == att[j]) {
+                    if (!att[i].getDuplicateFlag())
+                        VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
+
+                    CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
+                    CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                }
+            }
+        }
+        c.setErrorFlag(true);
+    }
+}
+
 void Semantics::testRelations()
 {
     for (size_t i = 0; i < classes.size(); i++)
     {
-        auto rel = classes[i].getRelations();
+        auto &rel = classes[i].getRelations();
         for (size_t j = 0; j < rel.size(); j++)
         {
             UMLClass c;
@@ -157,6 +201,20 @@ void Semantics::testRelations()
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
                 auto a = rel[j].toString().toStdString();
+            }
+        }
+    }
+}
+
+void Semantics::addInheritedProperties()
+{
+    for (UMLClass& c : classes) {
+        c.cleanAndSetUpdatedInherited();
+        for (UMLRelation r : c.getRelations()) {
+            if (r.getType() == RuleID::R_GEN)
+            {
+                classes[r.getID()].updateInherited(true, c.getMethods());
+                classes[r.getID()].updateInherited(false, c.getAttributes());
             }
         }
     }
@@ -296,6 +354,8 @@ void Semantics::buildSTree(GlobalStack stack)
 
     testDuplicates();
     testRelations();
+    addInheritedProperties();
+    //testProperties();
 
     //for (size_t i = 0; i < this->classes.size(); i++)
     //{
@@ -383,9 +443,9 @@ QString UMLProperty::toString()
 bool UMLProperty::updateProperty(UMLProperty new_p)
 {
     bool changed = false;
-    changed |= new_p.p_mod == this->p_mod;
-    changed |= new_p.p_type == this->p_type;
-    changed |= new_p.p_name == this->p_name;
+    changed |= new_p.p_mod != this->p_mod;
+    changed |= new_p.p_type != this->p_type;
+    changed |= new_p.p_name != this->p_name;
 
     if (changed) {
         this->p_mod = new_p.p_mod;
@@ -410,8 +470,8 @@ QString UMLRelation::getEntity()
 bool UMLRelation::updateRelationParams(UMLRelation new_r)
 {
     bool changed = false;
-    changed |= new_r.entity == this->entity;
-    changed |= new_r.type == this->type;
+    changed |= new_r.entity != this->entity;
+    changed |= new_r.type != this->type;
 
     if (changed) {
         this->entity = new_r.entity;
@@ -424,7 +484,7 @@ bool UMLRelation::updateRelationParams(UMLRelation new_r)
 bool UMLRelation::updateRelationConnectors(size_t new_id)
 {
     bool changed = false;
-    changed |= new_id == this->id;
+    changed |= new_id != this->id;
 
     if (changed) {
         this->id = new_id;

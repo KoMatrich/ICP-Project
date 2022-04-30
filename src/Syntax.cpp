@@ -95,14 +95,14 @@ RuleSet const SyntaxTree::genRules()
 
     // method
     Rule* method = new Rule();
-    method->start = Start("_?[A-Za-z][A-Za-z0-9_]*\\(\\)");
+    method->start = Start("_?[A-Za-z][A-Za-z0-9_]*\\(\\)$");
     method->format.setFontWeight(QFont::Bold);
     method->format.setForeground(Qt::darkBlue);
     method->id = RuleID::R_METHOD;
 
     // attribute
     Rule* attribute = new Rule();
-    attribute->start = Start("_?[A-Za-z][A-Za-z0-9_]*");
+    attribute->start = Start("_?[A-Za-z][A-Za-z0-9_]*$");
     attribute->format.setFontWeight(QFont::Bold);
     attribute->format.setForeground(Qt::darkGreen);
     attribute->id = RuleID::R_ATTRIBUTE;
@@ -155,7 +155,7 @@ RuleSet const SyntaxTree::genRules()
 
     // position
     Rule* position = new Rule();
-    position->start = Start("\\-?\\d+");
+    position->start = Start("\\-?\\d+$");
     position->format.setForeground(Qt::darkMagenta);
     position->id = RuleID::R_POSVAL;
 

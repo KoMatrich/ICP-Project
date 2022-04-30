@@ -21,6 +21,8 @@ public:
     ~UMLRelation() {}
     QString toString();
     QString getEntity();
+    size_t getID() { return id; }
+    RuleID getType() { return type; }
     bool updateRelationParams(UMLRelation new_r);
     bool updateRelationConnectors(size_t new_id);
 protected:
@@ -48,7 +50,12 @@ public:
     }
     QString toString();
     bool updateProperty(UMLProperty new_p);
+    QString getType() { return p_type; }
+    QString getName() { return p_name; }
+    inline bool getDuplicateFlag() { return duplicate; }
+    inline void setDuplicateFlag(bool d) { duplicate = d; }
 protected:
+    bool duplicate = false;
     QString p_mod;
     QString p_type;
     QString p_name;
@@ -65,7 +72,7 @@ public:
     bool has_changed = true;
     inline std::vector<UMLProperty> getAttributes() { return attributes; }
     inline std::vector<UMLProperty> getMethods() { return methods; }
-    inline std::vector<UMLRelation> getRelations() { return relations; }
+    inline std::vector<UMLRelation>& getRelations() { return relations; }
     inline int getXPos() { return x; }
     inline int getYPos() { return y; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
@@ -74,7 +81,9 @@ public:
     void removeExceedingProperties(size_t a, size_t m);
     void removeExceedingRelations(size_t r);
     void printProperties();
+    bool updateInherited(bool isMethod, std::vector<UMLProperty> src);
     void setErrorFlag(bool e) { has_changed |= (had_error != e); had_error = has_error; has_error = e; }
+    inline void cleanAndSetUpdatedInherited() { inheritedAttributes.clear(); inheritedMethods.clear(); has_changed = true; }
     inline bool getErrorFlag() { return has_error; }
     inline void removePosFlags() { x_set = false; y_set = false; }
     inline bool getDuplicateFlag() { return duplicate; }
@@ -90,6 +99,8 @@ protected:
     QString class_name = "";
     std::vector<UMLProperty> attributes;
     std::vector<UMLProperty> methods;
+    std::vector<UMLProperty> inheritedAttributes;
+    std::vector<UMLProperty> inheritedMethods;
     std::vector<UMLRelation> relations;
     int x = 0;
     int y = 0;
@@ -119,7 +130,9 @@ protected:
     QString getUMLClassName(QString lex);
     void testDuplicates();
     void testRelations();
+    void addInheritedProperties();
     void printStack();
+    void testProperties();
 private:
     Semantics()
     {
