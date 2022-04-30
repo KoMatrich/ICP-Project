@@ -252,7 +252,7 @@ void Semantics::buildSTree(GlobalStack stack)
             if (this->stack[i].size() == 8)
             {
                 UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
-                rel.pos = 1;
+                rel.pos = i;
 
                 this->classes[n].addRelation(rel, r++);
             }
