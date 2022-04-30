@@ -117,15 +117,6 @@ void Highlighter::highlightBlock(const QString& text)
 
     }
 
-    //normal operation
-    //if (text.isEmpty()) {
-    //    //empty line copy previous number
-    //    //dont do any syntax check
-    //    int state = prevState;
-    //    setCurrentBlockState(state);
-    //    return;
-    //}
-
     //update line number
     updateCurrentBlockState();
 
