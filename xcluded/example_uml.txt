@@ -20,7 +20,7 @@ class student{
 	+  String as
 	-	String firstname
 	+ String lastname
-	#	UInt study program
+	#	UInt study_program
 	~	UInt credits
 
 	+ void bully()

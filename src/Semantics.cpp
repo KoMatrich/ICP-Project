@@ -182,7 +182,7 @@ void Semantics::testRelations()
 {
     for (size_t i = 0; i < classes.size(); i++)
     {
-        auto &rel = classes[i].getRelations();
+        auto& rel = classes[i].getRelations();
         for (size_t j = 0; j < rel.size(); j++)
         {
             UMLClass c;
@@ -213,8 +213,8 @@ void Semantics::addInheritedProperties()
         for (UMLRelation r : c.getRelations()) {
             if (r.getType() == RuleID::R_GEN)
             {
-                classes[r.getID()].updateInherited(true, c.getMethods());
-                classes[r.getID()].updateInherited(false, c.getAttributes());
+                c.updateInherited(true, classes[r.getID()].getMethods());
+                c.updateInherited(false, classes[r.getID()].getAttributes());
             }
         }
     }
@@ -357,12 +357,24 @@ void Semantics::buildSTree(GlobalStack stack)
     addInheritedProperties();
     //testProperties();
 
-    //for (size_t i = 0; i < this->classes.size(); i++)
-    //{
-    //    VitaPrint(this->classes[i].getClassName());
-    //    VitaPrint(QString::number(this->classes[i].getXPos()));
-    //    VitaPrint(QString::number(this->classes[i].getYPos()));
-    //}
+    for (size_t i = 0; i < this->classes.size(); i++)
+    {
+
+        auto att = this->classes[i].getInheritedAttributes();
+        VitaPrintf("ATT: %1", VF(att.size()));
+        for (size_t j = 0; j < att.size(); j++)
+        {
+            VitaPrint(att[j].toString());
+        }
+        auto met = this->classes[i].getInheritedMethods();
+        for (size_t j = 0; j < met.size(); j++)
+        {
+            VitaPrint(met[j].toString());
+        }
+        //VitaPrint(this->classes[i].getClassName());
+        //VitaPrint(QString::number(this->classes[i].getXPos()));
+        //VitaPrint(QString::number(this->classes[i].getYPos()));
+    }
 
     HighlightService::setEnabled(true);
 }

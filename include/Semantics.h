@@ -72,6 +72,8 @@ public:
     bool has_changed = true;
     inline std::vector<UMLProperty> getAttributes() { return attributes; }
     inline std::vector<UMLProperty> getMethods() { return methods; }
+    inline std::vector<UMLProperty> getInheritedAttributes() { return inheritedAttributes; }
+    inline std::vector<UMLProperty> getInheritedMethods() { return inheritedMethods; }
     inline std::vector<UMLRelation>& getRelations() { return relations; }
     inline int getXPos() { return x; }
     inline int getYPos() { return y; }
