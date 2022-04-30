@@ -156,6 +156,7 @@ void Semantics::testRelations()
                 classes[i].setErrorFlag(true);
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
+                auto a = rel[j].toString().toStdString();
             }
         }
     }
@@ -335,7 +336,9 @@ void Semantics::testDuplicates()
                 if (!classes[i].getDuplicateFlag())
                     VitaPrint("[ERROR] Duplicate entity name: " + classes[i].getClassName());
 
+                CodeService::formatLine(classes[i].pos, HLevel::LEVEL_ERROR);
                 classes[i].setErrorFlag(true);
+                CodeService::formatLine(classes[j].pos, HLevel::LEVEL_ERROR);
                 classes[j].setErrorFlag(true);
             }
         }

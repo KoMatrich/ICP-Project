@@ -199,6 +199,9 @@ void MainWindow::loadFile(const QString& fileName)
         return;
     }
 
+    HighlightService::setEnabled(false);
+    CodeService::clearBackground();
+
     mainTextEdit->clear();
 
     setCurrentFile(fileName);
@@ -216,6 +219,10 @@ void MainWindow::loadFile(const QString& fileName)
     QTextStream in(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
     mainTextEdit->setPlainText(in.readAll());
+    HighlightService::setEnabled(true);
+    mainTextEdit->syntax_reload();
+
+
     QApplication::restoreOverrideCursor();
 
     statusBar()->showMessage(tr("File loaded"), 2000);

@@ -18,6 +18,8 @@ void CodeService::clearBackground()
 
 void CodeService::formatLine(size_t ln, HLevel level)
 {
+    if (ln == 1)
+        auto x = 2;
     QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     QTextBlockFormat f;
