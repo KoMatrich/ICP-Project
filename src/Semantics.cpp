@@ -209,18 +209,23 @@ void Semantics::testProperties()
             }
         }
 
+        for (size_t i = 0; i < att.size(); i++)
+        {
+            inh_att[i].setDuplicateFlag(false);
+        }
+
         // test inherited vs inherited
         if (inh_att.size() > 1) {
             for (size_t i = 0; i < inh_att.size() - 1; i++)
             {
                 for (size_t j = 1; j < inh_att.size(); j++)
                 {
-                    if (att[i] == inh_att[j]) {
-                        if (!att[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Duplicate inherited attribute name: " + att[i].getName());
+                    if (inh_att[i] == inh_att[j]) {
+                        if (!inh_att[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Inherited attribute in collision: " + inh_att[i].getName());
 
-                        CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
-                        CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
                     }
                 }
@@ -267,6 +272,29 @@ void Semantics::testProperties()
 
                         CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(mth[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
+                }
+            }
+        }
+
+        for (size_t i = 0; i < att.size(); i++)
+        {
+            inh_mth[i].setDuplicateFlag(false);
+        }
+
+        // test inherited vs inherited
+        if (inh_mth.size() > 1) {
+            for (size_t i = 0; i < inh_mth.size() - 1; i++)
+            {
+                for (size_t j = 1; j < inh_mth.size(); j++)
+                {
+                    if (inh_mth[i] == inh_mth[j]) {
+                        if (!inh_mth[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Inherited attribute in collision: " + inh_mth[i].getName());
+
+                        CodeService::formatLine(inh_mth[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_mth[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
                     }
                 }
