@@ -3,7 +3,7 @@
 #include "qgraphicsitem.h"
 #include "Semantics.h"
 #include "qobject.h"
-#include "CodeService.h"
+#include "services/CodeService.h"
 
 class Block;
 enum class BlockType;
