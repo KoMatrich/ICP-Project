@@ -229,8 +229,8 @@ void Semantics::testProperties()
                         if (!inh_att[i].getDuplicateFlag())
                             VitaPrint("[ERROR] Inherited attribute in collision: " + inh_att[i].getName());
 
-                        //CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
-                        //CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
                     }
                 }
