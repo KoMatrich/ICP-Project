@@ -2,31 +2,17 @@
 
 #include "qgraphicsitem.h"
 #include "Semantics.h"
+#include "qobject.h"
+#include "CodeService.h"
 
-//item data line type
-enum class BlockType
-{
-    Text, SepSingle, SepBold, SepDouble
-};
+class Block;
+enum class BlockType;
 
-//item data line
-class Block
+class WItem : public QGraphicsObject
 {
+    Q_OBJECT
 public:
-    Block(BlockType type, QString data)
-    {
-        this->type = type;
-        this->data = data;
-    }
-
-    BlockType type;
-    QString data;
-};
-
-class WItem : public QGraphicsItem
-{
-public:
-    WItem(UMLClass clas);
+    WItem(QGraphicsScene* parent, UMLClass clas);
     QRectF boundingRect() const override;
     void paint(QPainter* painter,
                const QStyleOptionGraphicsItem* option,
@@ -34,6 +20,7 @@ public:
 protected:
     QVariant itemChange(GraphicsItemChange change,
                         const QVariant& value);
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
 private:
     const int GRID_S = 12;
@@ -57,21 +44,48 @@ private:
     constexpr QSize Size() { return QSize{ this->Width(), this->Height() }; }
     QSize rsize;
     constexpr QSize RSize() { return QSize{ qCeil(qreal(size.width() + POFFSET.x() * 2) / GRID_S) * GRID_S, qCeil(qreal(size.height() + POFFSET.x() * 2) / GRID_S) * GRID_S }; }
-    //used by paintSeparator
-    constexpr QPoint* points();
 
     //data
     QVector<Block> blocks;
 
     QFontMetrics const metric = QFontMetrics{ QApplication::font() };
 
-    //init processing function
+    //init processing function for data
     void addline(const Block data);
+
     //paint sub functions
     void PaintBlocks(QPainter* paint);
     void paintText(QPainter* paint, Block line);
     void paintSeparator(QPainter* paint, BlockType type);
 
+    //for gradient fill
     QLinearGradient green();
     QLinearGradient red();
+
+private:
+    void addAtributes(UMLClass clas);
+    void addMethods(UMLClass clas);
+
+    void test();
+};
+
+
+//item data line type
+enum class BlockType
+{
+    Text, SepSingle, SepBold, SepDouble
+};
+
+//item data line
+class Block
+{
+public:
+    Block(BlockType type, QString data)
+    {
+        this->type = type;
+        this->data = data;
+    }
+
+    BlockType type;
+    QString data;
 };

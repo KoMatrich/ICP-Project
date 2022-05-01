@@ -40,7 +40,7 @@ void ERDScene::update()
 
 void ERDScene::add(UMLClass const clas)
 {
-    WItem* item = new WItem{ clas };
+    WItem* item = new WItem{ this, clas };
     addItem(item);
 }
 

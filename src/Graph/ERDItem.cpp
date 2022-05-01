@@ -1,20 +1,14 @@
 #include <Graph/ERDItem.h>
 
-WItem::WItem(UMLClass clas)
+WItem::WItem(QGraphicsScene* parent, UMLClass clas)
 {
+    this->setParent(parent);
+
     addline({ BlockType::Text, clas.getClassName() });
+    addline({ BlockType::SepBold ,"" });
+    addAtributes(clas);
     addline({ BlockType::SepDouble ,"" });
-    auto atrs = clas.getAttributes();
-    for (auto atr : atrs) {
-        addline({ BlockType::Text,atr.toString() });
-    }
-
-    addline({ BlockType::SepSingle ,"" });
-    auto mets = clas.getMethods();
-    for (auto met : mets) {
-        addline({ BlockType::Text,met.toString() });
-    }
-
+    addMethods(clas);
     setPos({ qreal(clas.getXPos()),qreal(clas.getYPos()) });
 
     //"constant" init //QGraphicsWidget 
@@ -32,6 +26,40 @@ WItem::WItem(UMLClass clas)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemClipsToShape, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+}
+
+void WItem::addAtributes(UMLClass clas)
+{
+    //atributes
+    auto atrs = clas.getAttributes();
+    for (auto atr : atrs) {
+        addline({ BlockType::Text,atr.toString() });
+    }
+
+    //inthered atributes
+    auto iatrs = clas.getInheritedAttributes();
+    if (atrs.size() > 0, iatrs.size() > 0)
+        addline({ BlockType::SepSingle ,"" });
+    for (auto iatr : iatrs) {
+        addline({ BlockType::Text,iatr.toString() });
+    }
+}
+
+void WItem::addMethods(UMLClass clas)
+{
+    //methods
+    auto meths = clas.getMethods();
+    for (auto meth : meths) {
+        addline({ BlockType::Text,meth.toString() });
+    }
+
+    //inheret methods
+    auto imeths = clas.getInheritedMethods();
+    if (meths.size() > 0, imeths.size() > 0)
+        addline({ BlockType::SepSingle ,"" });
+    for (auto imeth : imeths) {
+        addline({ BlockType::Text,imeth.toString() });
+    }
 }
 
 //adds new data to item
@@ -89,6 +117,26 @@ QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
         return QGraphicsItem::itemChange(change, value);
 }
 
+void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
+{
+    //menu creation
+    QMenu menu{};
+    menu.addAction(QStringLiteral("Modify"), [this]() {test(); });
+    menu.addAction(QStringLiteral("Delete"), [this]() {test(); });
+    menu.addSeparator();
+    QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
+    relations->addAction(QStringLiteral("Agregation"), [this]() {test(); });
+    relations->addAction(QStringLiteral("Association"), [this]() {test(); });
+    relations->addAction(QStringLiteral("Composition"), [this]() {test(); });
+    relations->addAction(QStringLiteral("Generalization"), [this]() {test(); });
+
+    //menu execution
+    menu.exec(event->screenPos());
+
+    //relations is pointer to local menu data
+    //no need to delete pointer data
+}
+
 //paints block of item
 void WItem::PaintBlocks(QPainter* paint)
 {
@@ -111,16 +159,32 @@ void WItem::paintText(QPainter* paint, Block line)
 //paints separator block
 void WItem::paintSeparator(QPainter* paint, BlockType type)
 {
+    QPoint points[]{
+        QPoint(0,0),
+        QPoint(rsize.width(),0),
+        QPoint(rsize.width(),SEPARATOR_H),
+        QPoint(0,SEPARATOR_H)
+    };
+
+    for (auto point : points) {
+        point -= POFFSET;
+    }
+
+    QPainterPath path;
     switch (type) {
     case BlockType::SepSingle:
-        paint->drawLine(points()[0], points()[1]);
+        paint->drawLine(points[0], points[1]);
         break;
     case BlockType::SepBold:
-        paint->drawPolygon(points(), 4);
+        path.moveTo(points[0]);
+        path.lineTo(points[1]);
+        path.lineTo(points[2]);
+        path.lineTo(points[3]);
+        paint->fillPath(path, QBrush(QColor("black")));
         break;
     case BlockType::SepDouble:
-        paint->drawLine(points()[0], points()[1]);
-        paint->drawLine(points()[2], points()[3]);
+        paint->drawLine(points[0], points[1]);
+        paint->drawLine(points[2], points[3]);
         break;
     default:
         qDebug("Unknown selector (PaintBlocks)");
@@ -149,17 +213,5 @@ QLinearGradient WItem::red()
     return gradient;
 }
 
-constexpr QPoint* WItem::points()
-{
-    QPoint points[]{
-        QPoint(0,0),
-        QPoint(rsize.width(),0),
-        QPoint(rsize.width(),SEPARATOR_H),
-        QPoint(0,SEPARATOR_H)
-    };
-
-    for (auto point : points) {
-        point -= POFFSET;
-    }
-    return points;
-}
+void WItem::test()
+{}
