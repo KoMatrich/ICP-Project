@@ -2,7 +2,6 @@
 
 #include <QWidget>
 #include "Graph/ERDItem.h"
-#include "Graph/ERDItem.h"
 #include "Semantics.h"
 
 class ERDScene : public QGraphicsScene
