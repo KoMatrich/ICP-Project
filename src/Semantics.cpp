@@ -209,7 +209,7 @@ void Semantics::testProperties()
             }
         }
 
-        for (size_t i = 0; i < att.size(); i++)
+        for (size_t i = 0; i < inh_att.size(); i++)
         {
             inh_att[i].setDuplicateFlag(false);
         }
