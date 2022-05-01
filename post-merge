@@ -1,4 +1,6 @@
 #!/bin/sh
 #
 
+echo "CMake rebuild trigered after pull."
+rm -f CMakeCache.txt
 cmake .
