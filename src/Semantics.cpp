@@ -174,8 +174,13 @@ void Semantics::testProperties()
                 {
                     if (att[i] == att[j]) {
                         if (!att[i].getDuplicateFlag())
+                        {
                             VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
-
+                            VitaPrint(QString("# %1: ").arg(att[i].pos));
+                            VitaPrint(QString("# %1: ").arg(att[j].pos));
+                        }
+                            
+                        
                         CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
@@ -218,14 +223,14 @@ void Semantics::testProperties()
         if (inh_att.size() > 1) {
             for (size_t i = 0; i < inh_att.size() - 1; i++)
             {
-                for (size_t j = 1; j < inh_att.size(); j++)
+                for (size_t j = i + 1; j < inh_att.size(); j++)
                 {
                     if (inh_att[i] == inh_att[j]) {
                         if (!inh_att[i].getDuplicateFlag())
                             VitaPrint("[ERROR] Inherited attribute in collision: " + inh_att[i].getName());
 
-                        CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
-                        CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
+                        //CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
+                        //CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
                     }
                 }
@@ -278,7 +283,7 @@ void Semantics::testProperties()
             }
         }
 
-        for (size_t i = 0; i < att.size(); i++)
+        for (size_t i = 0; i < inh_mth.size(); i++)
         {
             inh_mth[i].setDuplicateFlag(false);
         }
@@ -287,7 +292,7 @@ void Semantics::testProperties()
         if (inh_mth.size() > 1) {
             for (size_t i = 0; i < inh_mth.size() - 1; i++)
             {
-                for (size_t j = 1; j < inh_mth.size(); j++)
+                for (size_t j = i + 1; j < inh_mth.size(); j++)
                 {
                     if (inh_mth[i] == inh_mth[j]) {
                         if (!inh_mth[i].getDuplicateFlag())
