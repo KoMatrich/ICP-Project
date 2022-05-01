@@ -4,9 +4,9 @@
 #include "Syntax/Rules.h"
 #include "Syntax/Analyzer.h"
 #include "Types.h"
-#include "services/DebugService.h"
-#include "services/HighlightService.h"
-#include "services/CodeService.h"
+#include "Services/Debug.h"
+#include "Services/Highlight.h"
+#include "Services/Code.h"
 
 class UMLRelation
 {
