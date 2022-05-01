@@ -116,5 +116,8 @@ dkms.conf
 CMakeSettings.json
 
 #documentation
-doc
+/doc/*
+!/doc/Doxyfile
+
+#Schilinger files
 /enc_temp_folder
