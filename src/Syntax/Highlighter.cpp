@@ -1,6 +1,6 @@
-#include "Highlighter.h"
-#include "services/DebugService.h"
-#include "services/CodeService.h"
+#include "Syntax/Highlighter.h"
+#include "Services/DebugService.h"
+#include "Services/CodeService.h"
 
 Highlighter::Highlighter(QTextEdit* parent)
     : QSyntaxHighlighter(parent->document())
@@ -89,7 +89,6 @@ void Highlighter::highlightBlock(const QString& text)
 {
     if (!HighlightService::getEnabled()) return;
 
-    CodeService::clearBackground();
     std::string test = text.toStdString();
     auto prevState = previousBlockState();
 

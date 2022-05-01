@@ -1,12 +1,12 @@
-#include "Graph/SEQview.h"
+#include "Graph/ERD/View.h"
 
-SEQScene::SEQScene(QObject* parent)
+ERDScene::ERDScene(QObject* parent)
     : QGraphicsScene(parent)
 {
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 }
 
-void SEQScene::update()
+void ERDScene::update()
 {
     auto sem = Semantics::getInstance();
     auto classes = sem->getClasses();
@@ -38,13 +38,13 @@ void SEQScene::update()
     }
 }
 
-void SEQScene::add(UMLClass const clas)
+void ERDScene::add(UMLClass const clas)
 {
-    SeqItem* item = new SeqItem{ this, clas };
+    WItem* item = new WItem{ this, clas };
     addItem(item);
 }
 
-void SEQScene::rem(uint index)
+void ERDScene::rem(uint index)
 {
     //remove old from display
     items().removeAt(index);
@@ -52,7 +52,7 @@ void SEQScene::rem(uint index)
     delete items().at(index);
 }
 
-SEQView::SEQView(QObject* parent)
+ERDView::ERDView(QObject* parent)
 {
     setScene(&scene);
     setRenderHint(QPainter::Antialiasing);
@@ -67,7 +67,7 @@ SEQView::SEQView(QObject* parent)
     setAlignment(Qt::AlignCenter);
 }
 
-void SEQView::update()
+void ERDView::update()
 {
     scene.update();
 }

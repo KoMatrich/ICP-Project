@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "Graph/SEQItem.h"
+#include "Graph/SEQ/Item.h"
 #include "Semantics.h"
 
 class SEQScene : public QGraphicsScene

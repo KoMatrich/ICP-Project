@@ -24,7 +24,7 @@ file(GLOB_RECURSE vsrc "src/*.cpp")
 file(GLOB_RECURSE vrec "resources.qrc" "resources/*")
 file(GLOB_RECURSE vhead "include/*.h" "include/*.hpp")
 
-add_executable ("${PROJECT_NAME}"  "${vsrc}" "${vrec}" "${vhead}" "src/Graph/SEQItem.cpp")
+add_executable ("${PROJECT_NAME}"  "${vsrc}" "${vrec}" "${vhead}")
 
 target_include_directories("${PROJECT_NAME}" PUBLIC "${Qt5Widgets_INCLUDE_DIRS}")
 target_include_directories("${PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")

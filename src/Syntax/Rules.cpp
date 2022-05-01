@@ -1,4 +1,4 @@
-#include "Syntax.h"
+#include "Syntax/Rules.h"
 
 SyntaxTree::SyntaxTree()
 {

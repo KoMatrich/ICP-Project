@@ -1,4 +1,4 @@
-#include <Graph/ERDItem.h>
+#include <Graph/ERD/Item.h>
 
 WItem::WItem(QGraphicsScene* parent, UMLClass clas)
 {

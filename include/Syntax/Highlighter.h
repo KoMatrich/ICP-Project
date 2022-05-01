@@ -4,7 +4,7 @@
 #include <QTextCharFormat>
 #include <QTextEdit>
 #include <QDebug>
-#include "Analyzer.h"
+#include "Syntax/Analyzer.h"
 #include "TextDebug.h"
 #include "services/HighlightService.h"
 #include "Semantics.h"

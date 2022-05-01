@@ -1,4 +1,4 @@
-#include "Analyzer.h"
+#include "Syntax/Analyzer.h"
 #include "QDebug"
 #include <iostream>
 #include <format>

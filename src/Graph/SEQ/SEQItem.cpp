@@ -1,4 +1,4 @@
-#include <Graph/SEQItem.h>
+#include <Graph/SEQ/Item.h>
 
 SeqItem::SeqItem(QGraphicsScene* parent, UMLClass clas)
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "Graph/ERDItem.h"
+#include "Graph/ERD/Item.h"
 #include "Semantics.h"
 
 class ERDScene : public QGraphicsScene

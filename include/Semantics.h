@@ -1,8 +1,8 @@
 #pragma once
 #include <QString>
 #include <QPair>
-#include "Syntax.h"
-#include "Analyzer.h"
+#include "Syntax/Rules.h"
+#include "Syntax/Analyzer.h"
 #include "Types.h"
 #include "services/DebugService.h"
 #include "services/HighlightService.h"
