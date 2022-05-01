@@ -485,25 +485,6 @@ void Semantics::buildSTree(GlobalStack stack)
     addInheritedProperties();
     testProperties();
 
-    //for (size_t i = 0; i < this->classes.size(); i++)
-    //{
-
-    //    auto att = this->classes[i].getInheritedAttributes();
-    //    VitaPrintf("ATT: %1", VF(att.size()));
-    //    for (size_t j = 0; j < att.size(); j++)
-    //    {
-    //        VitaPrint(att[j].toString());
-    //    }
-    //    auto met = this->classes[i].getInheritedMethods();
-    //    for (size_t j = 0; j < met.size(); j++)
-    //    {
-    //        VitaPrint(met[j].toString());
-    //    }
-    //    //VitaPrint(this->classes[i].getClassName());
-    //    //VitaPrint(QString::number(this->classes[i].getXPos()));
-    //    //VitaPrint(QString::number(this->classes[i].getYPos()));
-    //}
-
     HighlightService::setEnabled(true);
 }
 

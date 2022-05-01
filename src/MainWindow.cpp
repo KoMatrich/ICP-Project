@@ -140,6 +140,7 @@ void MainWindow::createActions()
 
     auto* fileToolBar = addToolBar(QStringLiteral("File"));
     fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
+    fileToolBar->addAction(QStringLiteral("Magic?"), [this]() {CodeService::insertLine(0, "NEVER GONNA GIVE YOU UP\nNEVER GONNA LET YOU DOWN\nNEVER GONNA RUN AROUND\nAND HURT YOU!\n\t~Qt"); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); erdView->update(); });
