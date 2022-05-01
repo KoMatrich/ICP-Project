@@ -150,10 +150,15 @@ void Semantics::printStack()
     }
 }
 
+
+
 void Semantics::testProperties()
 {
     for (UMLClass& c : classes)
     {
+        if (!c.has_changed) continue;
+
+        //attributes
         auto att = c.getAttributes();
 
         for (size_t i = 0; i < att.size(); i++)
@@ -162,20 +167,111 @@ void Semantics::testProperties()
         }
 
         //test own
-        for (size_t i = 0; i < att.size() - 1; i++) //TODO
-        {
-            for (size_t j = i + 1; j < att.size(); j++)
+        if (att.size() > 1) {
+            for (size_t i = 0; i < att.size() - 1; i++)
             {
-                if (att[i] == att[j]) {
-                    if (!att[i].getDuplicateFlag())
-                        VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
+                for (size_t j = i + 1; j < att.size(); j++)
+                {
+                    if (att[i] == att[j]) {
+                        if (!att[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
 
-                    CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
-                    CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
                 }
             }
         }
-        //c.setErrorFlag(true);
+
+        //test inherited vs own
+        auto inh_att = c.getInheritedAttributes();
+
+        for (size_t i = 0; i < att.size(); i++)
+        {
+            att[i].setDuplicateFlag(false);
+        }
+
+        if ((att.size() > 0) && (inh_att.size() > 0)) {
+            for (size_t i = 0; i < att.size(); i++)
+            {
+                for (size_t j = 0; j < inh_att.size(); j++)
+                {
+                    if (att[i] == inh_att[j]) {
+                        if (!att[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Duplicate inherited attribute name: " + att[i].getName());
+
+                        CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
+                }
+            }
+        }
+
+        // test inherited vs inherited
+        if (inh_att.size() > 1) {
+            for (size_t i = 0; i < inh_att.size() - 1; i++)
+            {
+                for (size_t j = 1; j < inh_att.size(); j++)
+                {
+                    if (att[i] == inh_att[j]) {
+                        if (!att[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Duplicate inherited attribute name: " + att[i].getName());
+
+                        CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
+                }
+            }
+        }
+
+        //methods
+        auto mth = c.getMethods();
+
+        for (size_t i = 0; i < mth.size(); i++)
+        {
+            mth[i].setDuplicateFlag(false);
+        }
+
+        //test own
+        if (mth.size() > 1) {
+            for (size_t i = 0; i < mth.size() - 1; i++)
+            {
+                for (size_t j = i + 1; j < mth.size(); j++)
+                {
+                    if (mth[i] == mth[j]) {
+                        if (!mth[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Duplicate method name: " + mth[i].getName());
+
+                        CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(mth[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
+                }
+            }
+        }
+
+        //test inherited vs own
+        auto inh_mth = c.getInheritedMethods();
+
+        if ((mth.size() > 0) && (inh_mth.size() > 0)) {
+            for (size_t i = 0; i < mth.size(); i++)
+            {
+                for (size_t j = 0; j < inh_mth.size(); j++)
+                {
+                    if (mth[i] == inh_mth[j]) {
+                        if (!mth[i].getDuplicateFlag())
+                            VitaPrint("[ERROR] Duplicate inherited method name: " + mth[i].getName());
+
+                        CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(mth[j].pos, HLevel::LEVEL_ERROR);
+                        c.setErrorFlag(true);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -251,7 +347,7 @@ void Semantics::buildSTree(GlobalStack stack)
             continue;
         }
 
-        QString c_name = getUMLClassName(this->stack[i][2].second);
+        QString c_name = this->stack[i][2].second;
         auto aaa = c_name.toStdString();
         // update class
         if (n < this->classes.size())
@@ -358,24 +454,24 @@ void Semantics::buildSTree(GlobalStack stack)
     addInheritedProperties();
     testProperties();
 
-    for (size_t i = 0; i < this->classes.size(); i++)
-    {
+    //for (size_t i = 0; i < this->classes.size(); i++)
+    //{
 
-        auto att = this->classes[i].getInheritedAttributes();
-        VitaPrintf("ATT: %1", VF(att.size()));
-        for (size_t j = 0; j < att.size(); j++)
-        {
-            VitaPrint(att[j].toString());
-        }
-        auto met = this->classes[i].getInheritedMethods();
-        for (size_t j = 0; j < met.size(); j++)
-        {
-            VitaPrint(met[j].toString());
-        }
-        //VitaPrint(this->classes[i].getClassName());
-        //VitaPrint(QString::number(this->classes[i].getXPos()));
-        //VitaPrint(QString::number(this->classes[i].getYPos()));
-    }
+    //    auto att = this->classes[i].getInheritedAttributes();
+    //    VitaPrintf("ATT: %1", VF(att.size()));
+    //    for (size_t j = 0; j < att.size(); j++)
+    //    {
+    //        VitaPrint(att[j].toString());
+    //    }
+    //    auto met = this->classes[i].getInheritedMethods();
+    //    for (size_t j = 0; j < met.size(); j++)
+    //    {
+    //        VitaPrint(met[j].toString());
+    //    }
+    //    //VitaPrint(this->classes[i].getClassName());
+    //    //VitaPrint(QString::number(this->classes[i].getXPos()));
+    //    //VitaPrint(QString::number(this->classes[i].getYPos()));
+    //}
 
     HighlightService::setEnabled(true);
 }
@@ -383,13 +479,6 @@ void Semantics::buildSTree(GlobalStack stack)
 void Semantics::addClass(UMLClass new_class)
 {
     this->classes.push_back(new_class);
-}
-
-QString Semantics::getUMLClassName(QString lex)
-{
-    lex.remove(QRegExp("^(class|interface)\\s+"));
-    lex.remove(QRegExp("\\{$"));
-    return lex;
 }
 
 void Semantics::testDuplicates()

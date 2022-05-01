@@ -129,7 +129,6 @@ protected:
     void addClass(UMLClass new_class);
     bool skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, size_t pos);
     bool skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index, size_t pos, RuleID true_id, size_t true_pos);
-    QString getUMLClassName(QString lex);
     void testDuplicates();
     void testRelations();
     void addInheritedProperties();
