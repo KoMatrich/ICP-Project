@@ -1,4 +1,5 @@
 #include "services/CodeService.h"
+#include "Syntax.h"
 
 void CodeService::setEndpoint(QTextEdit* c)
 {
@@ -42,16 +43,64 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
 {
     HighlightService::setEnabled(false);
     QTextEdit* editor = CodeService::getInstance()->code;
-
+    QTextCursor cursor;
+    QString prefix = "";
+    QTextBlock block;
+    //Y
+    if (y_ln > 0)
+    {
+        block = editor->document()->findBlockByLineNumber(y_ln);
+        prefix = block.text().left(block.text().indexOf("y"));
+        cursor = QTextCursor(block);
+        cursor.movePosition(QTextCursor::EndOfLine);
+        cursor.insertText(" ");
+        cursor.movePosition(QTextCursor::Left);
+        cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+        cursor.removeSelectedText();
+    }
+    else
+    {
+        block = editor->document()->findBlockByLineNumber(entity_ln + 1);
+        cursor = QTextCursor(block);
+        cursor.movePosition(QTextCursor::StartOfLine);
+        cursor.insertText("\n");
+        cursor.movePosition(QTextCursor::Up);
+        HighlightService::setEnabled(true);
+    }
+    cursor.movePosition(QTextCursor::StartOfLine);
+    cursor.setCharFormat(SyntaxTree::posFormat());
+    cursor.insertText(prefix + "y:");
+    cursor.movePosition(QTextCursor::EndOfLine);
+    cursor.setCharFormat(SyntaxTree::posValFormat());
+    cursor.insertText(QString::number(y_val));
+    // X
     if (x_ln > 0)
     {
-        QTextBlock block = editor->document()->findBlockByLineNumber(x_ln);
-        //str.left(std.indexOf("something") + 9)
-        QString prefix = block.text().left(block.text().indexOf("x"));
-        QTextCursor cursor = QTextCursor(block);
+        block = editor->document()->findBlockByLineNumber(x_ln);
+        prefix = block.text().left(block.text().indexOf("x"));
+        cursor = QTextCursor(block);
+        cursor.movePosition(QTextCursor::EndOfLine);
+        cursor.insertText(" ");
+        cursor.movePosition(QTextCursor::Left);
+        cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+        cursor.removeSelectedText();
     }
+    else
+    {
+        block = editor->document()->findBlockByLineNumber(entity_ln + 1);
+        cursor = QTextCursor(block);
+        cursor.movePosition(QTextCursor::StartOfLine);
+        cursor.insertText("\n");
+        cursor.movePosition(QTextCursor::Up);
+        HighlightService::setEnabled(true);
+    }
+    cursor.movePosition(QTextCursor::StartOfLine);
+    cursor.setCharFormat(SyntaxTree::posFormat());
+    cursor.insertText(prefix + "x:");
+    cursor.movePosition(QTextCursor::EndOfLine);
+    cursor.setCharFormat(SyntaxTree::posValFormat());
+    cursor.insertText(QString::number(x_val));
 
-    //QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     HighlightService::setEnabled(true);
 }
 

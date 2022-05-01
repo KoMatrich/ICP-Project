@@ -78,6 +78,8 @@ public:
     inline std::vector<UMLRelation>& getRelations() { return relations; }
     inline int getXPos() { return x; }
     inline int getYPos() { return y; }
+    inline int getXLine() { return x_line; }
+    inline int getYLine() { return y_line; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
     bool updatePosition(int pos, bool is_x, size_t i);
@@ -107,6 +109,8 @@ protected:
     std::vector<UMLRelation> relations;
     int x = 0;
     int y = 0;
+    size_t x_line = 0;
+    size_t y_line = 0;
     bool x_set = false;
     bool y_set = false;
 };

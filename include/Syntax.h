@@ -61,7 +61,16 @@ class SyntaxTree {
 public:
 	SyntaxTree();
 	QTextCharFormat err, cursor_color, after_err, no_check;
-
+    static QTextCharFormat posFormat() {
+        QTextCharFormat format;
+        format.setFontWeight(QFont::Bold);
+        return format;
+    };
+    static QTextCharFormat posValFormat() {
+        QTextCharFormat format;
+        format.setForeground(Qt::darkMagenta);
+        return format;
+    };
 	RuleSet const getRules();
 private:
 	RuleSet const genRules();

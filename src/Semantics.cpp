@@ -89,6 +89,7 @@ bool UMLClass::updatePosition(int pos, bool is_x, size_t i)
         }
         this->x_set = true;
         this->x = pos;
+        this->x_line = i;
     }
     else
     {
@@ -101,6 +102,7 @@ bool UMLClass::updatePosition(int pos, bool is_x, size_t i)
         }
         this->y_set = true;
         this->y = pos;
+        this->y_line = i;
     }
     return true;
 }

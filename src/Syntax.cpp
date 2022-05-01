@@ -46,7 +46,6 @@ QRegExp inline Start(const QString input)
 
 RuleSet const SyntaxTree::genRules()
 {
-
     // uml body
     Rule* uml = new Rule();
     uml->start = Start("^@startuml$");
@@ -156,19 +155,19 @@ RuleSet const SyntaxTree::genRules()
     // position
     Rule* position = new Rule();
     position->start = Start("\\-?\\d+$");
-    position->format.setForeground(Qt::darkMagenta);
+    position->format = posValFormat();
     position->id = RuleID::R_POSVAL;
 
     // x pos
     Rule* x_pos = new Rule();
     x_pos->start = Start("x:");
-    x_pos->format.setFontWeight(QFont::Bold);
+    x_pos->format = posFormat();
     x_pos->id = RuleID::R_XPOS;
 
     // y pos
     Rule* y_pos = new Rule();
     y_pos->start = Start("y:");
-    y_pos->format.setFontWeight(QFont::Bold);
+    y_pos->format = posFormat();
     y_pos->id = RuleID::R_YPOS;
 
 
