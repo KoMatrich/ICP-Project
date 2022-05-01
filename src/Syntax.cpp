@@ -1,6 +1,4 @@
 #include "Syntax.h"
-#include "assert.h"
-#include <QDebug>
 
 SyntaxTree::SyntaxTree()
 {
@@ -22,7 +20,7 @@ QRegExp inline End(const QString input)
 {
     QRegExp regex = QRegExp(input);
     if (!regex.isValid()) {
-        qDebug("Invalid regex:" + regex.pattern().toLatin1());
+        //qDebug("Invalid regex:" + regex.pattern().toLatin1());
         exit(99);
     }
     return regex;
@@ -32,17 +30,17 @@ QRegExp inline Start(const QString input)
 {
     QRegExp regex = QRegExp(input);
     if (!regex.isValid()) {
-        qDebug("Invalid regex:" + regex.pattern().toLatin1());
+        //qDebug("Invalid regex:" + regex.pattern().toLatin1());
         exit(99);
     }
     if (!(regex.indexIn("") == -1)) {
-        qDebug("Regex matchings empty rule:" + regex.pattern().toLatin1());
+        //qDebug("Regex matchings empty rule:" + regex.pattern().toLatin1());
         exit(99);
     }
     return regex;
 }
 
-///@TODO https://real-world-plantuml.com/umls/4783596598460416
+///https://real-world-plantuml.com/umls/4783596598460416
 
 RuleSet const SyntaxTree::genRules()
 {

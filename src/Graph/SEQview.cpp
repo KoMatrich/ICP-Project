@@ -1,62 +1,73 @@
-#include <QtWidgets>
-#include <Graph/SEQview.h>
+#include "Graph/SEQview.h"
 
-SEQview::SEQview(QTextEdit* parent) : QWidget(parent)
+SEQScene::SEQScene(QObject* parent)
+    : QGraphicsScene(parent)
 {
-    this->editor = parent;
-    resize(200, 200);
+    setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 }
 
-void SEQview::paintEvent(QPaintEvent*)
+void SEQScene::update()
 {
-    static const QPoint hourHand[3] = {
-        QPoint(7, 8),
-        QPoint(-7, 8),
-        QPoint(0, -40)
-    };
-    static const QPoint minuteHand[3] = {
-        QPoint(7, 8),
-        QPoint(-7, 8),
-        QPoint(0, -70)
-    };
+    auto sem = Semantics::getInstance();
+    auto classes = sem->getClasses();
 
-    QColor hourColor(0, 127, 127);
-    QColor minuteColor(40, 0, 127, 191);
+    int offset = 0;
 
-    int side = qMin(width(), height());
-
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.translate(width() / 2, height() / 2);
-    painter.scale(side / 200.0, side / 200.0);
-
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(hourColor);
-
-    painter.save();
-    painter.drawConvexPolygon(hourHand, 3);
-    painter.restore();
-
-    painter.setPen(hourColor);
-
-    for (int i = 0; i < 12; ++i) {
-        painter.drawLine(88, 0, 96, 0);
-        painter.rotate(30.0);
+    //remove all excessive items
+    while (items().count() > classes.size()) {
+        rem(items().count() - 1);
     }
 
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(minuteColor);
+    uint index = 0;
+    //add or change existing items
+    while (!classes.empty()) {
+        UMLClass clas = classes.back();
+        if (index >= items().count()) {
+            //item doesn't exists
+            //new item
+            add(clas);
+        } else if (clas.has_changed) {
+            //item exists and has changed
+            rem(index);
+            //create new
+            add(clas);
+        }//else nothing
 
-    painter.save();
-    painter.drawConvexPolygon(minuteHand, 3);
-    painter.restore();
-
-    painter.setPen(minuteColor);
-
-    for (int j = 0; j < 60; ++j) {
-        if ((j % 5) != 0)
-            painter.drawLine(92, 0, 96, 0);
-        painter.rotate(6.0);
+        index++;
+        classes.pop_back();
     }
 }
 
+void SEQScene::add(UMLClass const clas)
+{
+    SeqItem* item = new SeqItem{ this, clas };
+    addItem(item);
+}
+
+void SEQScene::rem(uint index)
+{
+    //remove old from display
+    items().removeAt(index);
+    //deletes old
+    delete items().at(index);
+}
+
+SEQView::SEQView(QObject* parent)
+{
+    setScene(&scene);
+    setRenderHint(QPainter::Antialiasing);
+    //TODO fix this background
+    const QPixmap bckg = QPixmap(":/images/resources/grid.png");
+    setBackgroundBrush(bckg);
+    //setCacheMode(QGraphicsView::CacheBackground);//dont use! visual glitches
+    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setInteractive(true);
+    setResizeAnchor(QGraphicsView::AnchorViewCenter);
+    setDragMode(QGraphicsView::ScrollHandDrag);
+    setAlignment(Qt::AlignCenter);
+}
+
+void SEQView::update()
+{
+    scene.update();
+}

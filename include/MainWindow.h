@@ -42,8 +42,7 @@ private:
     DebugTextEdit* debugTextEdit;
 
     ERDView* erdView;
-
-    SEQview* seqView;
+    SEQView* seqView;
 
     QString curFile;
     bool isUntitled;

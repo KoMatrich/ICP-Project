@@ -1,24 +1,30 @@
 #pragma once
 
 #include <QWidget>
+#include "Graph/SEQItem.h"
+#include "Semantics.h"
 
-QT_BEGIN_NAMESPACE
-class QTextEdit;
-QT_END_NAMESPACE
-
-class SEQview : public QWidget
+class SEQScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    explicit SEQview(QTextEdit *parent = 0);
-
-signals:
+    explicit SEQScene(QObject* parent = nullptr);
 
 public slots:
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
-
+    void update();
 private:
-    QTextEdit *editor;
+    void add(UMLClass const clas);
+    void rem(uint index);
+};
+
+class SEQView : public QGraphicsView
+{
+    Q_OBJECT
+public:
+    SEQView(QObject* parent = nullptr);
+    SEQScene* getScene() { return &scene; }
+public slots:
+    void update();
+private:
+    SEQScene scene;
 };
