@@ -161,7 +161,7 @@ void Semantics::testProperties()
             att[i].setDuplicateFlag(false);
         }
 
-        for (size_t i = 0; i < att.size() - 1; i++)
+        for (size_t i = 0; i < att.size() - 1; i++) //TODO
         {
             for (size_t j = i + 1; j < att.size(); j++)
             {
@@ -174,7 +174,7 @@ void Semantics::testProperties()
                 }
             }
         }
-        c.setErrorFlag(true);
+        //c.setErrorFlag(true);
     }
 }
 
@@ -355,7 +355,7 @@ void Semantics::buildSTree(GlobalStack stack)
     testDuplicates();
     testRelations();
     addInheritedProperties();
-    //testProperties();
+    testProperties();
 
     for (size_t i = 0; i < this->classes.size(); i++)
     {

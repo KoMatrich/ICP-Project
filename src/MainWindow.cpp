@@ -205,7 +205,11 @@ void MainWindow::loadFile(const QString& fileName)
     mainTextEdit->clear();
 
     setCurrentFile(fileName);
-    if (fileName.isEmpty())return;
+    if (fileName.isEmpty()) {
+        HighlightService::setEnabled(true);
+        mainTextEdit->syntax_reload();
+        return;
+    }
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -213,6 +217,8 @@ void MainWindow::loadFile(const QString& fileName)
                              tr("Cannot read file %1:\n%2.")
                              .arg(fileName)
                              .arg(file.errorString()));
+        HighlightService::setEnabled(true);
+        mainTextEdit->syntax_reload();
         return;
     }
 
