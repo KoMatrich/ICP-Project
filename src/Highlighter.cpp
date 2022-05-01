@@ -1,6 +1,6 @@
 #include "Highlighter.h"
-#include "DebugService.h"
-#include "CodeService.h"
+#include "services/DebugService.h"
+#include "services/CodeService.h"
 
 Highlighter::Highlighter(QTextEdit* parent)
     : QSyntaxHighlighter(parent->document())

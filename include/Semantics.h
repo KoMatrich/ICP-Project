@@ -4,9 +4,9 @@
 #include "Syntax.h"
 #include "Analyzer.h"
 #include "Types.h"
-#include "DebugService.h"
-#include "HighlightService.h"
-#include "CodeService.h"
+#include "services/DebugService.h"
+#include "services/HighlightService.h"
+#include "services/CodeService.h"
 
 class UMLRelation
 {
@@ -14,7 +14,8 @@ public:
     size_t pos = 0;
 
     UMLRelation() {}
-    UMLRelation(QString entity, RuleID type) {
+    UMLRelation(QString entity, RuleID type)
+    {
         this->entity = entity;
         this->type = type;
     }

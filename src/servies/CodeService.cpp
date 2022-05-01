@@ -1,4 +1,4 @@
-#include "CodeService.h"
+#include "services/CodeService.h"
 
 void CodeService::setEndpoint(QTextEdit* c)
 {
@@ -21,8 +21,7 @@ void CodeService::formatLine(size_t ln, HLevel level)
     QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     QTextBlockFormat f;
-    switch (level)
-    {
+    switch (level) {
     case HLevel::LEVEL_OK:
         f.setBackground(QColor(226, 255, 191));
         break;
@@ -66,5 +65,5 @@ void CodeService::insertLine(size_t ln, QString text)
 
 void CodeService::setCodeWindow(QTextEdit* c)
 {
-	this->code = c;
+    this->code = c;
 }

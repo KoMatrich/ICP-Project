@@ -18,7 +18,7 @@ public:
     void Next(int line, int& offset, const QString& text, Rule** rule);
     void ClearTo(int lineNumber);
     void ClearAll();
-    GlobalStack GetStack();
+    const GlobalStack& GetStack();
 private:
     SyntaxTree* syntax_tree;
     GlobalStack global_stack;

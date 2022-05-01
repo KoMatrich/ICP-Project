@@ -2,8 +2,8 @@
 #include "QDebug"
 #include <iostream>
 #include <format>
-#include "DebugService.h"
 #include "Types.h"
+#include "services/DebugService.h"
 
 
 /// Returns current rule on top of line stack
@@ -175,7 +175,7 @@ void Analyzer::ClearAll()
     global_stack.clear();
 }
 
-GlobalStack Analyzer::GetStack()
+const GlobalStack& Analyzer::GetStack()
 {
     return this->global_stack;
 }

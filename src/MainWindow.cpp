@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "MainWindow.h"
-#include "DebugService.h"
-#include "CodeService.h"
+#include "services/DebugService.h"
+#include "services/CodeService.h"
 
 MainWindow::MainWindow(const QString& fileName)
 {

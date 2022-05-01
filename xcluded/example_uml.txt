@@ -4,6 +4,8 @@ https://real-world-plantuml.com/?type=sequence
 @startuml
 
 interface teacher{
+	x: 120
+	y: 150
 	in assoc with student
 	+	String firstname
 	+ String  lastname
