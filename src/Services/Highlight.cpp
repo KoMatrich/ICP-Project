@@ -1,4 +1,4 @@
-#include "services/HighlightService.h"
+#include "Services/Highlight.h"
 
 void HighlightService::setEnabled(bool e)
 {

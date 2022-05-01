@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include "MainWindow.h"
-#include "services/DebugService.h"
-#include "services/CodeService.h"
+#include "Services/Debug.h"
+#include "Services/Code.h"
 
 MainWindow::MainWindow(const QString& fileName)
 {
@@ -140,7 +140,7 @@ void MainWindow::createActions()
 
     auto* fileToolBar = addToolBar(QStringLiteral("File"));
     fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
-    fileToolBar->addAction(QStringLiteral("Magic?"), [this]() {CodeService::updatePos(18,0,240,0,0); });
+    fileToolBar->addAction(QStringLiteral("Magic?"), [this]() {CodeService::updatePos(18, 0, 240, 0, 0); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); erdView->update(); });

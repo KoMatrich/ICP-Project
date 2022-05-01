@@ -1,4 +1,4 @@
-#include "services/DebugService.h"
+#include "Services/Debug.h"
 
 void DebugService::setEndpoint(DebugTextEdit* d)
 {

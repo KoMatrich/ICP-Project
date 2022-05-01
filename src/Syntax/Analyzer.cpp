@@ -3,7 +3,7 @@
 #include <iostream>
 #include <format>
 #include "Types.h"
-#include "services/DebugService.h"
+#include "Services/Debug.h"
 
 
 /// Returns current rule on top of line stack

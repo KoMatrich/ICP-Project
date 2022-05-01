@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "MainWindow.h"
-#include "services/DebugService.h"
-#include "services/CodeService.h"
+#include "Services/Debug.h"
+#include "Services/Code.h"
 
 Semantics* Semantics::instance = nullptr;
 DebugService* DebugService::instance = nullptr;

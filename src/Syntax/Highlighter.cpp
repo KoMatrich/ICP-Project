@@ -1,6 +1,6 @@
 #include "Syntax/Highlighter.h"
-#include "Services/DebugService.h"
-#include "Services/CodeService.h"
+#include "Services/Debug.h"
+#include "Services/Code.h"
 
 Highlighter::Highlighter(QTextEdit* parent)
     : QSyntaxHighlighter(parent->document())
@@ -148,6 +148,7 @@ void Highlighter::highlightBlock(const QString& text)
         if (analyzer->GetStack().size() > 0)
             if (analyzer->GetStack().back().size() == 0) {
                 //whole file has right syntax
+                CodeService::clearBackground();
                 Semantics::getInstance()->buildSTree(analyzer->GetStack());
             }
         return;
@@ -160,6 +161,7 @@ void Highlighter::highlightBlock(const QString& text)
         break;
     case SYNTAX_ERR:
         VitaPrint("Syntax error!");
+        CodeService::clearBackground();
         setFormat(last_off, len - last_off, syntax->err);
         setCurrentBlockState(SYNTAX_E);
         break;

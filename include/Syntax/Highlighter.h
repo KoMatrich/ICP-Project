@@ -6,7 +6,7 @@
 #include <QDebug>
 #include "Syntax/Analyzer.h"
 #include "TextDebug.h"
-#include "services/HighlightService.h"
+#include "Services/Highlight.h"
 #include "Semantics.h"
 
 class Highlighter : public QSyntaxHighlighter

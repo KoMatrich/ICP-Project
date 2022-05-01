@@ -3,7 +3,7 @@
 #include "qgraphicsitem.h"
 #include "Semantics.h"
 #include "qobject.h"
-#include "services/CodeService.h"
+#include "Services/Code.h"
 #include "Graph/Item.h"
 
 class SeqItem : public QGraphicsObject

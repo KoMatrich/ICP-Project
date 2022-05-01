@@ -1,4 +1,4 @@
-#include "services/CodeService.h"
+#include "Services/Code.h"
 #include "Syntax/Rules.h"
 
 void CodeService::setEndpoint(QTextEdit* c)
