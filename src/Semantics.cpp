@@ -176,8 +176,6 @@ void Semantics::testProperties()
                         if (!att[i].getDuplicateFlag())
                         {
                             VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
-                            VitaPrint(QString("# %1: ").arg(att[i].pos));
-                            VitaPrint(QString("# %1: ").arg(att[j].pos));
                         }
                             
                         
