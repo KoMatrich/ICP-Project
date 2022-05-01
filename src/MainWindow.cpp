@@ -207,7 +207,6 @@ void MainWindow::loadFile(const QString& fileName)
     setCurrentFile(fileName);
     if (fileName.isEmpty()) {
         HighlightService::setEnabled(true);
-        mainTextEdit->syntax_reload();
         return;
     }
 
@@ -219,6 +218,7 @@ void MainWindow::loadFile(const QString& fileName)
                              .arg(file.errorString()));
         HighlightService::setEnabled(true);
         mainTextEdit->syntax_reload();
+        save();
         return;
     }
 

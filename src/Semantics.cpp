@@ -161,6 +161,7 @@ void Semantics::testProperties()
             att[i].setDuplicateFlag(false);
         }
 
+        //test own
         for (size_t i = 0; i < att.size() - 1; i++) //TODO
         {
             for (size_t j = i + 1; j < att.size(); j++)
