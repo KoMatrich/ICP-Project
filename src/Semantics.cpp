@@ -355,7 +355,7 @@ void Semantics::buildSTree(GlobalStack stack)
     if (stack.size() <= 1) return;
 
     HighlightService::setEnabled(false);
-    CodeService::clearBackground();
+    //CodeService::clearBackground();
 
     if (stack.size() == 1)
     {
@@ -588,10 +588,12 @@ bool UMLRelation::updateRelationParams(UMLRelation new_r)
     bool changed = false;
     changed |= new_r.entity != this->entity;
     changed |= new_r.type != this->type;
+    changed |= new_r.pos != this->pos;
 
     if (changed) {
         this->entity = new_r.entity;
         this->type = new_r.type;
+        this->pos = new_r.pos;
     }
 
     return changed;
