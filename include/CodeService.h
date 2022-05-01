@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HighlightService.h"
 enum class HLevel {
     LEVEL_OK, LEVEL_WARN, LEVEL_ERROR
 };
@@ -19,6 +20,7 @@ public:
 	}
 	static void setEndpoint(QTextEdit* c);
     static void formatLine(size_t ln, HLevel level);
+    static void updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val);
     static void insertLine(size_t ln, QString text);
     static void clearBackground();
 	void setCodeWindow(QTextEdit* c);

@@ -39,6 +39,24 @@ void CodeService::formatLine(size_t ln, HLevel level)
     cursor.setBlockFormat(f);
 }
 
+void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
+{
+    HighlightService::setEnabled(false);
+    QTextEdit* editor = CodeService::getInstance()->code;
+
+    if (x_ln > 0)
+    {
+        QTextBlock block = editor->document()->findBlockByLineNumber(x_ln);
+        //str.left(std.indexOf("something") + 9)
+        QString prefix = block.text().left(block.text().indexOf("x"));
+        QTextCursor cursor = QTextCursor(block);
+    }
+
+    //QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
+    HighlightService::setEnabled(true);
+}
+
+
 void CodeService::insertLine(size_t ln, QString text)
 {
     QTextEdit* editor = CodeService::getInstance()->code;
