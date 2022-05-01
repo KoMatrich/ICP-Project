@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QTextEdit>
-#include "Highlighter.h"
+#include "Syntax/Highlighter.h"
 #include "TextDebug.h"
 
 QT_BEGIN_NAMESPACE
@@ -10,20 +10,21 @@ QT_END_NAMESPACE
 
 class MainTextEdit : public QTextEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	MainTextEdit(QWidget* parent = 0) : QTextEdit(parent)
-	{
-		highlighter = new Highlighter(this);
-	}
+    MainTextEdit(QWidget* parent = 0) : QTextEdit(parent)
+    {
+        highlighter = new Highlighter(this);
+    }
 signals:
 
 public slots:
-	void syntax_reload() {
-		highlighter->rehighlight();
-	};
+    void syntax_reload()
+    {
+        highlighter->rehighlight();
+    };
 protected:
 
 private:
-	Highlighter* highlighter;
+    Highlighter* highlighter;
 };

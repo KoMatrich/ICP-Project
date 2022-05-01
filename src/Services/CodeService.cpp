@@ -1,5 +1,5 @@
 #include "services/CodeService.h"
-#include "Syntax.h"
+#include "Syntax/Rules.h"
 
 void CodeService::setEndpoint(QTextEdit* c)
 {
@@ -47,8 +47,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     QString prefix = "";
     QTextBlock block;
     //Y
-    if (y_ln > 0)
-    {
+    if (y_ln > 0) {
         block = editor->document()->findBlockByLineNumber(y_ln);
         prefix = block.text().left(block.text().indexOf("y"));
         cursor = QTextCursor(block);
@@ -57,9 +56,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
         cursor.movePosition(QTextCursor::Left);
         cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
         cursor.removeSelectedText();
-    }
-    else
-    {
+    } else {
         block = editor->document()->findBlockByLineNumber(entity_ln + 1);
         cursor = QTextCursor(block);
         cursor.movePosition(QTextCursor::StartOfLine);
@@ -74,8 +71,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     cursor.setCharFormat(SyntaxTree::posValFormat());
     cursor.insertText(QString::number(y_val));
     // X
-    if (x_ln > 0)
-    {
+    if (x_ln > 0) {
         block = editor->document()->findBlockByLineNumber(x_ln);
         prefix = block.text().left(block.text().indexOf("x"));
         cursor = QTextCursor(block);
@@ -84,9 +80,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
         cursor.movePosition(QTextCursor::Left);
         cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
         cursor.removeSelectedText();
-    }
-    else
-    {
+    } else {
         block = editor->document()->findBlockByLineNumber(entity_ln + 1);
         cursor = QTextCursor(block);
         cursor.movePosition(QTextCursor::StartOfLine);

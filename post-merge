@@ -1,6 +1,0 @@
-#!/bin/sh
-#
-
-echo "CMake rebuild trigered after pull."
-rm -r -f ./out/
-cmake .

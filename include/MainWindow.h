@@ -2,8 +2,8 @@
 
 #include <QMainWindow>
 
-#include "Graph/ERDview.h"
-#include "Graph/SEQview.h"
+#include "Graph/ERD/View.h"
+#include "Graph/SEQ/View.h"
 #include "TextCode.h"
 #include "TextDebug.h"
 
@@ -42,8 +42,7 @@ private:
     DebugTextEdit* debugTextEdit;
 
     ERDView* erdView;
-
-    SEQview* seqView;
+    SEQView* seqView;
 
     QString curFile;
     bool isUntitled;

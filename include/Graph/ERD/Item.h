@@ -4,9 +4,7 @@
 #include "Semantics.h"
 #include "qobject.h"
 #include "services/CodeService.h"
-
-class Block;
-enum class BlockType;
+#include "Graph/Item.h"
 
 class WItem : public QGraphicsObject
 {
@@ -67,25 +65,4 @@ private:
     void addMethods(UMLClass clas);
 
     void test();
-};
-
-
-//item data line type
-enum class BlockType
-{
-    Text, SepSingle, SepBold, SepDouble
-};
-
-//item data line
-class Block
-{
-public:
-    Block(BlockType type, QString data)
-    {
-        this->type = type;
-        this->data = data;
-    }
-
-    BlockType type;
-    QString data;
 };

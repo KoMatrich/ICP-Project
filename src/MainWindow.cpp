@@ -87,11 +87,11 @@ void MainWindow::init()
     hsplit->addWidget(tabs);
 
     //right first
-    erdView = new ERDView(mainTextEdit);
+    erdView = new ERDView(tabs);
     tabs->addTab(erdView, "Class");
 
     //right second
-    seqView = new SEQview(mainTextEdit);
+    seqView = new SEQView(tabs);
     tabs->addTab(seqView, "Sequence");
 
     //set width proportion
