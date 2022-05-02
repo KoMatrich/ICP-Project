@@ -110,11 +110,11 @@ QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
         if (QApplication::mouseButtons() == Qt::LeftButton) {
             qreal x = round(newPos.x() / GRID_S) * GRID_S;
             qreal y = round(newPos.y() / GRID_S) * GRID_S;
+            emit itemMoved();
             return QPointF(x, y);
-        } else
-            return newPos;
-    } else
-        return QGraphicsItem::itemChange(change, value);
+        }
+    }
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)

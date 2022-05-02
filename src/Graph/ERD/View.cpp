@@ -36,6 +36,14 @@ void ERDScene::update()
         index++;
         classes.pop_back();
     }
+
+    //TEST Delete me
+    if (items().count() >= 2) {
+        auto i1 = dynamic_cast<WItem*>(items().at(0));
+        auto i2 = dynamic_cast<WItem*>(items().at(1));
+        auto arrow = new Arrow(this, i1, i2);
+        addItem(arrow);
+    }
 }
 
 void ERDScene::add(UMLClass const clas)
@@ -46,10 +54,10 @@ void ERDScene::add(UMLClass const clas)
 
 void ERDScene::rem(uint index)
 {
-    //remove old from display
-    items().removeAt(index);
     //deletes old
     delete items().at(index);
+    //remove old from display
+    items().removeAt(index);
 }
 
 ERDView::ERDView(QObject* parent)
