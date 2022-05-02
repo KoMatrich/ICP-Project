@@ -66,8 +66,3 @@ ERDView::ERDView(QObject* parent)
     setDragMode(QGraphicsView::ScrollHandDrag);
     setAlignment(Qt::AlignCenter);
 }
-
-void ERDView::update()
-{
-    scene.update();
-}

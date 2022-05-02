@@ -2,6 +2,7 @@
 
 #include <QWidget>
 #include "Graph/ERD/Item.h"
+#include "Graph/ERD/Arrow.h"
 #include "Semantics.h"
 
 class ERDScene : public QGraphicsScene
@@ -9,8 +10,6 @@ class ERDScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit ERDScene(QObject* parent = nullptr);
-
-public slots:
     void update();
 private:
     void add(UMLClass const clas);
@@ -24,7 +23,7 @@ public:
     ERDView(QObject* parent = nullptr);
     ERDScene* getScene() { return &scene; }
 public slots:
-    void update();
+    void update() { scene.update(); };
 private:
     ERDScene scene;
 };
