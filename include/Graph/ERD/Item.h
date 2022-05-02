@@ -9,14 +9,12 @@ class WItem : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    QSize size;
-    QSize rsize;
-
     WItem(QGraphicsScene* parent, UMLClass clas);
     QRectF boundingRect() const override;
     void paint(QPainter* painter,
                const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;
+    QString getBlock(uint i) { return blocks.at(i).data; };
 protected:
     QVariant itemChange(GraphicsItemChange change,
                         const QVariant& value);
@@ -39,6 +37,9 @@ private:
 
     int Height() { return line_c * line_h + separator_c * SEPARATOR_H; }
     int Width() { return width; }
+
+    QSize size;
+    QSize rsize;
 
     constexpr QSize Size() { return QSize{ this->Width(), this->Height() }; }
     constexpr QSize RSize() { return QSize{ qCeil(qreal(size.width() + POFFSET.x() * 2) / GRID_S) * GRID_S, qCeil(qreal(size.height() + POFFSET.x() * 2) / GRID_S) * GRID_S }; }

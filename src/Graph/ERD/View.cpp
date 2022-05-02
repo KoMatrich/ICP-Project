@@ -11,53 +11,34 @@ void ERDScene::update()
     auto sem = Semantics::getInstance();
     auto classes = sem->getClasses();
 
-    int offset = 0;
+    clear();
 
-    //remove all excessive items
-    while (items().count() > classes.size()) {
-        rem(items().count() - 1);
-    }
-
-    uint index = 0;
     //add or change existing items
-    while (!classes.empty()) {
-        UMLClass clas = classes.back();
-        if (index >= items().count()) {
-            //item doesn't exists
-            //new item
-            add(clas);
-        } else if (clas.has_changed) {
-            //item exists and has changed
-            rem(index);
-            //create new
-            add(clas);
-        }//else nothing
-
-        index++;
-        classes.pop_back();
+    for (auto clas : classes) {
+        add(clas);
     }
 
     //TEST Delete me
     if (items().count() >= 2) {
-        auto i1 = dynamic_cast<WItem*>(items().at(0));
-        auto i2 = dynamic_cast<WItem*>(items().at(1));
-        auto arrow = new Arrow(this, i1, i2);
-        addItem(arrow);
+        WItem* i1 = dynamic_cast<WItem*>(items().at(0));
+        WItem* i2 = dynamic_cast<WItem*>(items().at(1));
+        if (i1 != nullptr && i2 != nullptr) {
+            auto arrow = new Arrow(this, i1, i2);
+            arrow->setFlag(QGraphicsItem::ItemStacksBehindParent);
+            addItem(arrow);
+        } else {
+            VitaPrint("Arrow");
+        }
     }
 }
 
-void ERDScene::add(UMLClass const clas)
+/// <summary>
+/// adds item to scene
+/// </summary>
+void ERDScene::add(UMLClass const data)
 {
-    WItem* item = new WItem{ this, clas };
+    WItem* item = new WItem{ this, data };
     addItem(item);
-}
-
-void ERDScene::rem(uint index)
-{
-    //deletes old
-    delete items().at(index);
-    //remove old from display
-    items().removeAt(index);
 }
 
 ERDView::ERDView(QObject* parent)
@@ -68,7 +49,7 @@ ERDView::ERDView(QObject* parent)
     const QPixmap bckg = QPixmap(":/images/resources/grid.png");
     setBackgroundBrush(bckg);
     //setCacheMode(QGraphicsView::CacheBackground);//dont use! visual glitches
-    setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setInteractive(true);
     setResizeAnchor(QGraphicsView::AnchorViewCenter);
     setDragMode(QGraphicsView::ScrollHandDrag);

@@ -1,7 +1,7 @@
 #include "Graph/ERD/Arrow.h"
 
 Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2)
-    :o1(o1), o2(o1)
+    :o1(o1), o2(o2)
 {
     //auto remove when one object is destroyed
     connect(o1, SIGNAL(destroyed()), this, SLOT(destroy()));
@@ -17,15 +17,13 @@ Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2)
 
 QRectF Arrow::boundingRect() const
 {
-    return QRect(-dist, dist);
+    return QRect(-dist, dist).marginsAdded(renderMargin);
 }
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QVector<QLine> lines = { { -dist,dist} };
     painter->drawLines(lines);
-
-    painter->drawRect(boundingRect());
 }
 
 void Arrow::update()
@@ -37,8 +35,9 @@ void Arrow::update()
     s2 = o2->boundingRect().center().toPoint();
 
     dist = (p1 + s1) - (p2 + s2);
+    dist /= 2;
 
-    this->setPos(p1);
+    this->setPos((p1 + s1 + p2 + s2) / 2);
 }
 
 void Arrow::destroy()
