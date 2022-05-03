@@ -115,6 +115,13 @@ protected:
     bool y_set = false;
 };
 
+class Sequence
+{
+public:
+    Sequence() {}
+    ~Sequence() {}
+};
+
 class Semantics
 {
 private:
