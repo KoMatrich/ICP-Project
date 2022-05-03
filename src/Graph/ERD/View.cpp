@@ -24,7 +24,8 @@ void ERDScene::update()
         WItem* i2 = dynamic_cast<WItem*>(items().at(1));
         if (i1 != nullptr && i2 != nullptr) {
             auto arrow = new Arrow(this, i1, i2);
-            arrow->setFlag(QGraphicsItem::ItemStacksBehindParent);
+            //TODO remove
+            //arrow->setFlag(QGraphicsItem::ItemStacksBehindParent);
             addItem(arrow);
         } else {
             VitaPrint("Arrow");

@@ -21,13 +21,6 @@ protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
 private:
-    const int GRID_S = 12;
-    const int OFFSET{ GRID_S / 2 };
-    const int RADIUS{ GRID_S };
-    const int SEPARATOR_H{ 3 };
-
-    const QPoint POFFSET{ OFFSET,OFFSET };
-
     //automatic var
     QLinearGradient fill;
     int width{ 0 };

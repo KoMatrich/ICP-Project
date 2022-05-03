@@ -2,7 +2,7 @@
 
 #include "qobject.h"
 #include "Graph/ERD/Item.h"
-#include "qmargins.h"
+#include "Graph/Item.h"
 
 class Arrow : public QGraphicsObject
 {
@@ -16,18 +16,14 @@ public:
                QWidget* widget) override;
 
 private:
-    const int OFFSET = 15;
-    QMargins renderMargin{ OFFSET, OFFSET, OFFSET, OFFSET };
-    const QPointF POFFSET{ OFFSET,OFFSET };
-
-    //vector that points to first target
-    QPoint dist, s1, s2;
+    QVector2D dist1_vec, dist2_vec;
+    QLineF centerLine;
 
     //pointers to targets
     WItem* o1;
     WItem* o2;
 
 private slots:
-    void destroy();
     void update();
+    void destroy();
 };
