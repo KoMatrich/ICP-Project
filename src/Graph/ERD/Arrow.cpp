@@ -1,6 +1,6 @@
 #include "Graph/ERD/Arrow.h"
 
-Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2)
+Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2, RuleID arr_type)
     :o1(o1), o2(o2)
 {
     //auto remove when one object is destroyed
@@ -10,6 +10,7 @@ Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2)
     connect(o2, SIGNAL(destroyed()), this, SLOT(destroy()));
     connect(o2, SIGNAL(itemMoved()), this, SLOT(update()));
 
+    this->arrow_type = arr_type;
     setParent(parent);
 
     update();
@@ -22,12 +23,14 @@ QRectF Arrow::boundingRect() const
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-#ifdef DEBUG_DRAW
-    painter->drawEllipse(end.toPoint(), 10, 10);
-    painter->drawEllipse(col_vec.toPointF(), 10, 10);
-#endif // DEBUG_DRAW
-
     painter->drawLine(end.toPoint(), col_vec.toPoint());
+
+    if (arrow_type == RuleID::R_AGG)
+        painter->setBrush(Qt::black);
+    else
+        painter->setBrush(Qt::white);
+
+    painter->drawPolygon(arrow_head);
 }
 
 void Arrow::update()
@@ -65,7 +68,44 @@ void Arrow::updateArrow()
 
 void Arrow::updateArrowHead()
 {
-    
+    double angle = std::atan2(-col_vec.y(), col_vec.x());
+
+    switch (arrow_type)
+    {
+    case RuleID::R_ASS:
+        arrow_head.clear();
+        return;
+    case RuleID::R_COM:
+    case RuleID::R_AGG:
+    {
+        QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_COMAGG_SIZE,
+            cos(angle + M_PI / 3) * ARROW_COMAGG_SIZE);
+
+        QPointF arrowP3 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_COMAGG_SIZE,
+            cos(angle + 2 * M_PI / 3) * ARROW_COMAGG_SIZE);
+
+        QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + M_PI_2) * 2 * ARROW_COMAGG_SIZE,
+            cos(angle + M_PI_2) * 2 * ARROW_COMAGG_SIZE);
+
+        arrow_head.clear();
+        arrow_head << col_vec.toPointF() << arrowP1 << arrowP2 << arrowP3;
+        break;
+    }
+    case RuleID::R_GEN:
+    {
+        QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_GEN_SIZE,
+            cos(angle + M_PI / 3) * ARROW_GEN_SIZE);
+
+        QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE,
+            cos(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE);
+
+        arrow_head.clear();
+        arrow_head << col_vec.toPointF() << arrowP1 << arrowP2;
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void Arrow::destroy()

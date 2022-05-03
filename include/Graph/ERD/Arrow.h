@@ -3,12 +3,14 @@
 #include "qobject.h"
 #include "Graph/ERD/Item.h"
 #include "Graph/Item.h"
+#include "Syntax/Rules.h"
+
 
 class Arrow : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2);
+    Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2, RuleID arr_type);
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter,
@@ -18,8 +20,8 @@ public:
 private:
     QVector2D end;
     QVector2D col_vec;
-    QLineF centerLine;
-
+    QPolygonF arrow_head;
+    RuleID arrow_type;
     //pointers to targets
     WItem* o1;
     WItem* o2;

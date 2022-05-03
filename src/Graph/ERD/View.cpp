@@ -23,7 +23,7 @@ void ERDScene::update()
         WItem* i1 = dynamic_cast<WItem*>(items().at(0));
         WItem* i2 = dynamic_cast<WItem*>(items().at(1));
         if (i1 != nullptr && i2 != nullptr) {
-            auto arrow = new Arrow(this, i1, i2);
+            auto arrow = new Arrow(this, i1, i2, RuleID::R_AGG);
 
             arrow->setFlag(QGraphicsItem::ItemStacksBehindParent);
             addItem(arrow);
