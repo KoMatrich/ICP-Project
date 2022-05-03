@@ -24,6 +24,8 @@ private:
     WItem* o1;
     WItem* o2;
 
+    void updateArrow();
+    void updateArrowHead();
 private slots:
     void update();
     void destroy();
