@@ -39,6 +39,12 @@ inline const char* RuleIDtoString(RuleID r)
 	case RuleID::R_XPOS: return "R_XPOS"; break;
 	case RuleID::R_YPOS: return "R_YPOS"; break;
 	case RuleID::R_POSVAL: return "R_POSVAL"; break;
+	case RuleID::R_SEQ: return "R_SEQ"; break;
+	case RuleID::R_ACTIVATE: return "R_ACTIVATE"; break;
+	case RuleID::R_DEACTIVATE: return "R_DEACTIVATE"; break;
+	case RuleID::R_ARROW_SYNC: return "R_ARROW_SYNC"; break;
+	case RuleID::R_ARROW_ASYNC: return "R_ARROW_ASYNC"; break;
+	case RuleID::R_COLON: return "R_COLON"; break;
 
 	default:      return "[Unknown]";
 	}
