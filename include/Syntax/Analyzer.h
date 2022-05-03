@@ -24,6 +24,10 @@ public:
     void Next(int line, int& offset, const QString& text, Rule** rule);
     /// @brief              Clears GlobalStack to line index
     /// @param lineNumber   line index
+    /// Finds next lexem in text and updates LineStack.
+    /// Offset is lengh of match, if lexem is found.
+    /// Offset is unchenged on empty rule match
+    /// (used as last rule when matching)
     void ClearTo(int lineNumber);
     /// @brief              Clears GlobalStack
     void ClearAll();

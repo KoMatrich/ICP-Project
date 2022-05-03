@@ -40,8 +40,6 @@ QRegExp inline Start(const QString input)
     return regex;
 }
 
-///https://real-world-plantuml.com/umls/4783596598460416
-
 RuleSet const SyntaxTree::genRules()
 {
     // uml body
@@ -291,6 +289,6 @@ RuleSet const SyntaxTree::genRules()
     seq->parts.push_back(sender);
 
     syntax.push_back(seq);
-    
+
     return syntax;
 }
