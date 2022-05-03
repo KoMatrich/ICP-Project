@@ -168,7 +168,6 @@ RuleSet const SyntaxTree::genRules()
     y_pos->format = posFormat();
     y_pos->id = RuleID::R_YPOS;
 
-
     // parts appending
 
     with->parts.push_back(entity_name2);
@@ -201,7 +200,97 @@ RuleSet const SyntaxTree::genRules()
 
     uml->parts.push_back(class_keyword);
     uml->parts.push_back(interface_keyword);
+
     syntax.push_back(uml);
 
+    /* ------------- SEQ ----------------*/
+
+    // sequence diagram
+    Rule* seq = new Rule();
+    seq->start = Start("^@startseq$");
+    seq->type = RuleType::MULTI_LINE;
+    seq->end = End("^@endseq$");
+    seq->format.setFontWeight(QFont::Bold);
+    seq->id = RuleID::R_SEQ;
+
+    // activate keyword
+    Rule* activate_keyword = new Rule();
+    activate_keyword->start = Start("activate");
+    activate_keyword->format.setFontWeight(QFont::Bold);
+    activate_keyword->format.setForeground(Qt::darkGreen);
+    activate_keyword->id = RuleID::R_ACTIVATE;
+
+    // deactivate keyword
+    Rule* deactivate_keyword = new Rule();
+    deactivate_keyword->start = Start("deactivate");
+    deactivate_keyword->format.setFontWeight(QFont::Bold);
+    deactivate_keyword->format.setForeground(Qt::darkRed);
+    deactivate_keyword->id = RuleID::R_DEACTIVATE;
+
+    // entity name
+    Rule* x_tivate = new Rule();
+    x_tivate->start = Start("[A-Za-z0-9_]+$");
+    x_tivate->format.setForeground(Qt::darkYellow);
+    x_tivate->format.setFontItalic(true);
+    x_tivate->id = RuleID::R_ENTITYNAME;
+
+    // sender entity
+    Rule* sender = new Rule();
+    sender->start = Start("[A-Za-z0-9_]+");
+    sender->format.setForeground(Qt::darkYellow);
+    sender->format.setFontItalic(true);
+    sender->id = RuleID::R_ENTITYNAME;
+
+    // arrow sync
+    Rule* a_sync = new Rule();
+    a_sync->start = Start("\\-\\>");
+    a_sync->format.setForeground(Qt::darkMagenta);
+    a_sync->id = RuleID::R_ARROW_SYNC;
+
+    // arrow sync
+    Rule* a_async = new Rule();
+    a_async->start = Start("\\-\\-\\>");
+    a_async->format.setForeground(Qt::darkMagenta);
+    a_async->id = RuleID::R_ARROW_ASYNC;
+
+    // receiver entity
+    Rule* receiver = new Rule();
+    receiver->start = Start("[A-Za-z0-9_]+");
+    receiver->format.setForeground(Qt::darkYellow);
+    receiver->format.setFontItalic(true);
+    receiver->id = RuleID::R_ENTITYNAME;
+    receiver->wh = RuleWhitespace::W_OPTIONAL;
+
+    // colon
+    Rule* colon = new Rule();
+    colon->start = Start("\\:");
+    colon->id = RuleID::R_COLON;
+
+    // message
+    Rule* message = new Rule();
+    message->start = Start("_?[A-Za-z][A-Za-z0-9_]*\\(\\)$");
+    message->format.setFontWeight(QFont::Bold);
+    message->format.setForeground(Qt::darkBlue);
+    message->id = RuleID::R_METHOD;
+
+    colon->parts.push_back(message);
+
+    receiver->parts.push_back(colon);
+
+    a_async->parts.push_back(receiver);
+    a_sync->parts.push_back(receiver);
+
+    sender->parts.push_back(a_async);
+    sender->parts.push_back(a_sync);
+    activate_keyword->parts.push_back(x_tivate);
+    deactivate_keyword->parts.push_back(x_tivate);
+
+
+    seq->parts.push_back(deactivate_keyword);
+    seq->parts.push_back(activate_keyword);
+    seq->parts.push_back(sender);
+
+    syntax.push_back(seq);
+    
     return syntax;
 }

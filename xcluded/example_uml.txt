@@ -12,7 +12,6 @@ interface teacher{
 	#	String faculty
 
 	- String teach()
-   + String givePoints()
 	+ void getMoney()
 }
 
@@ -24,13 +23,58 @@ class student{
 	+ String lastname
 	#	UInt study_program
 	~	UInt credits
-
-	+ void bully()
+	+ int getKnowledge()
+	+ void getReadyForBullying()
 	+ void getBulied()
+	+ int getPoints()
+	+ void laugh()
 }
 
 class Martin{
 	in gen with student
-	in ass with Martin
+}
+
+class Vita{
+	in gen with student
 }
 @enduml
+
+@startseq
+
+activate Martin
+activate Vita
+Vita -> Vita: getReadyForBullying()
+
+Vita -> Martin: getBulied()
+Vita -> Martin: getBulied()
+
+deactivate Martin
+
+Vita -> Vita: laugh()
+
+deactivate Vita
+
+@endseq
+
+@startseq
+
+activate teacher
+activate Martin
+
+teacher -> teacher: teach()
+teacher -> teacher: getMoney()
+teacher --> Martin: getKnowledge()
+
+activate Vita
+
+teacher --> Vita: getKnowledge()
+Martin -> Vita: getBulied()
+
+deactivate Vita
+
+teacher -> Martin: getPoints()
+
+deactivate Martin
+deactivate teacher
+
+@endseq
