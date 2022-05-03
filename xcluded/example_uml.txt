@@ -69,6 +69,7 @@ activate Vita
 
 teacher --> Vita: getKnowledge()
 Martin -> Vita: getBulied()
+teacher --> Vita: getBulied()
 
 deactivate Vita
 

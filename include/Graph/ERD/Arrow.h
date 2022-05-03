@@ -16,7 +16,8 @@ public:
                QWidget* widget) override;
 
 private:
-    QVector2D dist1_vec, dist2_vec;
+    QVector2D end;
+    QVector2D col_vec;
     QLineF centerLine;
 
     //pointers to targets

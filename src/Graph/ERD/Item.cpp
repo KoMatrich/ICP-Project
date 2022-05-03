@@ -85,7 +85,7 @@ void WItem::addline(const Block line)
 
 QRectF WItem::boundingRect() const
 {
-    return QRectF{ QPoint(0,0), rsize }.normalized().marginsAdded(MARGIN);
+    return QRectF{ QPoint(0,0), rsize }.normalized(); //.marginsAdded(MARGIN)
 }
 
 void WItem::paint(QPainter* painter,
