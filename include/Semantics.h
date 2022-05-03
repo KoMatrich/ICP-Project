@@ -7,7 +7,8 @@
 #include "Services/Debug.h"
 #include "Services/Highlight.h"
 #include "Services/Code.h"
-
+///TODO doc
+/// @brief Class that stores UML relation data
 class UMLRelation
 {
 public:

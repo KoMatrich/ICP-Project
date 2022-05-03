@@ -8,6 +8,7 @@ QT_BEGIN_NAMESPACE
 class QTextEdit;
 QT_END_NAMESPACE
 
+/// @brief Text editor
 class MainTextEdit : public QTextEdit
 {
     Q_OBJECT
@@ -19,12 +20,11 @@ public:
 signals:
 
 public slots:
+    /// @brief Does syntax reload
     void syntax_reload()
     {
         highlighter->rehighlight();
     };
-protected:
-
 private:
     Highlighter* highlighter;
 };

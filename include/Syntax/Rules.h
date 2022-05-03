@@ -3,12 +3,16 @@
 #include <QTextCharFormat>
 #include <QTextEdit>
 
-enum class RuleType {
-	INLINE, MULTI_LINE
+enum class RuleType
+{
+    INLINE,     /// is poped from stack 
+    MULTI_LINE  /// MUST match end
 };
 
-enum class RuleWhitespace {
-    W_REQUIRED, W_OPTIONAL
+enum class RuleWhitespace
+{
+    W_REQUIRED,
+    W_OPTIONAL
 };
 
 enum class RuleID {
@@ -19,8 +23,7 @@ enum class RuleID {
 
 inline const char* RuleIDtoString(RuleID r)
 {
-	switch (r)
-	{
+    switch (r) {
     case RuleID::R_ERR: return "R_ERR"; break;
     case RuleID::R_UML: return "R_UML"; break;
     case RuleID::R_CLASS: return "R_CLASS"; break;
@@ -46,52 +49,63 @@ inline const char* RuleIDtoString(RuleID r)
 	case RuleID::R_ARROW_ASYNC: return "R_ARROW_ASYNC"; break;
 	case RuleID::R_COLON: return "R_COLON"; break;
 
-	default:      return "[Unknown]";
-	}
+    default:      return "[Unknown]";
+    }
 }
 
-
-
+/// @brief Structure that stores rule data
 struct Rule
 {
-	QRegExp start;
-	QRegExp end;
-	QTextCharFormat format;
-	RuleType type = RuleType::INLINE;
-	RuleID id = RuleID::R_ERR;
+    QRegExp start;
+    QRegExp end;
+    QTextCharFormat format;
+    RuleType type = RuleType::INLINE;
+    RuleID id = RuleID::R_ERR;
     RuleWhitespace wh = RuleWhitespace::W_REQUIRED;
-    std::vector<Rule *> parts;
+    std::vector<Rule*> parts;
 };
 
-typedef std::vector<Rule *> RuleSet;
+/// @brief stores pointer to syntax tree rules
+typedef std::vector<Rule*> RuleSet;
 
-class SyntaxTree {
+/// @brief Main syntax tree
+class SyntaxTree
+{
 public:
-	SyntaxTree();
-	QTextCharFormat err, cursor_color, after_err, no_check;
-    static QTextCharFormat posFormat() {
+    SyntaxTree();
+    QTextCharFormat err, cursor_color, after_err, no_check;
+    static QTextCharFormat posFormat()
+    {
         QTextCharFormat format;
         format.setFontWeight(QFont::Bold);
         return format;
     };
-    static QTextCharFormat posValFormat() {
+    static QTextCharFormat posValFormat()
+    {
         QTextCharFormat format;
         format.setForeground(Qt::darkMagenta);
         return format;
     };
-	RuleSet const getRules();
+    /// @return Pointers to syntax tree
+    RuleSet const getRules();
 private:
-	RuleSet const genRules();
+    /// @brief Generates syntax tree rules
+    RuleSet const genRules();
     RuleSet syntax;
 };
 
-enum SYNTAX_STATE {
-	NO_CHECK = -1,
-	SYNTAX_ERR = -2
+/// @brief Syntax state
+enum SYNTAX_STATE
+{
+    NO_CHECK = -1,
+    SYNTAX_ERR = -2
 };
-enum LINE_STATE {
-	FILE_START = -1,
-	SYNTAX_E = -2,
-	INTERNAL_E = -3
+
+/// @brief State of line for syntax highlighter
+enum LINE_STATE
+{
+    FILE_START = -1,
+    SYNTAX_E = -2,
+    INTERNAL_E = -3
 };
 

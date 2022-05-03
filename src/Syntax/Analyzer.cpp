@@ -44,11 +44,6 @@ Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
     return nullptr;
 }
 
-/// <returns>
-/// 0  if end is matched
-/// 1  if end is empty
-/// -1 if end is not found
-/// </returns>
 int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
 {
     //not in any rule
@@ -77,7 +72,6 @@ int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
     return -1;
 }
 
-/// Pops INLINE rules from LineStack
 void Analyzer::reduceStack(LineStack* stack)
 {
     while (stack->size() != 0) {
