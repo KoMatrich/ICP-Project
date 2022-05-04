@@ -8,14 +8,17 @@
 class Highlighter : public QSyntaxHighlighter
 {
 public:
+    /// @brief              creates new highlighter
+    /// @param parent       text editor to highlight
     Highlighter(QTextEdit* parent);
-
 protected:
     /// @brief          Highlighting function
     /// @param text     line of file
     void highlightBlock(const QString& text) override;
 private:
-    SyntaxTree* syntax;
+    /// @brief          pointer to syntax tree
+    SyntaxTree* syntax_tree;
+    /// @brief          pointer to syntax analyzer
     Analyzer* analyzer;
     /// @brief updates index of current line
     /// @note indexing is also used for updating

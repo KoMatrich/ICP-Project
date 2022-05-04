@@ -14,8 +14,9 @@ public:
     /// @param fileName     File to be opened
     MainWindow(const QString& fileName = {});
 protected:
+    /// @brief          window close event handler
+    /// @param event    close event
     void closeEvent(QCloseEvent* event) override;
-    //bool eventFilter(QObject* obj, QEvent* ev);
 private:
     /// @brief      Saves file
     /// @return     True on success, else False
@@ -53,10 +54,14 @@ private:
     QString strippedName(const QString& fullFileName);
 
 private:
+    /// @brief  main window text editor
     MainTextEdit* mainTextEdit;
+    /// @brief  main window debug output
     DebugTextEdit* debugTextEdit;
 
+    /// @brief  main window ERD view
     ERDView* erdView;
+    /// @brief  main window SEQ view
     SEQView* seqView;
 
     /// @brief Name of current file

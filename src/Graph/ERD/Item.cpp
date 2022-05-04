@@ -11,8 +11,6 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
     addMethods(clas);
     moveBy(qreal(clas.getXPos()), qreal(clas.getYPos()));
 
-    //"constant" init //QGraphicsWidget 
-    size = Size();
     rsize = RSize();
 
     xpos_line = clas.getXLine();

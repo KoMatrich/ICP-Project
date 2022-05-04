@@ -10,12 +10,12 @@ class MainTextEdit : public QTextEdit
 {
     Q_OBJECT
 public:
+    /// @brief              Creates new text editor
+    /// @param parent       parent QWidget
     MainTextEdit(QWidget* parent = 0) : QTextEdit(parent)
     {
         highlighter = new Highlighter(this);
     }
-signals:
-
 public slots:
     /// @brief Does syntax reload
     void syntax_reload()
@@ -23,5 +23,6 @@ public slots:
         highlighter->rehighlight();
     };
 private:
+    /// @brief text editor highlighter
     Highlighter* highlighter;
 };

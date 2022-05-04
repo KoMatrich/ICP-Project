@@ -56,12 +56,19 @@ inline const char* RuleIDtoString(RuleID r)
 /// @brief Structure that stores rule data
 struct Rule
 {
+    /// @brief rule starting regex
     QRegExp start;
+    /// @brief rule ending regex
     QRegExp end;
+    /// @brief rule formating
     QTextCharFormat format;
+    /// @brief rule type
     RuleType type = RuleType::INLINE;
+    /// @brief rule syntax id
     RuleID id = RuleID::R_ERR;
+    /// @brief rule whitespace requirement
     RuleWhitespace wh = RuleWhitespace::W_REQUIRED;
+    /// @brief rule inner parts
     std::vector<Rule*> parts;
 };
 
@@ -91,7 +98,7 @@ public:
 private:
     /// @brief Generates syntax tree rules
     RuleSet const genRules();
-    RuleSet syntax;
+    RuleSet syntax_tree;
 };
 
 /// @brief Syntax state
