@@ -12,14 +12,14 @@ public:
     WItem(QGraphicsScene* parent, UMLClass clas);
     QRectF boundingRect() const override;
     void paint(QPainter* painter,
-               const QStyleOptionGraphicsItem* option,
-               QWidget* widget) override;
+        const QStyleOptionGraphicsItem* option,
+        QWidget* widget) override;
     QString getBlock(uint i) { return blocks.at(i).data; };
 protected:
     QVariant itemChange(GraphicsItemChange change,
-                        const QVariant& value);
+        const QVariant& value);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
-
+    //void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 private:
     //automatic var
     QLinearGradient fill;
@@ -31,6 +31,9 @@ private:
     int Height() { return line_c * line_h + separator_c * SEPARATOR_H; }
     int Width() { return width; }
 
+    size_t xpos_line{ 0 };
+    size_t ypos_line{ 0 };
+    size_t class_line{ 0 };
     QSize size;
     QSize rsize;
 
@@ -51,8 +54,9 @@ private:
     void paintSeparator(QPainter* paint, BlockType type);
 
     //for gradient fill
-    QLinearGradient green();
     QLinearGradient red();
+    QLinearGradient green();
+    QLinearGradient blue();
 
 private:
     void addAtributes(UMLClass clas);
@@ -62,4 +66,6 @@ private:
 
 signals:
     void itemMoved();
+private slots:
+    void changeCode();
 };

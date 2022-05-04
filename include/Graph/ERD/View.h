@@ -13,6 +13,12 @@ public:
     void update();
 private:
     void add(UMLClass const clas);
+protected:
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+    {
+        VitaPrint("Custom scene released.");
+        QGraphicsScene::mouseReleaseEvent(event);
+    }
 };
 
 class ERDView : public QGraphicsView
@@ -25,4 +31,5 @@ public slots:
     void update() { scene.update(); };
 private:
     ERDScene scene;
+
 };

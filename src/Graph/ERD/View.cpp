@@ -39,6 +39,7 @@ void ERDScene::update()
 void ERDScene::add(UMLClass const data)
 {
     WItem* item = new WItem{ this, data };
+    item->installEventFilter(this);
     addItem(item);
 }
 

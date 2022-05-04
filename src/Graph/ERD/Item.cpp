@@ -15,10 +15,18 @@ WItem::WItem(QGraphicsScene* parent, UMLClass clas)
     size = Size();
     rsize = RSize();
 
+    xpos_line = clas.getXLine();
+    ypos_line = clas.getYLine();
+    class_line = clas.pos;
+
     if (clas.getErrorFlag()) {
         fill = red();
-    } else {
-        fill = green();
+    }
+    else {
+        if (clas.isInterface())
+            fill = blue();
+        else
+            fill = green();
     }
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -26,6 +34,7 @@ WItem::WItem(QGraphicsScene* parent, UMLClass clas)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemClipsToShape, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    //setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 }
 
 void WItem::addAtributes(UMLClass clas)
@@ -89,8 +98,8 @@ QRectF WItem::boundingRect() const
 }
 
 void WItem::paint(QPainter* painter,
-                  const QStyleOptionGraphicsItem* option,
-                  QWidget* widget)
+    const QStyleOptionGraphicsItem* option,
+    QWidget* widget)
 {
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);
@@ -102,6 +111,13 @@ void WItem::paint(QPainter* painter,
     PaintBlocks(painter);
 }
 
+//void WItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+//    //CodeService::updatePos(class_line, xpos_line, static_cast<int>(this->pos().x()), ypos_line, static_cast<int>(this->pos().y()));
+//
+//    //CodeService::callCachedUpdatePos();
+//    //event->accept();
+//}
+
 QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
 {
     if (change == ItemPositionChange && scene()) {
@@ -110,11 +126,20 @@ QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
         if (QApplication::mouseButtons() == Qt::LeftButton) {
             qreal x = round(newPos.x() / GRID_S) * GRID_S;
             qreal y = round(newPos.y() / GRID_S) * GRID_S;
+
+
             emit itemMoved();
+            CodeService::cacheUpdatePos(class_line, xpos_line, static_cast<int>(x), ypos_line, static_cast<int>(y));
+
             return QPointF(x, y);
         }
     }
     return QGraphicsItem::itemChange(change, value);
+}
+
+void WItem::changeCode()
+{
+    CodeService::updatePos(class_line, xpos_line, static_cast<int>(this->pos().x()), ypos_line, static_cast<int>(this->pos().y()));
 }
 
 void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
@@ -125,7 +150,7 @@ void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     menu.addAction(QStringLiteral("Delete"), [this]() {test(); });
     menu.addSeparator();
     QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
-    relations->addAction(QStringLiteral("Agregation"), [this]() {test(); });
+    relations->addAction(QStringLiteral("Aggregation"), [this]() {test(); });
     relations->addAction(QStringLiteral("Association"), [this]() {test(); });
     relations->addAction(QStringLiteral("Composition"), [this]() {test(); });
     relations->addAction(QStringLiteral("Generalization"), [this]() {test(); });
@@ -143,7 +168,8 @@ void WItem::PaintBlocks(QPainter* paint)
     for (Block line : blocks) {
         if (line.type != BlockType::Text) {
             paintSeparator(paint, line.type);
-        } else {
+        }
+        else {
             paintText(paint, line);
         }
     }
@@ -193,6 +219,16 @@ void WItem::paintSeparator(QPainter* paint, BlockType type)
     paint->translate(0, SEPARATOR_H);
 }
 
+QLinearGradient WItem::red()
+{
+    QLinearGradient gradient(0, 0, 0, RSize().height());
+    gradient.setColorAt(0.0, Qt::white);
+    gradient.setColorAt(0.2, { 255, 220, 220 });
+    gradient.setColorAt(0.8, { 240, 220, 220 });
+    gradient.setColorAt(1.0, { 240, 220, 220 });
+    return gradient;
+}
+
 QLinearGradient WItem::green()
 {
     QLinearGradient gradient(0, 0, 0, RSize().height());
@@ -203,13 +239,13 @@ QLinearGradient WItem::green()
     return gradient;
 }
 
-QLinearGradient WItem::red()
+QLinearGradient WItem::blue()
 {
     QLinearGradient gradient(0, 0, 0, RSize().height());
     gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, { 255, 220, 220 });
-    gradient.setColorAt(0.8, { 240, 220, 220 });
-    gradient.setColorAt(1.0, { 240, 220, 220 });
+    gradient.setColorAt(0.2, { 220, 220, 255 });
+    gradient.setColorAt(0.8, { 220, 220, 240 });
+    gradient.setColorAt(1.0, { 220, 220, 240 });
     return gradient;
 }
 

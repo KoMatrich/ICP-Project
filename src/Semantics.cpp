@@ -14,6 +14,15 @@ void UMLClass::updateName(QString name)
     this->class_name = name;
 }
 
+void UMLClass::updateType(bool is_interface)
+{
+    if (this->is_interface == is_interface)
+        return;
+
+    this->has_changed = true;
+    this->is_interface = is_interface;
+}
+
 void UMLClass::addProperty(UMLProperty new_p, bool isMethod, size_t n)
 {
     std::vector<UMLProperty>* search;
@@ -339,10 +348,11 @@ void Semantics::buildSTree(GlobalStack stack)
         }
 
         QString c_name = this->stack[i][2].second;
-        auto aaa = c_name.toStdString();
+        //auto aaa = c_name.toStdString();
         // update class
         if (n < this->classes.size()) {
             classes[n].updateName(c_name);
+            classes[n].updateType(this->stack[i][1].first->id == RuleID::R_INTERFACE);
             classes[n].setErrorFlag(false);
             classes[n].removePosFlags();
             classes[n].pos = i;
@@ -351,6 +361,7 @@ void Semantics::buildSTree(GlobalStack stack)
         else {
             UMLClass c = UMLClass();
             c.updateName(c_name);
+            c.updateType(this->stack[i][1].first->id == RuleID::R_INTERFACE);
             c.pos = i;
             this->addClass(c);
         }

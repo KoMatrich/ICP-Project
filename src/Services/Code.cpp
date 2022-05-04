@@ -94,8 +94,17 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     cursor.movePosition(QTextCursor::EndOfLine);
     cursor.setCharFormat(SyntaxTree::posValFormat());
     cursor.insertText(QString::number(x_val));
-
     HighlightService::setEnabled(true);
+}
+
+void CodeService::cacheUpdatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
+{
+    CodeService* instance = CodeService::getInstance();
+    instance->new_class_line = entity_ln;
+    instance->new_x_line = x_ln;
+    instance->new_x = x_val;
+    instance->new_y_line = y_ln;
+    instance->new_y = y_val;
 }
 
 
@@ -104,6 +113,12 @@ void CodeService::insertLine(size_t ln, QString text)
     QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     cursor.insertText(text);
+}
+
+void CodeService::callCachedUpdatePos()
+{
+    CodeService* instance = CodeService::getInstance();
+    CodeService::updatePos(instance->new_class_line, instance->new_x_line, instance->new_x, instance->new_y_line, instance->new_y);
 }
 
 void CodeService::setCodeWindow(QTextEdit* c)

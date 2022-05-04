@@ -69,6 +69,8 @@ public:
     ~UMLClass() {}
     QString getClassName();
     void updateName(QString name);
+    void updateType(bool is_interface);
+    bool isInterface() { return is_interface; }
     size_t pos = 0;
     bool has_changed = true;
     inline std::vector<UMLProperty> getAttributes() { return attributes; }
@@ -78,8 +80,8 @@ public:
     inline std::vector<UMLRelation>& getRelations() { return relations; }
     inline int getXPos() { return x; }
     inline int getYPos() { return y; }
-    inline int getXLine() { return x_line; }
-    inline int getYLine() { return y_line; }
+    inline size_t getXLine() { return x_line; }
+    inline size_t getYLine() { return y_line; }
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
     bool updatePosition(int pos, bool is_x, size_t i);
@@ -93,11 +95,9 @@ public:
     inline void removePosFlags() { x_set = false; y_set = false; }
     inline bool getDuplicateFlag() { return duplicate; }
     inline void setDuplicateFlag(bool d) { duplicate = d; }
-    bool operator==(const UMLClass& rhs)
-    {
-        return this->class_name == rhs.class_name;
-    }
+    bool operator==(const UMLClass& rhs) { return this->class_name == rhs.class_name; }
 protected:
+    bool is_interface = false;
     bool duplicate = false;
     bool has_error = false;
     bool had_error = true;

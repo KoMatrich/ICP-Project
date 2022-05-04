@@ -14,7 +14,7 @@ public:
 
 protected:
     void closeEvent(QCloseEvent* event) override;
-
+    //bool eventFilter(QObject* obj, QEvent* ev);
 private:
     bool save();
     bool saveAs();
