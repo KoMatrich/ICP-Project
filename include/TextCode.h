@@ -1,8 +1,5 @@
 #pragma once
-
-#include <QTextEdit>
 #include "Syntax/Highlighter.h"
-#include "TextDebug.h"
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;

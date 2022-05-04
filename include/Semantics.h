@@ -1,9 +1,7 @@
 #pragma once
-#include <QString>
+
 #include <QPair>
-#include "Syntax/Rules.h"
 #include "Syntax/Analyzer.h"
-#include "Types.h"
 #include "Services/Debug.h"
 #include "Services/Highlight.h"
 #include "Services/Code.h"

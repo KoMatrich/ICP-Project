@@ -3,7 +3,6 @@
 #include <QWidget>
 #include "Graph/ERD/Item.h"
 #include "Graph/ERD/Arrow.h"
-#include "Semantics.h"
 
 class ERDScene : public QGraphicsScene
 {

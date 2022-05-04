@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Syntax/Rules.h"
-#include <QString>
 #include "TextDebug.h"
 #include "Types.h"
 

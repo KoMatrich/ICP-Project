@@ -2,7 +2,6 @@
 
 #include <QWidget>
 #include "Graph/SEQ/Item.h"
-#include "Semantics.h"
 
 class SEQScene : public QGraphicsScene
 {
