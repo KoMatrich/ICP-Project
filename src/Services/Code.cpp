@@ -39,6 +39,7 @@ void CodeService::formatLine(size_t ln, HLevel level)
     cursor.setBlockFormat(f);
 }
 
+// TODO optimize to use less inserts
 void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
 {
     //HighlightService::setEnabled(false);
