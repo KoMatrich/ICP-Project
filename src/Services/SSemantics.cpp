@@ -238,7 +238,7 @@ void Semantics::buildSTree(GlobalStack stack)
 
         if (++i >= this->stack.size()) break;
 
-        // we will iterate twice
+        // we will iterate over the contents multiple times
         size_t saved_i = i;
 
         // always set to new index
@@ -303,6 +303,7 @@ void Semantics::buildSTree(GlobalStack stack)
             if (++i >= this->stack.size()) break;
         }
 
+        this->classes[n].pos_end = i;
         n++;
     }
     // delete excessive classes

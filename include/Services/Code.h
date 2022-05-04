@@ -42,15 +42,19 @@ public:
     /// @param ln           line index
     /// @param text         new line text
     static void insertLine(size_t ln, QString text);
+    /// @brief              sets a flag if position updates should be accepted
+    /// @param val          new flag value
+    static void setPosActive(bool val);
     /// @brief              restores cashed position
     static void clearBackground();
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint
     void setCodeWindow(QTextEdit* c);
-    size_t new_class_line;
-    size_t new_x_line;
-    size_t new_y_line;
-    int new_x;
-    int new_y;
+    bool isPosActive = false;
+    size_t new_class_line = 0;
+    size_t new_x_line = 0;
+    size_t new_y_line = 0;
+    int new_x = 0;
+    int new_y = 0;
 };

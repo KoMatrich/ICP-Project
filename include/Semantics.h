@@ -71,6 +71,7 @@ public:
     void updateType(bool is_interface);
     bool isInterface() { return is_interface; }
     size_t pos = 0;
+    size_t pos_end = 0;
     bool has_changed = true;
     inline std::vector<UMLProperty> getAttributes() { return attributes; }
     inline std::vector<UMLProperty> getMethods() { return methods; }

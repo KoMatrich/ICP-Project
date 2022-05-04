@@ -16,6 +16,7 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
     xpos_line = clas.getXLine();
     ypos_line = clas.getYLine();
     class_line = clas.pos;
+    class_end = clas.pos_end;
 
     cached_pos = QPoint(clas.getXPos(), clas.getYPos());
 
@@ -122,6 +123,7 @@ QVariant ERDItem::itemChange(GraphicsItemChange change, const QVariant& value)
             qreal y = cached_pos.y() + round(newPos.y() / GRID_S) * GRID_S;
 
             emit itemMoved();
+            CodeService::setPosActive(true);
             CodeService::cacheUpdatePos(class_line, xpos_line, static_cast<int>(x), ypos_line, static_cast<int>(y));
 
             return QPointF(x, y);

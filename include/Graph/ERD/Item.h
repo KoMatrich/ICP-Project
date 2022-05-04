@@ -58,6 +58,8 @@ private:
     size_t ypos_line{ 0 };
     /// @brief used for getting position of cords in text file
     size_t class_line{ 0 };
+    /// @brief used for getting position of cords in text file
+    size_t class_end{ 0 };
 
     /// @brief cashed position for movement
     QPoint cached_pos;
