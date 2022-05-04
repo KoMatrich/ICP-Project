@@ -4,6 +4,7 @@
 #include "Graph/ERD/Item.h"
 #include "Graph/ERD/Arrow.h"
 #include "Semantics.h"
+#include "Services/Code.h"
 
 class ERDScene : public QGraphicsScene
 {
@@ -16,7 +17,9 @@ private:
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
-        VitaPrint("Custom scene released.");
+
+        CodeService::callCachedUpdatePos();
+        
         QGraphicsScene::mouseReleaseEvent(event);
     }
 };

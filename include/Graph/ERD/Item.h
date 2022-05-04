@@ -36,6 +36,7 @@ private:
     size_t class_line{ 0 };
     QSize size;
     QSize rsize;
+    QPoint cached_pos;
 
     constexpr QSize Size() { return QSize{ this->Width(), this->Height() }; }
     constexpr QSize RSize() { return QSize{ qCeil(qreal(size.width() + POFFSET.x() * 2) / GRID_S) * GRID_S, qCeil(qreal(size.height() + POFFSET.x() * 2) / GRID_S) * GRID_S }; }

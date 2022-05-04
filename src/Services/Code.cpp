@@ -41,7 +41,7 @@ void CodeService::formatLine(size_t ln, HLevel level)
 
 void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
 {
-    HighlightService::setEnabled(false);
+    //HighlightService::setEnabled(false);
     QTextEdit* editor = CodeService::getInstance()->code;
     QTextCursor cursor;
     QString prefix = "";

@@ -19,6 +19,8 @@ WItem::WItem(QGraphicsScene* parent, UMLClass clas)
     ypos_line = clas.getYLine();
     class_line = clas.pos;
 
+    cached_pos = QPoint(clas.getXPos(), clas.getYPos());
+
     if (clas.getErrorFlag()) {
         fill = red();
     }
@@ -124,9 +126,8 @@ QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
         //snap to grid
         QPointF newPos = value.toPointF();
         if (QApplication::mouseButtons() == Qt::LeftButton) {
-            qreal x = round(newPos.x() / GRID_S) * GRID_S;
-            qreal y = round(newPos.y() / GRID_S) * GRID_S;
-
+            qreal x = cached_pos.x() + round(newPos.x() / GRID_S) * GRID_S;
+            qreal y = cached_pos.y() + round(newPos.y() / GRID_S) * GRID_S;
 
             emit itemMoved();
             CodeService::cacheUpdatePos(class_line, xpos_line, static_cast<int>(x), ypos_line, static_cast<int>(y));
