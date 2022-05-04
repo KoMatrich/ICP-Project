@@ -30,13 +30,13 @@ WItem::WItem(QGraphicsScene* parent, UMLClass clas)
 
 void WItem::addAtributes(UMLClass clas)
 {
-    //atributes
+    //attributes
     auto atrs = clas.getAttributes();
     for (auto atr : atrs) {
         addline({ BlockType::Text,atr.toString() });
     }
 
-    //inthered atributes
+    //inhered attributes
     auto iatrs = clas.getInheritedAttributes();
     if (atrs.size() > 0, iatrs.size() > 0)
         addline({ BlockType::SepSingle ,"" });
@@ -121,14 +121,14 @@ void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     //menu creation
     QMenu menu{};
-    menu.addAction(QStringLiteral("Modify"), [this]() {test(); });
-    menu.addAction(QStringLiteral("Delete"), [this]() {test(); });
+    menu.addAction(QStringLiteral("Modify"), [this]() {});
+    menu.addAction(QStringLiteral("Delete"), [this]() {});
     menu.addSeparator();
     QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
-    relations->addAction(QStringLiteral("Agregation"), [this]() {test(); });
-    relations->addAction(QStringLiteral("Association"), [this]() {test(); });
-    relations->addAction(QStringLiteral("Composition"), [this]() {test(); });
-    relations->addAction(QStringLiteral("Generalization"), [this]() {test(); });
+    relations->addAction(QStringLiteral("Aggregation"), [this]() {});
+    relations->addAction(QStringLiteral("Association"), [this]() {});
+    relations->addAction(QStringLiteral("Composition"), [this]() {});
+    relations->addAction(QStringLiteral("Generalization"), [this]() {});
 
     //menu execution
     menu.exec(event->screenPos());
@@ -212,6 +212,3 @@ QLinearGradient WItem::red()
     gradient.setColorAt(1.0, { 240, 220, 220 });
     return gradient;
 }
-
-void WItem::test()
-{}
