@@ -15,9 +15,6 @@ private:
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
-
-        CodeService::callCachedUpdatePos();
-        
         QGraphicsScene::mouseReleaseEvent(event);
     }
 };

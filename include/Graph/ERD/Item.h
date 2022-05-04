@@ -17,7 +17,7 @@ protected:
     QVariant itemChange(GraphicsItemChange change,
         const QVariant& value);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
-    //void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 private:
     //automatic var
     QLinearGradient fill;

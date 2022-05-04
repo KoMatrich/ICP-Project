@@ -42,7 +42,8 @@ void CodeService::formatLine(size_t ln, HLevel level)
 // TODO optimize to use less inserts
 void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
 {
-    //HighlightService::setEnabled(false);
+    //disables syntax for changes to prevent recursion
+    HighlightService::setEnabled(false);
     QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor;
     QString prefix = "";
@@ -96,8 +97,9 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     if (!(x_ln > 0)) cursor.insertText(" ");
     cursor.movePosition(QTextCursor::EndOfLine);
     cursor.setCharFormat(SyntaxTree::posValFormat());
-    cursor.insertText(QString::number(x_val));
+    //enables syntax to trigger update
     HighlightService::setEnabled(true);
+    cursor.insertText(QString::number(x_val));
 }
 
 void CodeService::cacheUpdatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)

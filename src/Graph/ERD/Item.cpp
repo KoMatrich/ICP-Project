@@ -157,6 +157,11 @@ void ERDItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     //no need to delete pointer data
 }
 
+void ERDItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+    CodeService::callCachedUpdatePos();
+}
+
 //paints block of item
 void ERDItem::PaintBlocks(QPainter* paint)
 {
