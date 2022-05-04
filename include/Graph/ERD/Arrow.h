@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Graph/Item.h"
+#include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
 
 /// @brief QGraphicsObject Arrow

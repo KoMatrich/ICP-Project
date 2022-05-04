@@ -1,23 +1,26 @@
 #pragma once
 
-//item data line type
+/// @brief item line type
 enum class BlockType
 {
     InheritedText, Text, SepSingle, SepBold, SepDouble
 };
 
-//item data line
+/// @brief item line data
 class Block
 {
 public:
-    Block(BlockType type, QString data)
-    {
-        this->type = type;
-        this->data = data;
-    }
-
+    /// @brief block type
     BlockType type;
+    /// @brief block data
     QString data;
+    /// @brief          constructor
+    /// @param type     block data
+    /// @param data 
+    Block(BlockType type, QString data)
+        :type(type), data(data)
+    {
+    };
 };
 
 const int GRID_S = 12;
@@ -29,6 +32,3 @@ const float ARROW_GEN_SIZE{ 20.0 };
 const float ARROW_COMAGG_SIZE{ 15.0 };
 
 const QPoint POFFSET{ OFFSET,OFFSET };
-
-//TODO remove
-#define DEBUG_DRAW

@@ -127,17 +127,9 @@ public:
     ~Sequence() {}
 };
 
-class Semantics
+class Semantics : public Service<Semantics>
 {
-private:
-    static Semantics* instance;
 public:
-    static Semantics* getInstance()
-    {
-        if (!instance)
-            instance = new Semantics;
-        return instance;
-    }
     void buildSTree(GlobalStack stack);
     std::vector<UMLClass> getClasses() { return classes; }
 protected:
@@ -151,10 +143,4 @@ protected:
     void addInheritedProperties();
     void printStack();
     void testProperties();
-private:
-    Semantics()
-    {
-        //instance = this;
-    }
-    ~Semantics() {}
 };

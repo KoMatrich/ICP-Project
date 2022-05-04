@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Services/Service.h"
 #include "TextDebug.h"
 
 #define VitaPrint(_text) DebugService::getInstance().printText(QString(_text))
@@ -8,24 +9,24 @@
 
 #define VitaClear() DebugService::getInstance().clearText()
 
-class DebugService
+/// @brief debug console service
+/// used to print to debug console
+class DebugService : public Service<DebugService>
 {
 private:
-	static DebugService* instance;
-	DebugTextEdit* debug = nullptr;
+    /// @brief endpoint
+    DebugTextEdit* debug = nullptr;
+    /// @brief      sets debug console endpoint
+    /// @param d    endpoint
     void setDebug(DebugTextEdit* d);
-protected:
-    DebugService() {}; // Prevent construction
-    DebugService(const DebugService&) {}; // Prevent construction by copying
-    DebugService& operator=(const DebugService&) {}; // Prevent assignment
-    ~DebugService() {}; // Prevent unwanted destruction
+
 public:
-	static DebugService& getInstance()
-    {
-        static DebugService inst;
-        return inst;
-    }
-	static void setEndpoint(DebugTextEdit* d);
-	static void printText(QString msg);
-	static void clearText();
+    /// @brief      sets endpoint
+    /// @param d    endpoint
+    static void setEndpoint(DebugTextEdit* d);
+    /// @brief      prints text in debug console
+    /// @param msg  text
+    static void printText(QString msg);
+    /// @brief      clears debug text console
+    static void clearText();
 };

@@ -1,10 +1,6 @@
 #include <QApplication>
 #include "MainWindow.h"
 
-Semantics* Semantics::instance = nullptr;
-DebugService* DebugService::instance = nullptr;
-CodeService* CodeService::instance = nullptr;
-
 /*!
  * @brief Main application class
 */

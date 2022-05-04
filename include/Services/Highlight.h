@@ -1,21 +1,19 @@
 #pragma once
 
-class HighlightService
+#include "Services/Service.h"
+
+/// @brief highlight service
+/// used to disable enable highlighter
+class HighlightService : public Service<HighlightService>
 {
-public:
-    static HighlightService& getInstance()
-    {
-        static HighlightService inst;
-        return inst;
-    }
-    //Highlighter* highlighter = nullptr;
-    static void setEnabled(bool e);
-    static bool getEnabled();
-protected:
-    //static void setEndpoint(Highlighter* c);
-    HighlightService() {}; // Prevent construction
-    HighlightService(const HighlightService&) {}; // Prevent construction by copying
-    HighlightService& operator=(const HighlightService&) {}; // Prevent assignment
-    ~HighlightService() {}; // Prevent unwanted destruction
+private:
+    /// @brief  state
     bool enabled = true;
+public:
+    /// @brief      set current state
+    /// @param e    state
+    static void setEnabled(bool e);
+    /// @brief      get current state
+    /// @return     current state
+    static bool getEnabled();
 };

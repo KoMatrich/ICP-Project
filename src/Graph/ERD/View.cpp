@@ -8,13 +8,13 @@ ERDScene::ERDScene(QObject* parent)
 
 void ERDScene::update()
 {
-    auto sem = Semantics::getInstance();
-    auto classes = sem->getClasses();
+    Semantics sem = Semantics::getInstance();
+    auto classes = sem.getClasses();
 
     clear();
 
     //add or change existing items
-    for (auto clas : classes) {
+    for (UMLClass clas : classes) {
         add(clas);
     }
 

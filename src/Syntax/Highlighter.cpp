@@ -146,7 +146,7 @@ void Highlighter::highlightBlock(const QString& text)
             if (analyzer->GetStack().back().size() == 0) {
                 //whole file has right syntax
                 CodeService::clearBackground();
-                Semantics::getInstance()->buildSTree(analyzer->GetStack());
+                Semantics::getInstance().buildSTree(analyzer->GetStack());
             }
         return;
     }

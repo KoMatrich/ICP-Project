@@ -2,7 +2,7 @@
 
 #include "Semantics.h"
 #include "Services/Code.h"
-#include "Graph/Item.h"
+#include "Graph/ItemConst.h"
 
 class WItem : public QGraphicsObject
 {

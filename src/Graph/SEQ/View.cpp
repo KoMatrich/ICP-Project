@@ -9,7 +9,7 @@ SEQScene::SEQScene(QObject* parent)
 void SEQScene::update()
 {
     auto sem = Semantics::getInstance();
-    auto classes = sem->getClasses();
+    auto classes = sem.getClasses();
 
     int offset = 0;
 
