@@ -2,7 +2,6 @@
 
 #include "qgraphicsitem.h"
 #include "Semantics.h"
-#include "Services/Code.h"
 #include "Graph/ItemConst.h"
 
 class SeqItem : public QGraphicsObject

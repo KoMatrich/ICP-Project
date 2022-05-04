@@ -2,7 +2,6 @@
 
 #include <QSyntaxHighlighter>
 #include <QDebug>
-#include "Syntax/Analyzer.h"
 #include "Semantics.h"
 
 /// @brief Syntax Highlighter
