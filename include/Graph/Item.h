@@ -3,7 +3,7 @@
 //item data line type
 enum class BlockType
 {
-    Text, SepSingle, SepBold, SepDouble
+    InheritedText, Text, SepSingle, SepBold, SepDouble
 };
 
 //item data line

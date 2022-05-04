@@ -298,6 +298,7 @@ void Semantics::testRelations()
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
                 auto a = rel[j].toString().toStdString();
+                
             }
         }
     }
@@ -410,12 +411,13 @@ void Semantics::buildSTree(GlobalStack stack)
         this->classes[n].removeExceedingRelations(r);
 
         i = saved_i;
-
+        this->classes[n].removePosLines();
+        this->classes[n].removePos();
         // get all positions
         while (this->skipTreeUntilWhileTrue({ RuleID::R_XPOS, RuleID::R_YPOS }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
             if (this->stack[i].size() == 6) {
                 int pos = this->stack[i][5].second.toInt();
-                // this can lead to error
+                // this can lead to error, so we need to test
                 if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS, i))
                     void;
                 //return;

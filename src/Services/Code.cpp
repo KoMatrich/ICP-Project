@@ -67,6 +67,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     cursor.movePosition(QTextCursor::StartOfLine);
     cursor.setCharFormat(SyntaxTree::posFormat());
     cursor.insertText(prefix + "y:");
+    if (!(y_ln > 0)) cursor.insertText(" ");
     cursor.movePosition(QTextCursor::EndOfLine);
     cursor.setCharFormat(SyntaxTree::posValFormat());
     cursor.insertText(QString::number(y_val));
@@ -91,6 +92,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
     cursor.movePosition(QTextCursor::StartOfLine);
     cursor.setCharFormat(SyntaxTree::posFormat());
     cursor.insertText(prefix + "x:");
+    if (!(x_ln > 0)) cursor.insertText(" ");
     cursor.movePosition(QTextCursor::EndOfLine);
     cursor.setCharFormat(SyntaxTree::posValFormat());
     cursor.insertText(QString::number(x_val));

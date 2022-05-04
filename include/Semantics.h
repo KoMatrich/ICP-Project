@@ -97,6 +97,8 @@ public:
     void setErrorFlag(bool e) { has_changed |= (had_error != e); had_error = has_error; has_error = e; }
     inline void cleanAndSetUpdatedInherited() { inheritedAttributes.clear(); inheritedMethods.clear(); has_changed = true; }
     inline bool getErrorFlag() { return has_error; }
+    inline void removePosLines() { x_line = 0; y_line = 0; }
+    inline void removePos() { x = 0; y = 0; }
     inline void removePosFlags() { x_set = false; y_set = false; }
     inline bool getDuplicateFlag() { return duplicate; }
     inline void setDuplicateFlag(bool d) { duplicate = d; }

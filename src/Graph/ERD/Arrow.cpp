@@ -3,6 +3,7 @@
 Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type)
     :o1(o1), o2(o2)
 {
+    setFlag(QGraphicsItem::ItemStacksBehindParent);
     connect(o1, SIGNAL(destroyed()), this, SLOT(destroy()));
     connect(o1, SIGNAL(itemMoved()), this, SLOT(update()), Qt::QueuedConnection);
 

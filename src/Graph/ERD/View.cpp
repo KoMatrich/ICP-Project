@@ -18,17 +18,22 @@ void ERDScene::update()
         add(clas);
     }
 
-    //TEST Delete me
-    if (items().count() >= 2) {
-        WItem* i1 = dynamic_cast<WItem*>(items().at(0));
-        WItem* i2 = dynamic_cast<WItem*>(items().at(1));
-        if (i1 != nullptr && i2 != nullptr) {
-            auto arrow = new Arrow(this, i1, i2, RuleID::R_AGG);
+    for (size_t i = 0; i < classes.size(); i++) {
+        for (auto rel : classes[i].getRelations()) {
+            WItem* i1 = dynamic_cast<WItem*>(items().at(classes.size() - i - 1));
+            WItem* i2 = dynamic_cast<WItem*>(items().at(classes.size() - rel.getID() - 1));
 
-            arrow->setFlag(QGraphicsItem::ItemStacksBehindParent);
+            if (i1 == nullptr || i2 == nullptr)
+                continue;
+
+            Arrow* arrow;
+
+            if (rel.getType() == RuleID::R_GEN)
+                arrow = new Arrow(this, i1, i2, rel.getType());
+            else
+                arrow = new Arrow(this, i2, i1, rel.getType());
+
             addItem(arrow);
-        } else {
-            VitaPrint("Arrow");
         }
     }
 }

@@ -9,7 +9,7 @@ WItem::WItem(QGraphicsScene* parent, UMLClass clas)
     addAtributes(clas);
     addline({ BlockType::SepDouble ,"" });
     addMethods(clas);
-    setPos({ qreal(clas.getXPos()),qreal(clas.getYPos()) });
+    moveBy( qreal(clas.getXPos()),qreal(clas.getYPos()));
 
     //"constant" init //QGraphicsWidget 
     size = Size();
@@ -52,7 +52,7 @@ void WItem::addAtributes(UMLClass clas)
     if (atrs.size() > 0, iatrs.size() > 0)
         addline({ BlockType::SepSingle ,"" });
     for (auto iatr : iatrs) {
-        addline({ BlockType::Text,iatr.toString() });
+        addline({ BlockType::InheritedText,iatr.toString() });
     }
 }
 
@@ -69,7 +69,7 @@ void WItem::addMethods(UMLClass clas)
     if (meths.size() > 0, imeths.size() > 0)
         addline({ BlockType::SepSingle ,"" });
     for (auto imeth : imeths) {
-        addline({ BlockType::Text,imeth.toString() });
+        addline({ BlockType::InheritedText,imeth.toString() });
     }
 }
 
@@ -79,6 +79,8 @@ void WItem::addline(const Block line)
     auto text = metric.size(Qt::TextLongestVariant, line.data.trimmed());
     blocks.append(line);
     switch (line.type) {
+    case BlockType::InheritedText:
+        [[FALLTHROUGH]];
     case BlockType::Text:
         width = qMax(width, text.width());
         line_h = qMax(line_h, text.height());
@@ -112,13 +114,6 @@ void WItem::paint(QPainter* painter,
     painter->translate(0, OFFSET);
     PaintBlocks(painter);
 }
-
-//void WItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
-//    //CodeService::updatePos(class_line, xpos_line, static_cast<int>(this->pos().x()), ypos_line, static_cast<int>(this->pos().y()));
-//
-//    //CodeService::callCachedUpdatePos();
-//    //event->accept();
-//}
 
 QVariant WItem::itemChange(GraphicsItemChange change, const QVariant& value)
 {
@@ -167,11 +162,16 @@ void WItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 void WItem::PaintBlocks(QPainter* paint)
 {
     for (Block line : blocks) {
-        if (line.type != BlockType::Text) {
-            paintSeparator(paint, line.type);
-        }
-        else {
+        switch (line.type) {
+        case BlockType::InheritedText:
             paintText(paint, line);
+            break;
+        case BlockType::Text:
+            paintText(paint, line);
+            break;
+        default:
+            paintSeparator(paint, line.type);
+            break;
         }
     }
 }
@@ -179,6 +179,12 @@ void WItem::PaintBlocks(QPainter* paint)
 //paints text block
 void WItem::paintText(QPainter* paint, Block line)
 {
+    if (line.type == BlockType::Text) {
+        paint->setPen(Qt::black);
+    }
+    else {
+        paint->setPen(Qt::gray);
+    }
     paint->drawText(QRect(OFFSET, 0, width + OFFSET, line_h), Qt::AlignLeft, line.data);
     paint->translate(0, line_h);
 }
@@ -186,6 +192,7 @@ void WItem::paintText(QPainter* paint, Block line)
 //paints separator block
 void WItem::paintSeparator(QPainter* paint, BlockType type)
 {
+    paint->setPen(Qt::black);
     QPoint points[]{
         QPoint(0,0),
         QPoint(rsize.width(),0),
