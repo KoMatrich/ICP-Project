@@ -5,9 +5,6 @@
 #include "Types.h"
 #include "Services/Debug.h"
 
-
-/// Returns current rule on top of line stack
-/// without poping inline rules
 void inline Analyzer::getRules(Rule** current, RuleSet& parts, LineStack stack)
 {
     parts = syntax_tree->getRules();
@@ -18,7 +15,6 @@ void inline Analyzer::getRules(Rule** current, RuleSet& parts, LineStack stack)
     }
 }
 
-///If found index of matched rule, else -1
 Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
 {
     //find start of sub block
@@ -44,11 +40,6 @@ Lexem* Analyzer::matchBody(const QString& text, int& offset, RuleSet parts)
     return nullptr;
 }
 
-/// <returns>
-/// 0  if end is matched
-/// 1  if end is empty
-/// -1 if end is not found
-/// </returns>
 int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
 {
     //not in any rule
@@ -77,7 +68,6 @@ int Analyzer::matchEnd(const QString& text, int& offset, Rule* current)
     return -1;
 }
 
-/// Pops INLINE rules from LineStack
 void Analyzer::reduceStack(LineStack* stack)
 {
     while (stack->size() != 0) {
@@ -91,10 +81,6 @@ void Analyzer::reduceStack(LineStack* stack)
     }
 }
 
-/// Finds next lexem in text and updates LineStack.
-/// Offset is lengh of match, if lexem is found.
-/// Offset is unchenged on empty rule match
-/// (used as last rule when matching)
 void Analyzer::Next(int line, int& offset, const QString& text, Rule** current)
 {
     LineStack stack;
@@ -156,8 +142,6 @@ SKIP:
     global_stack.push_back(stack);
 }
 
-/// Removes all LineStacks with index > line number
-/// from GlobalStack
 void Analyzer::ClearTo(int lineNumber)
 {
     if (lineNumber < 1) return;

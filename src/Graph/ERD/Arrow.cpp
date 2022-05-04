@@ -1,14 +1,13 @@
 #include "Graph/ERD/Arrow.h"
 
-Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2, RuleID arr_type)
+Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type)
     :o1(o1), o2(o2)
 {
-    //auto remove when one object is destroyed
     connect(o1, SIGNAL(destroyed()), this, SLOT(destroy()));
-    connect(o1, SIGNAL(itemMoved()), this, SLOT(update()));
+    connect(o1, SIGNAL(itemMoved()), this, SLOT(update()), Qt::QueuedConnection);
 
     connect(o2, SIGNAL(destroyed()), this, SLOT(destroy()));
-    connect(o2, SIGNAL(itemMoved()), this, SLOT(update()));
+    connect(o2, SIGNAL(itemMoved()), this, SLOT(update()), Qt::QueuedConnection);
 
     this->arrow_type = arr_type;
     setParent(parent);
@@ -18,7 +17,7 @@ Arrow::Arrow(QGraphicsScene* parent, WItem* o1, WItem* o2, RuleID arr_type)
 
 QRectF Arrow::boundingRect() const
 {
-   return QRect(this->pos().toPoint(), this->end.toPoint()).normalized(); //.marginsAdded(MARGIN)
+    return QRect(this->pos().toPoint(), this->end.toPoint()).normalized(); //.marginsAdded(MARGIN)
 }
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -45,7 +44,7 @@ void Arrow::updateArrow()
     QPoint p1 = o1->pos().toPoint() + o1->boundingRect().center().toPoint();
     QPoint p2 = o2->pos().toPoint() + o2->boundingRect().center().toPoint();
 
-    //set arrow position to center of object 1
+    //set arrow position to center of object 2
     this->setPos(p2);
 
     //get connecting vector
@@ -70,8 +69,7 @@ void Arrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
 
-    switch (arrow_type)
-    {
+    switch (arrow_type) {
     case RuleID::R_ASS:
         arrow_head.clear();
         return;

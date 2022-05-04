@@ -32,7 +32,6 @@ int inline state_modify(int state)
     return index * 2 + (mod + 1) % 2;
 }
 
-/// Logic inplementation of line indexing.
 void Highlighter::updateCurrentBlockState()
 {
     auto prevState = previousBlockState();
@@ -67,7 +66,6 @@ void Highlighter::updateCurrentBlockState()
     }
 }
 
-/// Skips to next non white space char on line
 void Highlighter::skipSpace(const QString text, int& offset)
 {
     //save current offset
@@ -84,7 +82,6 @@ void Highlighter::skipSpace(const QString text, int& offset)
         offset = text.length();
 }
 
-/// Main highlighter functions
 void Highlighter::highlightBlock(const QString& text)
 {
     if (!HighlightService::getEnabled()) return;

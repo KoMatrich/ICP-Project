@@ -8,11 +8,11 @@
 #include "Services/Highlight.h"
 #include "Services/Code.h"
 
+/// @brief Class that stores UML relation data
 class UMLRelation
 {
 public:
     size_t pos = 0;
-
     UMLRelation() {}
     UMLRelation(QString entity, RuleID type)
     {
@@ -28,7 +28,9 @@ public:
     bool updateRelationConnectors(size_t new_id);
 protected:
     QString entity;
+    /// @brief semantic type of rule
     RuleID type;
+    /// @brief Unique identifier
     size_t id = -1;
 };
 
@@ -85,6 +87,9 @@ public:
     void addProperty(UMLProperty new_p, bool isMethod, size_t n);
     void addRelation(UMLRelation new_r, size_t n);
     bool updatePosition(int pos, bool is_x, size_t i);
+    /// @brief      After class generation, delete exceeding properties
+    /// @param a    size of attribute list
+    /// @param m    size of method list
     void removeExceedingProperties(size_t a, size_t m);
     void removeExceedingRelations(size_t r);
     void printProperties();

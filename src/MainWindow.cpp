@@ -37,7 +37,7 @@ bool MainWindow::saveAs()
     return saveFile(fileName);
 }
 
-///@TODO
+//TODO
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About SDI"),

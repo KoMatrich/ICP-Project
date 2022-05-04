@@ -33,9 +33,6 @@ void ERDScene::update()
     }
 }
 
-/// <summary>
-/// adds item to scene
-/// </summary>
 void ERDScene::add(UMLClass const data)
 {
     WItem* item = new WItem{ this, data };

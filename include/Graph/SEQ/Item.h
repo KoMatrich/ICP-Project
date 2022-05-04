@@ -2,7 +2,6 @@
 
 #include "qgraphicsitem.h"
 #include "Semantics.h"
-#include "qobject.h"
 #include "Services/Code.h"
 #include "Graph/Item.h"
 

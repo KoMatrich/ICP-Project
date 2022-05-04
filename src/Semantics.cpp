@@ -42,11 +42,6 @@ void UMLClass::addProperty(UMLProperty new_p, bool isMethod, size_t n)
     }
 }
 
-/// <summary>
-/// After class generation, delete exceeding properties
-/// </summary>
-/// <param name="a">size of attribute list</param>
-/// <param name="m">size of method list</param>
 void UMLClass::removeExceedingProperties(size_t a, size_t m)
 {
     if (this->attributes.size() > a) {
