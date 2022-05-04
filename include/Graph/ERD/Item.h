@@ -32,7 +32,15 @@ protected:
     /// @brief          context menu handler
     /// @param event    context menu open event
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
+    /// @brief          updates code on mouse release
+    /// @param event    mouse event
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    /// @brief          marks the entity as selected while in connect mode
+    /// @param event    mouse event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    /// @brief          marks the entity as not selected while in connect mode
+    /// @param event    mouse event
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 private:
     //automatic vars
     //used for size calculations
@@ -50,6 +58,9 @@ private:
     /// @brief      calculates height of item
     /// @return     height of item
     int Height() { return line_c * line_h + separator_c * SEPARATOR_H; }
+
+    /// @brief used for highlighting
+    bool is_thick = false;
 
     //feed back loop
     /// @brief used for getting position of cords in text file

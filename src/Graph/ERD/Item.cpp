@@ -34,6 +34,7 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemClipsToShape, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
+    setAcceptHoverEvents(true);
     //setFlag(QGraphicsItem::ItemIgnoresTransformations, true);
 }
 
@@ -103,9 +104,15 @@ void ERDItem::paint(QPainter* painter,
     const QStyleOptionGraphicsItem* option,
     QWidget* widget)
 {
+    QPen thick_pen = QPen();
+    thick_pen.setWidth(3);
+
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setBrush(fill);
+    if (is_thick) {
+        painter->setPen(thick_pen);
+    }
     painter->drawRoundedRect(boundingRect(), RADIUS, RADIUS);
 
     //draw text in frame
@@ -160,6 +167,18 @@ void ERDItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 void ERDItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     CodeService::callCachedUpdatePos();
+}
+
+void ERDItem::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = true;
+    update();
+}
+
+void ERDItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = false;
+    update();
 }
 
 //paints block of item
