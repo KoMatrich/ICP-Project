@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Services/Highlight.h"
+
 enum class HLevel
 {
     LEVEL_OK, LEVEL_WARN, LEVEL_ERROR

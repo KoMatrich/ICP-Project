@@ -1,6 +1,5 @@
 #pragma once
 
-#include "qobject.h"
 #include "Graph/ERD/Item.h"
 #include "Graph/Item.h"
 #include "Syntax/Rules.h"
