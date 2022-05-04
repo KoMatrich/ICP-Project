@@ -4,10 +4,10 @@ Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, R
     :o1(o1), o2(o2)
 {
     connect(o1, SIGNAL(destroyed()), this, SLOT(destroy()));
-    connect(o1, SIGNAL(itemMoved()), this, SLOT(update()));
+    connect(o1, SIGNAL(itemMoved()), this, SLOT(update()), Qt::QueuedConnection);
 
     connect(o2, SIGNAL(destroyed()), this, SLOT(destroy()));
-    connect(o2, SIGNAL(itemMoved()), this, SLOT(update()));
+    connect(o2, SIGNAL(itemMoved()), this, SLOT(update()), Qt::QueuedConnection);
 
     this->arrow_type = arr_type;
     setParent(parent);
