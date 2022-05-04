@@ -15,12 +15,12 @@ private:
     /// @brief endpoint
     QTextEdit* code = nullptr;
 public:
-    /// @brief      sets global instance endpoint
-    /// @param c    endpoint
+    /// @brief              sets global instance endpoint
+    /// @param c            endpoint
     static void setEndpoint(QTextEdit* c);
-    /// @brief          formats line
-    /// @param ln       line index
-    /// @param level    highlighting type
+    /// @brief              formats line
+    /// @param ln           line index
+    /// @param level        highlighting type
     static void formatLine(size_t ln, HLevel level);
     /// @brief              updates position value
     /// @param entity_ln    entity start line index
@@ -47,6 +47,13 @@ public:
     static void setPosActive(bool val);
     /// @brief              restores cashed position
     static void clearBackground();
+    /// @brief              deletes class definition from code
+    /// @param start        first relevant line index
+    /// @param end          last relevant line index
+    static void deleteEntity(size_t start, size_t end);
+    /// @brief              highlightes and jumps to class
+    /// @param ln           first line of class
+    static void highlightClass(size_t ln);
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint

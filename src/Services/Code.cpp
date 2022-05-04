@@ -19,10 +19,20 @@ void CodeService::clearBackground()
 
 void CodeService::deleteEntity(size_t start, size_t end)
 {
-    QTextEdit* editor = CodeService::getInstance()->code;
+    QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(start));
     cursor.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor, end - start + 1);
     cursor.removeSelectedText();
+}
+
+void CodeService::highlightClass(size_t ln)
+{
+    HighlightService::setEnabled(false);
+    CodeService::formatLine(ln, HLevel::LEVEL_OK);
+    QTextEdit* editor = CodeService::getInstance().code;
+    QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
+    editor->setTextCursor(cursor);
+    HighlightService::setEnabled(true);
 }
 
 
@@ -51,7 +61,7 @@ void CodeService::formatLine(size_t ln, HLevel level)
 // TODO optimize to use less inserts
 void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
 {
-    if (!CodeService::getInstance()->isPosActive)
+    if (!CodeService::getInstance().isPosActive)
         return;
 
     //disables syntax for changes to prevent recursion
@@ -133,8 +143,8 @@ void CodeService::insertLine(size_t ln, QString text)
 
 void CodeService::setPosActive(bool val)
 {
-    CodeService* instance = CodeService::getInstance();
-    instance->isPosActive = val;
+    CodeService& instance = CodeService::getInstance();
+    instance.isPosActive = val;
 }
 
 

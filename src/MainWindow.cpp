@@ -40,8 +40,8 @@ bool MainWindow::saveAs()
 //TODO
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About SDI"),
-                       tr("<b>@TODO</b>"));
+    QMessageBox::about(this, QStringLiteral("About ICP UML Project"),
+                       QStringLiteral("<b>Authors:</b> <i>Vitezslav Kriz & Martin Kocich</i>"));
 }
 
 void MainWindow::init()
@@ -128,7 +128,6 @@ void MainWindow::createActions()
 
     auto* helpMenu = menuBar()->addMenu(QStringLiteral("Help"));
     helpMenu->addAction(QStringLiteral("About"), [this]() {about(); });
-    helpMenu->addAction(QStringLiteral("About Qt"), []() {qApp->aboutQt(); });
 
     cutAct->setEnabled(false);
     copyAct->setEnabled(false);
