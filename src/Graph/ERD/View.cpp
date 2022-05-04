@@ -1,4 +1,5 @@
 #include "Graph/ERD/View.h"
+#include "Services/SSemantics.h"
 
 ERDScene::ERDScene(QObject* parent)
     : QGraphicsScene(parent)
@@ -20,8 +21,8 @@ void ERDScene::update()
 
     for (size_t i = 0; i < classes.size(); i++) {
         for (auto rel : classes[i].getRelations()) {
-            WItem* i1 = dynamic_cast<WItem*>(items().at(classes.size() - i - 1));
-            WItem* i2 = dynamic_cast<WItem*>(items().at(classes.size() - rel.getID() - 1));
+            ERDItem* i1 = dynamic_cast<ERDItem*>(items().at(classes.size() - i - 1));
+            ERDItem* i2 = dynamic_cast<ERDItem*>(items().at(classes.size() - rel.getID() - 1));
 
             if (i1 == nullptr || i2 == nullptr)
                 continue;
@@ -40,7 +41,7 @@ void ERDScene::update()
 
 void ERDScene::add(UMLClass const data)
 {
-    WItem* item = new WItem{ this, data };
+    ERDItem* item = new ERDItem{ this, data };
     item->installEventFilter(this);
     addItem(item);
 }

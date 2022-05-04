@@ -1,4 +1,5 @@
 #include "Graph/SEQ/View.h"
+#include "Services/SSemantics.h"
 
 SEQScene::SEQScene(QObject* parent)
     : QGraphicsScene(parent)

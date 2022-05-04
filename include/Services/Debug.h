@@ -10,7 +10,6 @@
 #define VitaClear() DebugService::getInstance().clearText()
 
 /// @brief debug console service
-/// used to print to debug console
 class DebugService : public Service<DebugService>
 {
 private:

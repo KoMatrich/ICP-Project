@@ -8,7 +8,7 @@ project(ICP CXX)
 set(CXX_STANDARD 23)
 if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++latest")
-else(MSVC)
+else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -g")
 endif()
 
@@ -31,6 +31,12 @@ target_include_directories("${PROJECT_NAME}" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}
 
 target_precompile_headers("${PROJECT_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/pch.h")
 target_link_libraries("${PROJECT_NAME}" Qt5::Widgets)
+
+#Edit and Continue for CMake projects
+if(MSVC)
+    target_compile_options(${PROJECT_NAME} PUBLIC "/ZI")
+    target_link_options(${PROJECT_NAME} PUBLIC "/INCREMENTAL")
+endif()
 
 windeployqt("${PROJECT_NAME}")
 

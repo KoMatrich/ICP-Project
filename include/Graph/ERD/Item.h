@@ -4,11 +4,11 @@
 #include "Services/Code.h"
 #include "Graph/ItemConst.h"
 
-class WItem : public QGraphicsObject
+class ERDItem : public QGraphicsObject
 {
     Q_OBJECT
 public:
-    WItem(QGraphicsScene* parent, UMLClass clas);
+    ERDItem(QGraphicsScene* parent, UMLClass clas);
     QRectF boundingRect() const override;
     void paint(QPainter* painter,
         const QStyleOptionGraphicsItem* option,
