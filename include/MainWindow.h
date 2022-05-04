@@ -5,7 +5,6 @@
 #include "Graph/ERD/View.h"
 #include "Graph/SEQ/View.h"
 #include "TextCode.h"
-#include "TextDebug.h"
 
 /// @brief Main window class
 class MainWindow : public QMainWindow
