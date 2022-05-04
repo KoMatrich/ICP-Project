@@ -20,7 +20,7 @@ void ERDScene::update()
     }
 
     for (size_t i = 0; i < classes.size(); i++) {
-        for (auto rel : classes[i].getRelations()) {
+        for (UMLRelation& rel : classes[i].getRelations()) {
             ERDItem* i1 = dynamic_cast<ERDItem*>(items().at(classes.size() - i - 1));
             ERDItem* i2 = dynamic_cast<ERDItem*>(items().at(classes.size() - rel.getID() - 1));
 
