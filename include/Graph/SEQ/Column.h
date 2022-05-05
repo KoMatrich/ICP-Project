@@ -11,7 +11,7 @@ public:
     /// @brief          creates ERD item
     /// @param parent   graphics scene on which is displayed
     /// @param clas     class data
-    Column(QGraphicsScene* parent, QPoint pos, QString name, int cont_height);
+    Column(QGraphicsScene* parent, SEQMember& mem, const int& header_height, const int& height);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
     QRectF boundingRect() const override;
@@ -22,15 +22,24 @@ public:
     void paint(QPainter* painter,
         const QStyleOptionGraphicsItem* option,
         QWidget* widget) override;
-protected:
+    /// @brief          moves column to pos
+    /// @param pos      absolute pos
+    void movePos(QPointF& pos);
+
+private:
     /// @brief          context menu handler
     /// @param event    context menu open event
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 
-    QSize size;
     const int cont_height;
-    const QString name;
+    QString name;
 
+    std::vector<SEQActivation> activations;
+
+    /// @brief  size of text
+    QSize size;
+    /// @brief  top rectangle size
+    QSize rsize;
     bool is_thick = false;
     QLinearGradient fill;
 };

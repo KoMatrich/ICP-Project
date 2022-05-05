@@ -14,9 +14,8 @@ public:
     /// @brief          updates scene
     void update();
 private:
-    /// @brief          adds column to scene
-    /// @param classes  classes 
-    void addColumn(std::vector<UMLClass> colums);
+    void addColumn(SEQMember member, QPointF& offsetPos, const int& height);
+    void addArrow(SEQMember action, QPointF& offsetPos);
 protected:
     /// @brief          handles code refreshing after dragging
     /// @param event    mouse release

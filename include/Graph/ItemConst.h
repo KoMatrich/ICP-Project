@@ -23,18 +23,36 @@ public:
     };
 };
 
+//general constants
 const int GRID_S = 12;
 const int OFFSET{ GRID_S / 2 };
 const int RADIUS{ GRID_S };
-const int SEPARATOR_H{ 3 };
+
+const QPoint POFFSET{ OFFSET,OFFSET };
+const QSize SOFFSET = QSize(OFFSET * 2, OFFSET * 2);
+
+/// @brief metric for getting text size
+QFontMetrics const metric = QFontMetrics{ QApplication::font() };
+
+//arrow settings
 const int ARROW_OFFSET{ 0 };
 const float ARROW_GEN_SIZE{ 20.0 };
 const float ARROW_COMAGG_SIZE{ 15.0 };
 
-const QPoint POFFSET{ OFFSET,OFFSET };
+//SEQ settings
+/// @brief Width of activation rectangle
+const int ACTIVATION_W{ GRID_S };
 
-/// @brief metric for getting text size
-QFontMetrics const metric = QFontMetrics{ QApplication::font() };
+/// @brief Action height
+const int ACTION_H{ 10 };
+/// @brief Real action height (with space)
+const int ACTION_RH{ ACTION_H + OFFSET };
+/// @brief Space between columns
+const int COLUMN_SPACE{ GRID_S * 4 };
+
+//ERD settings
+/// @brief separator height
+const int SEPARATOR_H{ 3 };
 
 inline QLinearGradient redG(uint cont_height)
 {
