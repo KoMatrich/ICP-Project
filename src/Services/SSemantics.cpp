@@ -214,10 +214,6 @@ void Semantics::buildSTree(GlobalStack stack)
     this->skipTreeUntilLastIs({ RuleID::R_UML }, &i, 0);
     // find start of a class
     while (this->skipTreeUntilWhileTrue({ RuleID::R_CLASS, RuleID::R_INTERFACE }, &i, 1, RuleID::R_UML, 0)) {
-        if (this->stack[i].size() < 4) {
-            i++;
-            continue;
-        }
 
         QString c_name = this->stack[i][2].second;
         //auto aaa = c_name.toStdString();
@@ -327,103 +323,16 @@ void Semantics::buildSTree(GlobalStack stack)
 
     this->skipTreeUntilLastIs({ RuleID::R_SEQ }, & i, 0);
 
-    //skip until start of sequence
+    // skip until start of sequence
     while (this->skipTreeUntilWhileTrue({ RuleID::R_SEQUENCE }, &i, 1, RuleID::R_SEQ, 0)) {
-        if (this->stack[i].size() < 4) {
-            i++;
-            continue;
-        }
+        VitaPrint("SEQ START");
+        VitaPrintn(i);
 
-        VitaPrint()
-        /*
-        QString c_name = this->stack[i][2].second;
-        //auto aaa = c_name.toStdString();
-        // update class
-        if (n < this->classes.size()) {
-            classes[n].updateName(c_name);
-            classes[n].updateType(this->stack[i][1].first->id == RuleID::R_INTERFACE);
-            classes[n].setErrorFlag(false);
-            classes[n].removePosFlags();
-            classes[n].pos = i;
-        }
-        // create class
-        else {
-            UMLClass c = UMLClass();
-            c.updateName(c_name);
-            c.updateType(this->stack[i][1].first->id == RuleID::R_INTERFACE);
-            c.pos = i;
-            this->addClass(c);
-        }
-
-        if (++i >= this->stack.size()) break;
-
-        // we will iterate over the contents multiple times
-        size_t saved_i = i;
-
-        // always set to new index
-        size_t a = 0;
-        size_t m = 0;
-        size_t r = 0;
-
-        // get all attributes / methods
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACCESS }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
-            if (this->stack[i].size() == 7) {
-                UMLProperty p = UMLProperty(this->stack[i][4].second, this->stack[i][5].second, this->stack[i][6].second);
-                p.pos = i;
-
-                if (this->stack[i][6].first->id == RuleID::R_METHOD)
-                    this->classes[n].addProperty(p, true, m++);
-                else
-                    this->classes[n].addProperty(p, false, a++);
-            } else {
-                CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete property definition (skipped)");
-            }
-
-            if (++i >= this->stack.size()) break;
-        }
-        this->classes[n].removeExceedingProperties(a, m);
-
-        i = saved_i;
-
-        // get all relations
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_IN }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
-            if (this->stack[i].size() == 8) {
-                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
-                rel.pos = i;
-
-                this->classes[n].addRelation(rel, r++);
-            } else {
-                CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete relation definition (skipped)");
-            }
-
-            if (++i >= this->stack.size()) break;
-        }
-
-        this->classes[n].removeExceedingRelations(r);
-
-        i = saved_i;
-        this->classes[n].removePosLines();
-        this->classes[n].removePos();
-        // get all positions
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_XPOS, RuleID::R_YPOS }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
-            if (this->stack[i].size() == 6) {
-                int pos = this->stack[i][5].second.toInt();
-                // this can lead to error, so we need to test
-                if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS, i))
-                    void;
-                //return;
-            } else {
-                CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete position definition (skipped)");
-            }
-
-            if (++i >= this->stack.size()) break;
-        }
-
-        this->classes[n].pos_end = i;
-        n++;*/
+        // iterate over members (de)activation
+        //while (this->skipTreeUntilWhileTrue({ RuleID::R_SEQUENCE }, &i, 1, RuleID::R_SEQUENCE, 1)) {
+        //    VitaPrint("SEQ START");
+        //    VitaPrintn(i);
+        //}
     }
 
     HighlightService::setEnabled(true);

@@ -205,12 +205,12 @@ public:
     void setErrorFlag(bool e) { has_error = e; }
     /// @brief      Getter for activations (read the size from actions!)
     /// @return     vector of activations
-    inline std::vector<std::pair<size_t, size_t>> getActivations() { return activations; }
+    inline std::vector<SEQActivation> getActivations() { return activations; }
 protected:
     QString name = "";
     bool has_error = false;
     bool is_interface = false;
-    std::vector<std::pair<size_t, size_t>> activations;
+    std::vector<SEQActivation> activations;
     size_t class_id;
 };
 

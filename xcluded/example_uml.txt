@@ -4,6 +4,7 @@ https://real-world-plantuml.com/?type=sequence
 @startuml
 
 interface teacher{
+
 	x: 312
 	y: -42
 	in assoc with student
