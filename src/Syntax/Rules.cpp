@@ -211,6 +211,29 @@ RuleSet const SyntaxTree::genRules()
 	seq->format.setFontWeight(QFont::Bold);
 	seq->id = RuleID::R_SEQ;
 
+    // sequence keyword
+    Rule* sequence_keyword = new Rule();
+    sequence_keyword->start = Start("sequence");
+    sequence_keyword->format.setFontWeight(QFont::Bold);
+    sequence_keyword->id = RuleID::R_SEQUENCE;
+
+    // sequence name
+    Rule* sequence_name = new Rule();
+    sequence_name->start = Start("[A-Za-z0-9_]+");
+    sequence_name->format.setForeground(Qt::darkYellow);
+    sequence_name->format.setFontItalic(true);
+    sequence_name->id = RuleID::R_SEQUENCENAME;
+    sequence_name->wh = RuleWhitespace::W_OPTIONAL;
+
+    // sequence block
+    Rule* sequence_block = new Rule();
+    sequence_block->start = Start("\\{");
+    sequence_block->type = RuleType::MULTI_LINE;
+    sequence_block->end = End("\\}\\s*$");
+    sequence_block->format.setFontWeight(QFont::Bold);
+    sequence_block->id = RuleID::R_SEQUENCEBLOCK;
+    sequence_block->wh = RuleWhitespace::W_OPTIONAL;
+
 	// activate keyword
 	Rule* activate_keyword = new Rule();
 	activate_keyword->start = Start("ac?t?i?v?a?t?e?");
@@ -283,10 +306,15 @@ RuleSet const SyntaxTree::genRules()
 	activate_keyword->parts.push_back(x_tivate);
 	deactivate_keyword->parts.push_back(x_tivate);
 
+    sequence_block->parts.push_back(deactivate_keyword);
+    sequence_block->parts.push_back(activate_keyword);
+    sequence_block->parts.push_back(sender);
 
-	seq->parts.push_back(deactivate_keyword);
-	seq->parts.push_back(activate_keyword);
-	seq->parts.push_back(sender);
+    sequence_name->parts.push_back(sequence_block);
+
+    sequence_keyword->parts.push_back(sequence_name);
+
+    seq->parts.push_back(sequence_keyword);
 
 	syntax_tree.push_back(seq);
 

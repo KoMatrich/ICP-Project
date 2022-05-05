@@ -47,6 +47,8 @@ y: 216
 
 @startseq
 
+sequence test01 {
+
 activate Martin
 activate Vita
 Vita -> Vita: getReadyForBullying()
@@ -59,29 +61,27 @@ deactivate Martin
 Vita -> Vita: laugh()
 
 deactivate Vita
+}
+sequence test02 {
 
-@endseq
+	activate teacher
+	activate Martin
 
-@startseq
+	teacher -> teacher: teach()
+	teacher -> teacher: getMoney()
+	teacher --> Martin: getKnowledge()
 
-activate teacher
-activate Martin
+	activate Vita
 
-teacher -> teacher: teach()
-teacher -> teacher: getMoney()
-teacher --> Martin: getKnowledge()
+	teacher --> Vita: getKnowledge()
+	Martin -> Vita: getBulied()
+	teacher --> Vita: getBulied()
 
-activate Vita
+	deactivate Vita
 
-teacher --> Vita: getKnowledge()
-Martin -> Vita: getBulied()
-teacher --> Vita: getBulied()
+	teacher -> Martin: getPoints()
 
-deactivate Vita
-
-teacher -> Martin: getPoints()
-
-deactivate Martin
-deactivate teacher
-
+	deactivate Martin
+	deactivate teacher
+}
 @endseq

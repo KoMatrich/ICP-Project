@@ -17,7 +17,7 @@ enum class RuleWhitespace
 enum class RuleID
 {
     R_ERR = -1, R_UML, R_CLASS, R_INTERFACE, R_ENTITYBLOCK, R_ENTITYNAME, R_METHOD, R_ATTRIBUTE, R_TYPE, R_ACCESS, R_IN, R_ASS, R_AGG, R_COM, R_GEN, R_XPOS, R_YPOS, R_POSVAL,
-    R_SEQ, R_ACTIVATE, R_DEACTIVATE, R_ARROW_SYNC, R_ARROW_ASYNC, R_COLON
+    R_SEQ, R_ACTIVATE, R_DEACTIVATE, R_ARROW_SYNC, R_ARROW_ASYNC, R_COLON, R_SEQUENCE, R_SEQUENCENAME, R_SEQUENCEBLOCK
 
 };
 
@@ -48,6 +48,9 @@ inline const char* RuleIDtoString(RuleID r)
     case RuleID::R_ARROW_SYNC: return "R_ARROW_SYNC"; break;
     case RuleID::R_ARROW_ASYNC: return "R_ARROW_ASYNC"; break;
     case RuleID::R_COLON: return "R_COLON"; break;
+    case RuleID::R_SEQUENCE: return "R_SEQUENCE"; break;
+    case RuleID::R_SEQUENCENAME: return "R_SEQUENCENAME"; break;
+    case RuleID::R_SEQUENCEBLOCK: return "R_SEQUENCEBLOCK"; break;
 
     default:      return "[Unknown]";
     }
