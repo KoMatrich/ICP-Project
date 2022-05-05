@@ -14,13 +14,25 @@ void ERDScene::update()
 
     clear();
 
+    addClasses(classes);
+    addArrows(classes);
+}
+
+void ERDScene::addClasses(std::vector<UMLClass> classes)
+{
     //add or change existing items
     for (UMLClass clas : classes) {
-        add(clas);
+        ERDItem* item = new ERDItem{ this, clas };
+        item->installEventFilter(this);
+        addItem(item);
     }
+}
 
+void ERDScene::addArrows(std::vector<UMLClass> classes)
+{
     for (size_t i = 0; i < classes.size(); i++) {
-        for (UMLRelation& rel : classes[i].getRelations()) {
+        auto clas = classes.at(i);
+        for (UMLRelation& rel : clas.getRelations()) {
             ERDItem* i1 = dynamic_cast<ERDItem*>(items().at(classes.size() - i - 1));
             ERDItem* i2 = dynamic_cast<ERDItem*>(items().at(classes.size() - rel.getID() - 1));
 
@@ -37,13 +49,6 @@ void ERDScene::update()
             addItem(arrow);
         }
     }
-}
-
-void ERDScene::add(UMLClass const data)
-{
-    ERDItem* item = new ERDItem{ this, data };
-    item->installEventFilter(this);
-    addItem(item);
 }
 
 ERDView::ERDView(QObject* parent)

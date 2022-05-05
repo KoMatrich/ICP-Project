@@ -15,9 +15,12 @@ public:
     /// @brief          updates scene
     void update();
 private:
-    /// @brief          adds new item
-    /// @param clas     item data
-    void add(UMLClass const clas);
+    /// @brief          adds classes to scene
+    /// @param classes  classes 
+    void addClasses(std::vector<UMLClass> classes);
+    /// @brief          adds arrows to scene
+    /// @param classes  classes with relations
+    void addArrows(std::vector<UMLClass> classes);
 protected:
     /// @brief          handles code refreshing after dragging
     /// @param event    mouse release
