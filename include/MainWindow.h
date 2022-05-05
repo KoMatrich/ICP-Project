@@ -14,6 +14,11 @@ public:
     /// @param fileName     File to be opened
     MainWindow(const QString& fileName = {});
 protected:
+    /// @brief      overwrites default Ctrl+Z
+    /// @param obj  src object
+    /// @param event event
+    /// @return     true if catched and not wanting to process further
+    bool eventFilter(QObject* obj, QEvent* event);
     /// @brief          window close event handler
     /// @param event    close event
     void closeEvent(QCloseEvent* event) override;

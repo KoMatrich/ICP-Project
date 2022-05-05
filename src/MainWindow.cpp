@@ -2,10 +2,27 @@
 #include "MainWindow.h"
 #include "Services/Debug.h"
 #include "Services/Code.h"
+#include "Services/History.h"
 
 MainWindow::MainWindow(const QString& fileName)
 {
     init();
+}
+
+bool MainWindow::eventFilter(QObject* obj, QEvent* event)
+{
+    if (obj == mainTextEdit && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Z && keyEvent->modifiers().testFlag(Qt::ControlModifier)) {
+            HistoryService::restoreHistorySnapshot();
+            return true;
+        } else {
+            HistoryService::takeHistorySnapshot(); //before change
+            return false;
+        }
+    }
+
+    return QObject::eventFilter(obj, event);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -69,7 +86,9 @@ void MainWindow::init()
 
     //left top
     mainTextEdit = new MainTextEdit(vsplit);
+    mainTextEdit->installEventFilter(this);
     CodeService::setEndpoint(mainTextEdit);
+    HistoryService::setEndpoint(mainTextEdit);
 
     vsplit->addWidget(mainTextEdit);
 
@@ -122,6 +141,7 @@ void MainWindow::createActions()
     fileMenu->addAction(QStringLiteral("Close"), [this]() {close(); }, QKeySequence::SaveAs);
 
     auto* editMenu = menuBar()->addMenu(QStringLiteral("Edit"));
+    auto* undoAct = editMenu->addAction(QStringLiteral("Undo"), [this]() {HistoryService::restoreHistorySnapshot(); }, QKeySequence::Undo);
     auto* cutAct = editMenu->addAction(QStringLiteral("Cut"), [this]() {mainTextEdit->cut(); }, QKeySequence::Cut);
     auto* copyAct = editMenu->addAction(QStringLiteral("Copy"), [this]() {mainTextEdit->copy(); }, QKeySequence::Copy);
     auto* pasteAct = editMenu->addAction(QStringLiteral("Paste"), [this]() {mainTextEdit->paste(); }, QKeySequence::Paste);
@@ -139,7 +159,7 @@ void MainWindow::createActions()
 
     auto* fileToolBar = addToolBar(QStringLiteral("File"));
     fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
-    fileToolBar->addAction(QStringLiteral("Magic?"), [this]() {CodeService::updatePos(18, 0, 240, 0, 0); });
+    fileToolBar->addAction(QStringLiteral("Undo"), [this]() {HistoryService::restoreHistorySnapshot(); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); });

@@ -1,5 +1,6 @@
 #include "Services/Code.h"
 #include "Syntax/Rules.h"
+#include "Services/History.h"
 
 void CodeService::setEndpoint(QTextEdit* c)
 {
@@ -19,6 +20,7 @@ void CodeService::clearBackground()
 
 void CodeService::deleteEntity(size_t start, size_t end)
 {
+    HistoryService::takeHistorySnapshot(); //before change
     QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(start));
     cursor.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor, end - start + 1);
@@ -51,6 +53,7 @@ void CodeService::relationConnect(QString target)
     CodeService& instance = CodeService::getInstance();
     if (!instance.isConnecting) return;
 
+    HistoryService::takeHistorySnapshot(); //before change
     instance.isConnecting = false;
     QTextEdit* editor = instance.code;
     QTextBlock block = editor->document()->findBlockByLineNumber(instance.rel_line);
@@ -87,6 +90,7 @@ void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_l
 {
     if (!CodeService::getInstance().isPosActive)
         return;
+    HistoryService::takeHistorySnapshot(); //before change
 
     //disables syntax for changes to prevent recursion
     HighlightService::setEnabled(false);
@@ -160,6 +164,7 @@ void CodeService::cacheUpdatePos(size_t entity_ln, size_t x_ln, int x_val, size_
 
 void CodeService::insertLine(size_t ln, QString text)
 {
+    HistoryService::takeHistorySnapshot(); //before change
     QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
     cursor.insertText(text);

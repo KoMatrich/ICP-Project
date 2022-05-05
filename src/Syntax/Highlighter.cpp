@@ -2,6 +2,7 @@
 #include "Services/Debug.h"
 #include "Services/Code.h"
 #include "Services/SSemantics.h"
+#include "Services/History.h"
 
 Highlighter::Highlighter(QTextEdit* parent)
 	: QSyntaxHighlighter(parent->document())
@@ -140,32 +141,34 @@ void Highlighter::highlightBlock(const QString& text)
 	while ((offset >= 0) && (offset < len));
 
 	VitaClear();
-	if (offset == len) {
-		// syntax check OK -> pass tree for semantic check
-		//call a singleton Semantics generator
-		if (analyzer->GetStack().size() > 0)
-			if (analyzer->GetStack().back().size() == 0) {
-				//whole file has right syntax
-				CodeService::clearBackground();
-				Semantics::getInstance().buildSTree(analyzer->GetStack());
-			}
-		return;
-	}
 
 	switch (offset) {
 	case NO_CHECK:
 		VitaPrint("Nothing to compile!");
 		setFormat(last_off, len - last_off, syntax_tree->no_check);
-		break;
+        return;
 	case SYNTAX_ERR:
 		VitaPrint("Syntax error!");
 		CodeService::clearBackground();
 		setFormat(last_off, len - last_off, syntax_tree->err);
 		setCurrentBlockState(SYNTAX_E);
-		break;
+        return;
 	case INTERNAL_E:
 		VitaPrint("Internal error!");
 		setCurrentBlockState(INTERNAL_E);
-		break;
+        return;
 	}
+
+
+    if (offset == len) {
+        // syntax check OK -> pass tree for semantic check
+        //call a singleton Semantics generator
+        if (analyzer->GetStack().size() > 0)
+            if (analyzer->GetStack().back().size() == 0) {
+                //whole file has right syntax
+                CodeService::clearBackground();
+                Semantics::getInstance().buildSTree(analyzer->GetStack());
+            }
+        return;
+    }
 }
