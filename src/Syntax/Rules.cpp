@@ -82,7 +82,7 @@ RuleSet const SyntaxTree::genRules()
 	Rule* entity_block = new Rule();
 	entity_block->start = Start("\\{");
 	entity_block->type = RuleType::MULTI_LINE;
-	entity_block->end = End("\\}\\s*$");
+	entity_block->end = End("^\\}\\s*$");
 	entity_block->format.setFontWeight(QFont::Bold);
 	entity_block->id = RuleID::R_ENTITYBLOCK;
 	entity_block->wh = RuleWhitespace::W_OPTIONAL;
@@ -229,7 +229,7 @@ RuleSet const SyntaxTree::genRules()
     Rule* sequence_block = new Rule();
     sequence_block->start = Start("\\{");
     sequence_block->type = RuleType::MULTI_LINE;
-    sequence_block->end = End("\\}\\s*$");
+    sequence_block->end = End("^\\}\\s*$");
     sequence_block->format.setFontWeight(QFont::Bold);
     sequence_block->id = RuleID::R_SEQUENCEBLOCK;
     sequence_block->wh = RuleWhitespace::W_OPTIONAL;

@@ -218,16 +218,18 @@ class Sequence
 {
 public:
     Sequence() {}
-    Sequence(QString name) {
+    Sequence(QString name, size_t line) {
         this->name = name;
+        this->line = line;
     }
     ~Sequence() {}
-    bool activateMember(QString name);
-    bool deactivateMember(QString name);
+    bool activateMember(QString name, size_t time);
+    bool deactivateMember(QString name, size_t time);
 
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
 protected:
+    size_t line = 0;
     QString name = "";
     std::vector<SEQMember> members;
     std::vector<SEQAction> actions;

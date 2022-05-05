@@ -152,6 +152,11 @@ void Semantics::testProperties()
     }
 }
 
+void Semantics::removeSequences()
+{
+    sequences.clear();
+}
+
 void Semantics::testRelations()
 {
     for (size_t i = 0; i < classes.size(); i++) {
@@ -214,9 +219,14 @@ void Semantics::buildSTree(GlobalStack stack)
     this->skipTreeUntilLastIs({ RuleID::R_UML }, &i, 0);
     // find start of a class
     while (this->skipTreeUntilWhileTrue({ RuleID::R_CLASS, RuleID::R_INTERFACE }, &i, 1, RuleID::R_UML, 0)) {
+        // dont delet pls, it will break everything
+        if (this->stack[i].size() < 4) {
+            i++;
+            continue;
+        }
 
         QString c_name = this->stack[i][2].second;
-        //auto aaa = c_name.toStdString();
+        // auto aaa = c_name.toStdString();
         // update class
         if (n < this->classes.size()) {
             classes[n].updateName(c_name);
@@ -317,6 +327,7 @@ void Semantics::buildSTree(GlobalStack stack)
     /* ---------------- SEQUENCES ---------------- */
     i = 0;
 
+    removeSequences();
     // find first start SEQ
     if (stack.size() > 86)
         int a = 5;
@@ -325,16 +336,50 @@ void Semantics::buildSTree(GlobalStack stack)
 
     // skip until start of sequence
     while (this->skipTreeUntilWhileTrue({ RuleID::R_SEQUENCE }, &i, 1, RuleID::R_SEQ, 0)) {
-        VitaPrint("SEQ START");
-        VitaPrintn(i);
+        //also dont delete
+        if (this->stack[i].size() < 4) {
+            i++;
+            continue;
+        }
 
-        // iterate over members (de)activation
-        //while (this->skipTreeUntilWhileTrue({ RuleID::R_SEQUENCE }, &i, 1, RuleID::R_SEQUENCE, 1)) {
-        //    VitaPrint("SEQ START");
-        //    VitaPrintn(i);
-        //}
+        // push new sequence, can be colliding names
+        this->sequences.push_back(Sequence(this->stack[i][2].second, i));
+
+        size_t time = 0;
+
+        // iterate over members (de)activation, 
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACTIVATE, RuleID::R_DEACTIVATE }, &i, 4, RuleID::R_SEQUENCEBLOCK, 3)) {
+            if (i == 36)
+                auto iii = 55;
+            // activations (don't modify timestamp)
+            if (this->stack[i][4].first->id == RuleID::R_ACTIVATE || this->stack[i][4].first->id == RuleID::R_DEACTIVATE) {
+                if (this->stack[i].size() >= 6) {
+                    if (this->stack[i][4].first->id == RuleID::R_ACTIVATE) {
+                        if (!this->sequences.back().activateMember(this->stack[i][5].second, time)) {
+                            CodeService::formatLine(i, HLevel::LEVEL_WARN);
+                            VitaPrint("[WARNING]: Cannot activate already activated member (skipped)");
+                        }
+                    } else {
+                        if (!this->sequences.back().deactivateMember(this->stack[i][5].second, time)) {
+                            CodeService::formatLine(i, HLevel::LEVEL_WARN);
+                            VitaPrint("[WARNING]: Cannot deactivate already deactivated member (skipped)");
+                        }
+                    }
+                } else {
+                    CodeService::formatLine(i, HLevel::LEVEL_WARN);
+                    VitaPrint("[WARNING]: Incomplete activation definition (skipped)");
+                }
+            }
+            // communications (modify timestamps)
+            else {
+                time++;
+            }
+
+
+            if (++i >= this->stack.size()) break;
+        }
     }
-
+    
     HighlightService::setEnabled(true);
 }
 

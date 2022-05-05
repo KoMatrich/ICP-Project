@@ -21,4 +21,5 @@ protected:
     void addInheritedProperties();
     void printStack();
     void testProperties();
+    void removeSequences();
 };

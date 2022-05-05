@@ -191,12 +191,12 @@ bool UMLRelation::updateRelationConnectors(size_t new_id)
     return changed;
 }
 
-bool Sequence::activateMember(QString name)
+bool Sequence::activateMember(QString name, size_t time)
 {
     return false;
 }
 
-bool Sequence::deactivateMember(QString name)
+bool Sequence::deactivateMember(QString name, size_t time)
 {
     return false;
 }

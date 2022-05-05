@@ -63,8 +63,11 @@ Vita -> Vita: laugh()
 
 deactivate Vita
 }
+
 sequence test02 {
 
+	activate teacher
+	activate teacher
 	activate teacher
 	activate Martin
 
