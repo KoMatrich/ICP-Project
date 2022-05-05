@@ -345,7 +345,7 @@ void Semantics::buildSTree(GlobalStack stack)
         size_t time = 0;
 
         // iterate over members (de)activation, 
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACTIVATE, RuleID::R_DEACTIVATE, RuleID::R_ENTITYNAME }, &i, 4, RuleID::R_SEQUENCEBLOCK, 3)) {
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACTIVATE, RuleID::R_DEACTIVATE, RuleID::R_ENTITYNAME, RuleID::R_NOP }, &i, 4, RuleID::R_SEQUENCEBLOCK, 3)) {
             // activations (don't modify timestamp)
             if (this->stack[i][4].first->id == RuleID::R_ACTIVATE || this->stack[i][4].first->id == RuleID::R_DEACTIVATE) {
                 if (this->stack[i].size() >= 6) {
@@ -378,15 +378,20 @@ void Semantics::buildSTree(GlobalStack stack)
                     CodeService::formatLine(i, HLevel::LEVEL_WARN);
                     VitaPrint("[WARNING]: Incomplete communication definition (skipped)");
                 }
+            } else { // NOP
+                size_t noptime = 1;
+                if (this->stack[i].size() >= 6)
+                    noptime = stack[i][5].second.toInt();
+                // add # of empty Actions
+                for (size_t nops = 0; nops < noptime; nops++) {
+                    this->sequences.back().addAction(SEQAction("", RuleID::R_NOP, i, "", ""));
+                    time++;
+                }
             }
-
-            else { // NOP
-                time++;
-            }
-
-
             if (++i >= this->stack.size()) break;
         }
+        // testing and index connecting
+        this->sequences.back().connectActions();
     }
 
     HighlightService::setEnabled(true);

@@ -50,18 +50,19 @@ y: 216
 
 sequence test01 {
 
-activate Martin
-activate Vita
-Vita -> Vita: getReadyForBullying()
+	activate Martin
+	activate Vita
+	Vita -> Vita: getReadyForBullying()
 
-Vita -> Martin: getBulied()
-Vita -> Martin: getBulied()
+	Vita -> Martin: getBulied()
+	Vita -> Martin: getBulied()
 
-deactivate Martin
+	deactivate Martin
+	NOP
+	NOP 3
+	Vita -> Vita: laugh()
 
-Vita -> Vita: laugh()
-
-deactivate Vita
+	deactivate Vita
 }
 
 sequence test02 {

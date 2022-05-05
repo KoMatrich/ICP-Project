@@ -128,13 +128,8 @@ protected:
 class SEQAction
 {
 public:
-    SEQAction() {}
-    SEQAction(QString name, RuleID type, size_t line, QString sender, QString receiver)
-    {
-        this->method = method;
-        this->type = type;
-        this->line = line;
-    }
+    SEQAction(QString method, RuleID type, size_t line, QString sender, QString receiver)
+        : sender(sender), receiver(receiver), method(method), type(type), line(line) {}
     ~SEQAction() {}
     /// @brief      Getter for member name
     /// @return     member name
@@ -170,14 +165,14 @@ public:
     /// @return     line position of action
     inline size_t getLine() { return line; }
 protected:
-    QString method = "";
+    const QString method;
     bool has_error = false;
-    RuleID type = RuleID::R_ERR;
-    QString sender;
+    const RuleID type;
+    const QString sender;
     size_t sender_index;
-    QString receiver;
+    const QString receiver;
     size_t receiver_index;
-    size_t line;
+    const size_t line;
 };
 
 class SEQActivation
@@ -205,34 +200,38 @@ public:
         this->name = name;
     }
     ~SEQMember() {}
-    /// @brief      Getter for member name
-    /// @return     member name
+    /// @brief              Getter for member name
+    /// @return             member name
     inline QString getName() { return name; }
-    /// @brief      Getter for member is_interface
-    /// @return     member is_interface
+    /// @brief              Getter for member is_interface
+    /// @return             member is_interface
     inline bool isInterface() { return is_interface; }
-    /// @brief      Getter for member has_error
-    /// @return     member has_error
+    /// @brief              Getter for member has_error
+    /// @return             member has_error
     inline bool getErrorFlag() { return has_error; }
-    /// @brief      Setter for member has_error
-    /// @param e    new value
+    /// @brief              Setter for member has_error
+    /// @param e            new value
     inline void setErrorFlag(bool e) { has_error = e; }
-    /// @brief      Getter for activations (read the size from actions!)
-    /// @return     vector of activations
+    /// @brief              Getter for activations (read the size from actions!)
+    /// @return             vector of activations
     inline std::vector<SEQActivation> getActivations() { return activations; }
-    /// @brief      Getter for activation flag
-    /// @return     activation flag
+    /// @brief              Getter for activation flag
+    /// @return             activation flag
     inline bool getActivatedFlag() { return is_activated; }
-    /// @brief      Setter for member is_activated
-    /// @param e    new value
+    /// @brief              Setter for member is_activated
+    /// @param e            new value
     inline void setActivatedFlag(bool e) { is_activated = e; }
     /// @brief              adding new activation Class (only start)
     /// @param start        start time
     /// @param startLine    line in code
     void addActivation(size_t start, size_t startLine);
-    /// @brief      Setter for deactivation time (only accessess the end of vector)
-    /// @param time end time
+    /// @brief              Setter for deactivation time (only accessess the end of vector)
+    /// @param time         end time
     void setDeactivationTime(size_t time);
+    /// @brief              Tests if Member was active at given time
+    /// @param time         time to test
+    /// @return             true if active
+    bool wasActiveAtTime(size_t time);
 protected:
     QString name = "";
     bool has_error = false;
@@ -256,9 +255,10 @@ public:
     void addAction(SEQAction action);
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
+    void connectActions();
 protected:
     SEQMember* getMemberByName(QString name);
-
+    int getMemberIndexByName(QString name);
     size_t line = 0;
     QString name = "";
     std::vector<SEQMember> members;

@@ -207,6 +207,7 @@ bool Sequence::activateMember(QString name, size_t time, size_t line)
     // add new activation to stack
     m->setActivatedFlag(true);
     m->addActivation(time, line);
+    return true;
 }
 
 bool Sequence::deactivateMember(QString name, size_t time)
@@ -231,6 +232,46 @@ void Sequence::addAction(SEQAction action)
     this->actions.push_back(action);
 }
 
+void Sequence::connectActions()
+{
+    for (size_t act = 0; act < actions.size(); act++) {
+        if (actions[act].getType() == RuleID::R_NOP) continue;
+        int i;
+        i = getMemberIndexByName(actions[act].getSender());
+        if (i != -1) {
+            actions[act].setSenderIndex(i);
+            if (!members[i].wasActiveAtTime(act)) {
+                CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
+                VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
+                actions[act].setErrorFlag(true);
+            }
+            // OK
+        }
+        else {
+            CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
+            VitaPrint("[ERROR]: Message sender was not found in members.");
+            actions[act].setErrorFlag(true);
+            continue;
+        }
+        i = getMemberIndexByName(actions[act].getReceiver());
+        if (i != -1) {
+            actions[act].setReceiverIndex(i);
+            if (!members[i].wasActiveAtTime(act)) {
+                CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
+                VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
+                actions[act].setErrorFlag(true);
+            }
+            // OK
+        } else {
+            CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
+            VitaPrint("[ERROR]: Message receiver was not found in members.");
+            actions[act].setErrorFlag(true);
+            continue;
+        }
+
+    }
+}
+
 SEQMember* Sequence::getMemberByName(QString name)
 {
     for (auto& member : members) {
@@ -238,6 +279,18 @@ SEQMember* Sequence::getMemberByName(QString name)
             return &member;
     }
     return nullptr;
+}
+
+int Sequence::getMemberIndexByName(QString name)
+{
+    auto s = name.toStdString();
+    int count = 0;
+    for (auto member : members) {
+        if (member.getName() == name)
+            return count;
+        count++;
+    }
+    return -1;
 }
 
 void SEQMember::addActivation(size_t start, size_t startLine)
@@ -248,4 +301,14 @@ void SEQMember::addActivation(size_t start, size_t startLine)
 void SEQMember::setDeactivationTime(size_t time)
 {
     this->activations.back().setEndIndex(time);
+}
+
+
+bool SEQMember::wasActiveAtTime(size_t time)
+{
+    for (SEQActivation act : activations) {
+        if ((time >= act.startIndex()) && (time < act.endIndex()))
+            return true;
+    }
+    return false;
 }

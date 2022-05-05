@@ -234,6 +234,18 @@ RuleSet const SyntaxTree::genRules()
     sequence_block->id = RuleID::R_SEQUENCEBLOCK;
     sequence_block->wh = RuleWhitespace::W_OPTIONAL;
 
+    // delay size
+    Rule* delay_amount = new Rule();
+    delay_amount->start = Start("\\d+$");
+    delay_amount->format.setFontWeight(QFont::Bold);
+    delay_amount->id = RuleID::R_NOPSIZE;
+
+    // delay keyword
+    Rule* delay_keyword = new Rule();
+    delay_keyword->start = Start("((D|d)(E|e)(L|l)(A|a)(Y|y)|(N|n)(O|o)(P|p))");
+    delay_keyword->format.setFontWeight(QFont::Bold);
+    delay_keyword->id = RuleID::R_NOP;
+
 	// activate keyword
 	Rule* activate_keyword = new Rule();
 	activate_keyword->start = Start("ac?t?i?v?a?t?e?");
@@ -305,7 +317,9 @@ RuleSet const SyntaxTree::genRules()
 	sender->parts.push_back(a_sync);
 	activate_keyword->parts.push_back(x_tivate);
 	deactivate_keyword->parts.push_back(x_tivate);
+    delay_keyword->parts.push_back(delay_amount);
 
+    sequence_block->parts.push_back(delay_keyword);
     sequence_block->parts.push_back(deactivate_keyword);
     sequence_block->parts.push_back(activate_keyword);
     sequence_block->parts.push_back(sender);
