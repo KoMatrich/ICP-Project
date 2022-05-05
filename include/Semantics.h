@@ -224,6 +224,9 @@ public:
     ~Sequence() {}
     bool activateMember(QString name);
     bool deactivateMember(QString name);
+
+    std::vector<SEQMember> getMembers() { return members; }
+    std::vector<SEQAction> getActions() { return actions; }
 protected:
     QString name = "";
     std::vector<SEQMember> members;
