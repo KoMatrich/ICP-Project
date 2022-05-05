@@ -4,6 +4,7 @@
 #include "TextDebug.h"
 
 #define VitaPrint(_text) DebugService::getInstance().printText(QString(_text))
+#define VitaPrintn(_text) DebugService::getInstance().printText(QString::number(_text))
 #define VitaPrintf(_text, _format) DebugService::getInstance().printText(QString(_text)_format)
 #define VF(_x) .arg(_x)
 
