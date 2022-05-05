@@ -208,16 +208,8 @@ void Semantics::buildSTree(GlobalStack stack)
     if (stack.size() <= 1) return;
 
     HighlightService::setEnabled(false);
-    //CodeService::clearBackground();
 
-    if (stack.size() == 1) {
-        if (stack[0].size() == 0) {
-            VitaPrint("Write some code or open a document to get started.");
-        }
-    }
     this->stack = stack;
-    //this->printStack();
-    //VitaClear();
 
     size_t i = 0;
     size_t n = 0;
@@ -353,9 +345,7 @@ void Semantics::buildSTree(GlobalStack stack)
         size_t time = 0;
 
         // iterate over members (de)activation, 
-        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACTIVATE, RuleID::R_DEACTIVATE }, &i, 4, RuleID::R_SEQUENCEBLOCK, 3)) {
-            if (i == 36)
-                auto iii = 55;
+        while (this->skipTreeUntilWhileTrue({ RuleID::R_ACTIVATE, RuleID::R_DEACTIVATE, RuleID::R_ENTITYNAME }, &i, 4, RuleID::R_SEQUENCEBLOCK, 3)) {
             // activations (don't modify timestamp)
             if (this->stack[i][4].first->id == RuleID::R_ACTIVATE || this->stack[i][4].first->id == RuleID::R_DEACTIVATE) {
                 if (this->stack[i].size() >= 6) {
@@ -376,7 +366,21 @@ void Semantics::buildSTree(GlobalStack stack)
                 }
             }
             // communications (modify timestamps)
-            else {
+            else if (this->stack[i][4].first->id == RuleID::R_ENTITYNAME) {
+                if (this->stack[i].size() >= 9) {
+                    //4 - sender
+                    //5 - arrow_type
+                    //6 - receiver
+                    //8 - method
+                    this->sequences.back().addAction(SEQAction(this->stack[i][8].second, this->stack[i][5].first->id, i, this->stack[i][4].second, this->stack[i][6].second));
+                    time++;
+                } else {
+                    CodeService::formatLine(i, HLevel::LEVEL_WARN);
+                    VitaPrint("[WARNING]: Incomplete communication definition (skipped)");
+                }
+            }
+
+            else { // NOP
                 time++;
             }
 

@@ -226,6 +226,11 @@ bool Sequence::deactivateMember(QString name, size_t time)
     return true;
 }
 
+void Sequence::addAction(SEQAction action)
+{
+    this->actions.push_back(action);
+}
+
 SEQMember* Sequence::getMemberByName(QString name)
 {
     for (auto& member : members) {

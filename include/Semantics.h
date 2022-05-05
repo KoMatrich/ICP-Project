@@ -129,30 +129,40 @@ class SEQAction
 {
 public:
     SEQAction() {}
-    SEQAction(QString name, RuleID type, size_t sender, size_t receiver, size_t line)
+    SEQAction(QString name, RuleID type, size_t line, QString sender, QString receiver)
     {
-        this->name = name;
+        this->method = method;
         this->type = type;
-        this->sender = sender;
-        this->receiver = receiver;
         this->line = line;
     }
     ~SEQAction() {}
     /// @brief      Getter for member name
     /// @return     member name
-    inline QString getName() { return name; }
+    inline QString getMethod() { return method; }
     /// @brief      Getter for member type
     /// @return     member type
     inline RuleID getType() { return type; }
     /// @brief      Getter for member has_error
     /// @return     member has_error
     inline bool getErrorFlag() { return has_error; }
-    /// @brief      Getter for member sender
+    /// @brief      Getter for member sender index
     /// @return     member sender
-    inline size_t getSender() { return sender; }
-    /// @brief      Getter for member receiver
+    inline size_t getSenderIndex() { return sender_index; }
+    /// @brief      Getter for member receiver index
     /// @return     member receiver
-    inline size_t getReceiver() { return receiver; }
+    inline size_t getReceiverIndex() { return receiver_index; }
+    /// @brief      Getter for member sender index
+    /// @return     member sender
+    inline void setSenderIndex(size_t i) { sender_index = i; }
+    /// @brief      Setter for member receiver index
+    /// @return     member receiver
+    inline void setReceiverIndex(size_t i) { receiver_index = i; }
+    /// @brief      Setter for member sender name
+    /// @return     member sender
+    inline QString getSender() { return sender; }
+    /// @brief      Getter for member receiver name
+    /// @return     member receiver
+    inline QString getReceiver() { return receiver; }
     /// @brief      Setter for member has_error
     /// @param e    new value
     inline void setErrorFlag(bool e) { has_error = e; }
@@ -160,11 +170,13 @@ public:
     /// @return     line position of action
     inline size_t getLine() { return line; }
 protected:
-    QString name = "";
+    QString method = "";
     bool has_error = false;
     RuleID type = RuleID::R_ERR;
-    size_t sender;
-    size_t receiver;
+    QString sender;
+    size_t sender_index;
+    QString receiver;
+    size_t receiver_index;
     size_t line;
 };
 
@@ -241,7 +253,7 @@ public:
     ~Sequence() {}
     bool activateMember(QString name, size_t time, size_t line);
     bool deactivateMember(QString name, size_t time);
-
+    void addAction(SEQAction action);
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
 protected:

@@ -252,17 +252,21 @@ void MainWindow::loadFile(const QString& fileName)
     //clear text editor
     mainTextEdit->clear();
 
-    VitaClear();
-    VitaPrint("New file loaded");
-
     erdView->update();
     seqView->update();
 
     setCurrentFile(fileName);
+
+    VitaClear();
+
     if (fileName.isEmpty()) {
+        VitaPrint("Write some code or open a document to get started.");
         HighlightService::setEnabled(true);
         return;
     }
+
+    VitaPrint("New file loaded");
+
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
