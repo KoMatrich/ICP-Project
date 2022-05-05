@@ -10,6 +10,7 @@ public:
     std::vector<UMLClass> getClasses() { return classes; }
 protected:
     std::vector<UMLClass> classes;
+    std::vector<Sequence> sequences;
     GlobalStack stack;
     void addClass(UMLClass new_class);
     bool skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, size_t pos);

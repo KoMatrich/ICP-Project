@@ -125,9 +125,107 @@ protected:
     bool y_set = false;
 };
 
+class SEQAction
+{
+public:
+    SEQAction() {}
+    SEQAction(QString name, RuleID type, size_t sender, size_t receiver, size_t line)
+    {
+        this->name = name;
+        this->type = type;
+        this->sender = sender;
+        this->receiver = receiver;
+        this->line = line;
+    }
+    ~SEQAction() {}
+    /// @brief      Getter for member name
+    /// @return     member name
+    inline QString getName() { return name; }
+    /// @brief      Getter for member type
+    /// @return     member type
+    inline RuleID getType() { return type; }
+    /// @brief      Getter for member has_error
+    /// @return     member has_error
+    inline bool getErrorFlag() { return has_error; }
+    /// @brief      Getter for member sender
+    /// @return     member sender
+    inline size_t getSender() { return sender; }
+    /// @brief      Getter for member receiver
+    /// @return     member receiver
+    inline size_t getReceiver() { return receiver; }
+    /// @brief      Setter for member has_error
+    /// @param e    new value
+    inline void setErrorFlag(bool e) { has_error = e; }
+    /// @brief      Getter for member line position in code
+    /// @return     line position of action
+    inline size_t getLine() { return line; }
+protected:
+    QString name = "";
+    bool has_error = false;
+    RuleID type = RuleID::R_ERR;
+    size_t sender;
+    size_t receiver;
+    size_t line;
+};
+
+class SEQActivation
+{
+public:
+    SEQActivation() {}
+    ~SEQActivation() {}
+    size_t startIndex() { return start; }
+    size_t endIndex() { return end; }
+protected:
+    size_t start;
+    size_t startLine;
+    size_t end;
+};
+
+class SEQMember
+{
+public:
+    SEQMember() {}
+    SEQMember(QString name, bool is_interface)
+    {
+        this->name = name;
+        this->is_interface = is_interface;
+    }
+    ~SEQMember() {}
+    /// @brief      Getter for member name
+    /// @return     member name
+    QString getName() { return name; }
+    /// @brief      Getter for member is_interface
+    /// @return     member is_interface
+    bool isInterface() { return is_interface; }
+    /// @brief      Getter for member has_error
+    /// @return     member has_error
+    bool getErrorFlag() { return has_error; }
+    /// @brief      Setter for member has_error
+    /// @param e    new value
+    void setErrorFlag(bool e) { has_error = e; }
+    /// @brief      Getter for activations (read the size from actions!)
+    /// @return     vector of activations
+    inline std::vector<std::pair<size_t, size_t>> getActivations() { return activations; }
+protected:
+    QString name = "";
+    bool has_error = false;
+    bool is_interface = false;
+    std::vector<std::pair<size_t, size_t>> activations;
+    size_t class_id;
+};
+
 class Sequence
 {
 public:
     Sequence() {}
+    Sequence(QString name) {
+        this->name = name;
+    }
     ~Sequence() {}
+    bool activateMember(QString name);
+    bool deactivateMember(QString name);
+protected:
+    QString name = "";
+    std::vector<SEQMember> members;
+    std::vector<SEQAction> actions;
 };
