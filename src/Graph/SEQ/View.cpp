@@ -13,16 +13,19 @@ void SEQScene::update()
     Semantics sem = Semantics::getInstance();
     auto seqs = sem.getSequences();
 
+    //delete all
     clear();
 
+    //check size
     if (seqs.size() == 0)
         return;
 
+    //get data
     Sequence seq = seqs.at(0);
     std::vector<SEQMember> members = seq.getMembers();
     std::vector<SEQAction> acts = seq.getActions();
 
-    /// @brief keeps starting positions of stems with offset
+    //keeps starting positions of stems with offset
     std::vector<int> offsets;
     QPointF start{ 0,0 };
     for (auto& member : members) {
@@ -38,8 +41,7 @@ void SEQScene::update()
 
 void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& height)
 {
-    auto col = new Column(this, member, 10, height * ACTION_RH);
-    col->movePos(offsetPos);
+    auto col = new Column(this, offsetPos, member, height);
     addItem(col);
 }
 
@@ -75,4 +77,8 @@ SEQView::SEQView(QObject* parent)
     setResizeAnchor(QGraphicsView::AnchorViewCenter);
     setDragMode(QGraphicsView::ScrollHandDrag);
     setAlignment(Qt::AlignCenter);
+
+    QFont f = font();
+    f.setPointSize(ACTION_H*3/4);
+    setFont(f);
 }

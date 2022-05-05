@@ -16,7 +16,9 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
     painter->drawLine(end.toPoint(), col_vec.toPoint());
+    painter->drawText((pos1 - pos2) / 2 - textWidth, method);
 
     if (arrow_type == RuleID::R_AGG)
         painter->setBrush(Qt::black);

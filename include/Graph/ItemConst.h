@@ -28,8 +28,8 @@ const int GRID_S = 12;
 const int OFFSET{ GRID_S / 2 };
 const int RADIUS{ GRID_S };
 
-const QPoint POFFSET{ OFFSET,OFFSET };
-const QSize SOFFSET = QSize(OFFSET * 2, OFFSET * 2);
+const QPoint POFFSET{ OFFSET, OFFSET };
+const QSize SOFFSET{ GRID_S * 2, GRID_S * 2 };
 
 /// @brief metric for getting text size
 QFontMetrics const metric = QFontMetrics{ QApplication::font() };
@@ -41,14 +41,16 @@ const float ARROW_COMAGG_SIZE{ 15.0 };
 
 //SEQ settings
 /// @brief Width of activation rectangle
-const int ACTIVATION_W{ GRID_S };
+const int ACTIVATION_W{ GRID_S * 2 };
 
-/// @brief Action height
-const int ACTION_H{ 10 };
+/// @brief Action text height
+const int ACTION_H{ GRID_S };
 /// @brief Real action height (with space)
-const int ACTION_RH{ ACTION_H + OFFSET };
+const int ACTION_RH{ ACTION_H + GRID_S };
 /// @brief Space between columns
 const int COLUMN_SPACE{ GRID_S * 4 };
+/// @brief Space under header
+const int HEADER_SPACE{ GRID_S * 2 };
 
 //ERD settings
 /// @brief separator height
