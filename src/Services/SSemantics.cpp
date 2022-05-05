@@ -360,7 +360,7 @@ void Semantics::buildSTree(GlobalStack stack)
             if (this->stack[i][4].first->id == RuleID::R_ACTIVATE || this->stack[i][4].first->id == RuleID::R_DEACTIVATE) {
                 if (this->stack[i].size() >= 6) {
                     if (this->stack[i][4].first->id == RuleID::R_ACTIVATE) {
-                        if (!this->sequences.back().activateMember(this->stack[i][5].second, time)) {
+                        if (!this->sequences.back().activateMember(this->stack[i][5].second, time, i)) {
                             CodeService::formatLine(i, HLevel::LEVEL_WARN);
                             VitaPrint("[WARNING]: Cannot activate already activated member (skipped)");
                         }

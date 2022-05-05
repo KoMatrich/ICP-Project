@@ -171,47 +171,63 @@ protected:
 class SEQActivation
 {
 public:
-    SEQActivation() {}
+    SEQActivation(size_t start, size_t startLine) {
+        this->start = start;
+        this->startLine = startLine;
+    }
     ~SEQActivation() {}
     size_t startIndex() { return start; }
     size_t endIndex() { return end; }
+    void setEndIndex(size_t ln) { end = ln; };
 protected:
-    size_t start;
-    size_t startLine;
-    size_t end;
+    size_t start = 0;
+    size_t startLine = 0;
+    size_t end = 0;
 };
 
 class SEQMember
 {
 public:
-    SEQMember() {}
-    SEQMember(QString name, bool is_interface)
+    SEQMember(QString name)
     {
         this->name = name;
-        this->is_interface = is_interface;
     }
     ~SEQMember() {}
     /// @brief      Getter for member name
     /// @return     member name
-    QString getName() { return name; }
+    inline QString getName() { return name; }
     /// @brief      Getter for member is_interface
     /// @return     member is_interface
-    bool isInterface() { return is_interface; }
+    inline bool isInterface() { return is_interface; }
     /// @brief      Getter for member has_error
     /// @return     member has_error
-    bool getErrorFlag() { return has_error; }
+    inline bool getErrorFlag() { return has_error; }
     /// @brief      Setter for member has_error
     /// @param e    new value
-    void setErrorFlag(bool e) { has_error = e; }
+    inline void setErrorFlag(bool e) { has_error = e; }
     /// @brief      Getter for activations (read the size from actions!)
     /// @return     vector of activations
     inline std::vector<SEQActivation> getActivations() { return activations; }
+    /// @brief      Getter for activation flag
+    /// @return     activation flag
+    inline bool getActivatedFlag() { return is_activated; }
+    /// @brief      Setter for member is_activated
+    /// @param e    new value
+    inline void setActivatedFlag(bool e) { is_activated = e; }
+    /// @brief              adding new activation Class (only start)
+    /// @param start        start time
+    /// @param startLine    line in code
+    void addActivation(size_t start, size_t startLine);
+    /// @brief      Setter for deactivation time (only accessess the end of vector)
+    /// @param time end time
+    void setDeactivationTime(size_t time);
 protected:
     QString name = "";
     bool has_error = false;
     bool is_interface = false;
     std::vector<SEQActivation> activations;
-    size_t class_id;
+    size_t class_id = 0;
+    bool is_activated = false;
 };
 
 class Sequence
@@ -223,12 +239,14 @@ public:
         this->line = line;
     }
     ~Sequence() {}
-    bool activateMember(QString name, size_t time);
+    bool activateMember(QString name, size_t time, size_t line);
     bool deactivateMember(QString name, size_t time);
 
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
 protected:
+    SEQMember* getMemberByName(QString name);
+
     size_t line = 0;
     QString name = "";
     std::vector<SEQMember> members;

@@ -66,6 +66,7 @@ deactivate Vita
 
 sequence test02 {
 
+	deactivate aasd
 	activate teacher
 	activate teacher
 	activate teacher

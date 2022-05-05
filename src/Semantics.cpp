@@ -191,12 +191,56 @@ bool UMLRelation::updateRelationConnectors(size_t new_id)
     return changed;
 }
 
-bool Sequence::activateMember(QString name, size_t time)
+bool Sequence::activateMember(QString name, size_t time, size_t line)
 {
-    return false;
+    SEQMember* m = this->getMemberByName(name);
+    // need to create new member
+    if (!m) {
+        this->members.push_back(SEQMember(name));
+        m = &this->members.back();
+    }
+
+    // cannot activate already activated member
+    if (m->getActivatedFlag())
+        return false;
+
+    // add new activation to stack
+    m->setActivatedFlag(true);
+    m->addActivation(time, line);
 }
 
 bool Sequence::deactivateMember(QString name, size_t time)
 {
-    return false;
+    SEQMember* m = this->getMemberByName(name);
+
+    // cannot deactivate non existing member
+    if (!m) return false;
+
+    // cannot deactivate already activated member
+    if (!m->getActivatedFlag())
+        return false;
+
+    // update activation
+    m->setActivatedFlag(false);
+    m->setDeactivationTime(time);
+    return true;
+}
+
+SEQMember* Sequence::getMemberByName(QString name)
+{
+    for (auto& member : members) {
+        if (member.getName() == name)
+            return &member;
+    }
+    return nullptr;
+}
+
+void SEQMember::addActivation(size_t start, size_t startLine)
+{
+    this->activations.push_back(SEQActivation(start, startLine));
+}
+
+void SEQMember::setDeactivationTime(size_t time)
+{
+    this->activations.back().setEndIndex(time);
 }
