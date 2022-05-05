@@ -318,6 +318,19 @@ void Semantics::buildSTree(GlobalStack stack)
     addInheritedProperties();
     testProperties();
 
+    /* ---------------- SEQUENCES ---------------- */
+    i = 0;
+    //remove
+    HighlightService::setEnabled(true);
+    return;
+    //remove
+    // find first start SEQ
+    while (this->skipTreeUntilLastIs({ RuleID::R_SEQ }, &i, 0)) {
+        VitaPrint(QString::number(i));
+        if (++i >= this->stack.size()) break;
+    }
+    
+
     HighlightService::setEnabled(true);
 }
 

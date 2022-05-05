@@ -8,6 +8,7 @@ class Semantics : public Service<Semantics>
 public:
     void buildSTree(GlobalStack stack);
     std::vector<UMLClass> getClasses() { return classes; }
+    std::vector<Sequence> getSequences() { return sequences; }
 protected:
     std::vector<UMLClass> classes;
     std::vector<Sequence> sequences;
