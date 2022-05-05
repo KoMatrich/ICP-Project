@@ -2,6 +2,7 @@
 
 #include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
+#include "CMath.h"
 
 /// @brief QGraphicsObject Arrow
 class SEQArrow : public QGraphicsObject
@@ -13,7 +14,7 @@ public:
     /// @param o1           first target (to which is this arrow pointing)
     /// @param o2           second target (from which is this arrow pointing)
     /// @param arr_type     type of arrow head used
-    SEQArrow(QGraphicsScene* parent, QPoint pos1, QPoint pos2, RuleID arr_type);
+    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;
@@ -31,9 +32,12 @@ private:
     /// @brief Relative vector from first to second target boundary
     QVector2D col_vec;
     /// @brief first target
-    QPoint pos1;
+    const QPoint pos1;
     /// @brief second target
-    QPoint pos2;
+    const QPoint pos2;
+
+    /// @brief method that is displayed above arrow
+    const QString method;
     /// @brief updates end and col_vec
     void updateArrow();
 

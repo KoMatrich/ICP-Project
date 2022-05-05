@@ -23,29 +23,43 @@ void SEQScene::update()
     std::vector<SEQAction> acts = seq.getActions();
 
     /// @brief keeps starting positions of stems with offset
-    std::vector<QPointF> starts;
+    std::vector<int> offsets;
     QPointF start{ 0,0 };
-    for (auto member : members) {
-        starts.push_back(start);
+    for (auto& member : members) {
+        offsets.push_back(start.x());
         addColumn(member, start, acts.size() + 2);
     }
 
-    start = { 0,0 };
-    for (auto act : acts) {
-
+    uint timeIndex = 0;
+    for (auto& act : acts) {
+        addArrow(act, timeIndex, offsets);
     }
 }
 
-void SEQScene::addColumn(SEQMember member, QPointF& offsetPos, const int& height)
+void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& height)
 {
     auto col = new Column(this, member, 10, height * ACTION_RH);
     col->movePos(offsetPos);
     addItem(col);
 }
 
-void SEQScene::addArrow(SEQMember action, QPointF& offsetPos)
+void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int>& offsets)
 {
-    auto arr = new SEQArrow(this, { 0,0 }, { 0,0 }, RuleID::R_ACCESS);
+    uint HOffset = timeIndex * ACTION_RH;
+
+    timeIndex++;
+
+    if (action.getType() == RuleID::R_NOP) {
+        return;
+    }
+
+    int startI = action.getSenderIndex();
+    int endI = action.getReceiverIndex();
+
+    QPoint start(offsets.at(startI), HOffset);
+    QPoint end(offsets.at(endI), HOffset);
+
+    auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod());
     addItem(arr);
 }
 

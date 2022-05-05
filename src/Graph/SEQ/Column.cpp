@@ -32,7 +32,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         painter->setPen(thick_pen);
     }
     //align to center
-    painter->translate(-rsize.width() / 2, 0);
+    painter->translate(float(-rsize.width()) / 2, 0);
     //draw rectangle in center
     painter->drawRoundedRect(QRect(0, 0, rsize.width(), rsize.height()), RADIUS, RADIUS);
     //draw text in center of rect (taking in count size of text) 
@@ -43,7 +43,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     QLine center_line(QPoint{ rsize.width() / 2, -OFFSET }, QPoint{ rsize.width() / 2,cont_height + OFFSET });
     painter->drawLine(center_line);
 
-    for (auto act : activations) {
+    for (auto& act : activations) {
         int start = act.startIndex() * ACTION_RH;
         int end = qMax(act.endIndex(), size_t(start + 1)) * ACTION_RH;
         //draw activation rectangle

@@ -178,7 +178,8 @@ protected:
 class SEQActivation
 {
 public:
-    SEQActivation(size_t start, size_t startLine) {
+    SEQActivation(size_t start, size_t startLine)
+    {
         this->start = start;
         this->startLine = startLine;
     }
@@ -245,7 +246,8 @@ class Sequence
 {
 public:
     Sequence() {}
-    Sequence(QString name, size_t line) {
+    Sequence(QString name, size_t line)
+    {
         this->name = name;
         this->line = line;
     }

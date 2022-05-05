@@ -1,9 +1,9 @@
 #include "Graph/SEQ/Arrow.h"
 
-SEQArrow::SEQArrow(QGraphicsScene* parent, QPoint pos1, QPoint pos2, RuleID arr_type)
-    :pos1(pos1), pos2(pos2)
+SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method)
+    :pos1(pos1), pos2(pos2), method(method)
 {
-    this->arrow_type = arr_type;
+    arrow_type = arr_type;
     setParent(parent);
 
     update();
@@ -11,7 +11,7 @@ SEQArrow::SEQArrow(QGraphicsScene* parent, QPoint pos1, QPoint pos2, RuleID arr_
 
 QRectF SEQArrow::boundingRect() const
 {
-    return QRect(this->pos().toPoint(), this->end.toPoint()).normalized(); //.marginsAdded(MARGIN)
+    return QRect(pos().toPoint(), end.toPoint()).normalized();
 }
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -35,13 +35,13 @@ void SEQArrow::update()
 void SEQArrow::updateArrow()
 {
     //set arrow position to center of object 2
-    this->setPos(pos2);
+    setPos(pos2);
 
     //get connecting vector
     QVector2D end = QVector2D(pos1 - pos2);
 
     //get colision vector without arrow head size
-    col_vec = QVector2D(end.x() * ARROW_OFFSET / std::abs(end.x()), end.y());
+    col_vec = QVector2D(end.x() - ACTIVATION_W * sgn(end.x()), end.y());
 }
 
 void SEQArrow::updateArrowHead()
