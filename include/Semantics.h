@@ -21,12 +21,17 @@ public:
     QString getEntity();
     size_t getID() { return id; }
     RuleID getType() { return type; }
+    void setInvalid() { isValid = false; }
+    bool getValid() { return isValid; }
     bool updateRelationParams(UMLRelation new_r);
     bool updateRelationConnectors(size_t new_id);
 protected:
+    /// @brief flag used for when deleting
+    bool isValid = true;
+    /// @brief name of target entity
     QString entity;
     /// @brief semantic type of rule
-    RuleID type;
+    RuleID type = RuleID::R_ERR;
     /// @brief Unique identifier
     size_t id = -1;
 };

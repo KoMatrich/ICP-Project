@@ -45,12 +45,16 @@ void UMLClass::addProperty(UMLProperty new_p, bool isMethod, size_t n)
 void UMLClass::removeExceedingProperties(size_t a, size_t m)
 {
     if (this->attributes.size() > a) {
-        this->attributes.resize(a);
+        while (this->attributes.size() > a) {
+            this->attributes.pop_back();
+        }
         this->has_changed = true;
     }
 
     if (this->methods.size() > m) {
-        this->methods.resize(m);
+        while (this->methods.size() > m) {
+            this->methods.pop_back();
+        }
         this->has_changed = true;
     }
 }
@@ -58,7 +62,9 @@ void UMLClass::removeExceedingProperties(size_t a, size_t m)
 void UMLClass::removeExceedingRelations(size_t r)
 {
     if (this->relations.size() > r) {
-        this->attributes.resize(r);
+        while (this->relations.size() > r) {
+            this->relations.pop_back();
+        }
         this->has_changed = true;
     }
 }

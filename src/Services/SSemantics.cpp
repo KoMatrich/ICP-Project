@@ -172,7 +172,8 @@ void Semantics::testRelations()
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
                 auto a = rel[j].toString().toStdString();
-
+                classes[i].has_changed = true;
+                rel[j].setInvalid();
             }
         }
     }
@@ -182,8 +183,9 @@ void Semantics::addInheritedProperties()
 {
     for (UMLClass& c : classes) {
         c.cleanAndSetUpdatedInherited();
+        auto s = c.getClassName().toStdString();
         for (UMLRelation r : c.getRelations()) {
-            if (r.getType() == RuleID::R_GEN) {
+            if (r.getType() == RuleID::R_GEN && r.getValid()) {
                 c.updateInherited(true, classes[r.getID()].getMethods());
                 c.updateInherited(false, classes[r.getID()].getAttributes());
             }
@@ -307,7 +309,9 @@ void Semantics::buildSTree(GlobalStack stack)
         n++;
     }
     // delete excessive classes
-    classes.resize(n);
+    while (this->classes.size() > n) {
+        this->classes.pop_back();
+    }
 
     testDuplicates();
     testRelations();

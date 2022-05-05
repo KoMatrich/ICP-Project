@@ -38,7 +38,7 @@ inline const char* RuleIDtoString(RuleID r)
     case RuleID::R_ASS: return "association"; break;
     case RuleID::R_AGG: return "aggregation"; break;
     case RuleID::R_COM: return "composition"; break;
-    case RuleID::R_GEN: return "generalisation"; break;
+    case RuleID::R_GEN: return "generalization"; break;
     case RuleID::R_XPOS: return "R_XPOS"; break;
     case RuleID::R_YPOS: return "R_YPOS"; break;
     case RuleID::R_POSVAL: return "R_POSVAL"; break;
