@@ -22,12 +22,12 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
     cached_pos = QPoint(clas.getXPos(), clas.getYPos());
 
     if (clas.getErrorFlag()) {
-        fill = red();
+        fill = redG(rsize.height());
     } else {
         if (clas.isInterface())
-            fill = blue();
+            fill = blueG(rsize.height());
         else
-            fill = green();
+            fill = greenG(rsize.height());
     }
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -116,8 +116,7 @@ void ERDItem::paint(QPainter* painter,
     painter->setBrush(fill);
     if (is_selected) {
         painter->setPen(selected_pen);
-    } 
-    else if (is_thick) {
+    } else if (is_thick) {
         painter->setPen(thick_pen);
     }
     painter->drawRoundedRect(boundingRect(), RADIUS, RADIUS);
@@ -266,34 +265,4 @@ void ERDItem::paintSeparator(QPainter* paint, BlockType type)
         break;
     }
     paint->translate(0, SEPARATOR_H);
-}
-
-QLinearGradient ERDItem::red()
-{
-    QLinearGradient gradient(0, 0, 0, RSize().height());
-    gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, { 255, 220, 220 });
-    gradient.setColorAt(0.8, { 240, 220, 220 });
-    gradient.setColorAt(1.0, { 240, 220, 220 });
-    return gradient;
-}
-
-QLinearGradient ERDItem::green()
-{
-    QLinearGradient gradient(0, 0, 0, RSize().height());
-    gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, { 220, 255, 220 });
-    gradient.setColorAt(0.8, { 220, 240, 220 });
-    gradient.setColorAt(1.0, { 220, 240, 220 });
-    return gradient;
-}
-
-QLinearGradient ERDItem::blue()
-{
-    QLinearGradient gradient(0, 0, 0, RSize().height());
-    gradient.setColorAt(0.0, Qt::white);
-    gradient.setColorAt(0.2, { 220, 220, 255 });
-    gradient.setColorAt(0.8, { 220, 220, 240 });
-    gradient.setColorAt(1.0, { 220, 220, 240 });
-    return gradient;
 }

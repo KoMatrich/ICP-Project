@@ -101,9 +101,6 @@ private:
     /// @brief data blocks (text,separators)
     QVector<Block> blocks;
 
-    /// @brief metric for getting text size
-    QFontMetrics const metric = QFontMetrics{ QApplication::font() };
-
     /// @brief init processing function for data
     void addline(const Block data);
 
@@ -120,17 +117,6 @@ private:
     /// @param type     string representation of type
     void paintSeparator(QPainter* paint, BlockType type);
 
-    //gradient fills
-    /// @brief      red gradient
-    /// @return     gradient with same height as item
-    QLinearGradient red();
-    /// @brief      green gradient
-    /// @return     gradient with same height as item
-    QLinearGradient green();
-    /// @brief      blue gradient
-    /// @return     gradient with same height as item
-    QLinearGradient blue();
-
 private:
     /// @brief          adds attributes to item
     /// @param clas     data
@@ -138,8 +124,6 @@ private:
     /// @brief          adds methods to item
     /// @param clas     data
     void addMethods(UMLClass clas);
-    //TODO remove
-    void test();
 
 signals:
     /// @brief  Signals item movement

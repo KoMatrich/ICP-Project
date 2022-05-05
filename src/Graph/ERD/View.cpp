@@ -55,7 +55,6 @@ ERDView::ERDView(QObject* parent)
 {
     setScene(&scene);
     setRenderHint(QPainter::Antialiasing);
-    //TODO fix this background
     const QPixmap bckg = QPixmap(":/images/resources/grid.png");
     setBackgroundBrush(bckg);
     //setCacheMode(QGraphicsView::CacheBackground);//dont use! visual glitches

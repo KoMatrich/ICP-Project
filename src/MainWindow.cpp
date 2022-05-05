@@ -142,11 +142,14 @@ void MainWindow::createActions()
     fileToolBar->addAction(QStringLiteral("Magic?"), [this]() {CodeService::updatePos(18, 0, 240, 0, 0); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
-            [this]() { setWindowModified(true); erdView->update(); });
+            [this]() { setWindowModified(true); });
+    connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
+            [this]() { erdView->update(); });
+    connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
+            [this]() { seqView->update(); });
+
     connect(mainTextEdit, &MainTextEdit::copyAvailable,
             [cutAct](bool s) {cutAct->setEnabled(s); });
-    connect(mainTextEdit, &MainTextEdit::copyAvailable,
-            [copyAct](bool s) {copyAct->setEnabled(s); });
 }
 
 void MainWindow::createStatusBar()
