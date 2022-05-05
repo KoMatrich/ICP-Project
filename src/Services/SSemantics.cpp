@@ -152,6 +152,11 @@ void Semantics::testProperties()
     }
 }
 
+void Semantics::removeClasses()
+{
+    classes.clear();
+}
+
 void Semantics::removeSequences()
 {
     sequences.clear();
@@ -332,7 +337,7 @@ void Semantics::buildSTree(GlobalStack stack)
     if (stack.size() > 86)
         int a = 5;
 
-    this->skipTreeUntilLastIs({ RuleID::R_SEQ }, & i, 0);
+    this->skipTreeUntilLastIs({ RuleID::R_SEQ }, &i, 0);
 
     // skip until start of sequence
     while (this->skipTreeUntilWhileTrue({ RuleID::R_SEQUENCE }, &i, 1, RuleID::R_SEQ, 0)) {
@@ -379,7 +384,7 @@ void Semantics::buildSTree(GlobalStack stack)
             if (++i >= this->stack.size()) break;
         }
     }
-    
+
     HighlightService::setEnabled(true);
 }
 

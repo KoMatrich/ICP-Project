@@ -9,6 +9,8 @@ public:
     void buildSTree(GlobalStack stack);
     std::vector<UMLClass> getClasses() { return classes; }
     std::vector<Sequence> getSequences() { return sequences; }
+    void removeClasses();
+    void removeSequences();
 protected:
     std::vector<UMLClass> classes;
     std::vector<Sequence> sequences;
@@ -21,5 +23,4 @@ protected:
     void addInheritedProperties();
     void printStack();
     void testProperties();
-    void removeSequences();
 };

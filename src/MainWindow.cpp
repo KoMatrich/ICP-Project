@@ -54,10 +54,10 @@ bool MainWindow::saveAs()
     return saveFile(fileName);
 }
 
-//TODO
 void MainWindow::about()
 {
-    QMessageBox::about(this, QStringLiteral("About ICP UML Project"),
+    QMessageBox::about(this,
+                       QStringLiteral("About ICP UML Project"),
                        QStringLiteral("<b>Authors:</b> <i>Vitezslav Kriz & Martin Kocich</i>"));
 }
 
@@ -132,19 +132,36 @@ void MainWindow::init()
 void MainWindow::createActions()
 {
     auto* fileMenu = menuBar()->addMenu(QStringLiteral("File"));
-    fileMenu->addAction(QStringLiteral("New"), [this]() {loadFile(""); }, QKeySequence::New);
+    fileMenu->addAction(QStringLiteral("New"),
+                        [this]() {loadFile(""); },
+                        QKeySequence::New);
     fileMenu->addAction(QStringLiteral("Open"),
-                        [this]() {loadFile(QFileDialog::getOpenFileName(this)); }, QKeySequence::Open);
-    fileMenu->addAction(QStringLiteral("Save"), [this]() {save(); }, QKeySequence::Save);
-    fileMenu->addAction(QStringLiteral("Save As"), [this]() {saveAs(); }, QKeySequence::SaveAs);
+                        [this]() {loadFile(QFileDialog::getOpenFileName(this)); },
+                        QKeySequence::Open);
+    fileMenu->addAction(QStringLiteral("Save"),
+                        [this]() {save(); },
+                        QKeySequence::Save);
+    fileMenu->addAction(QStringLiteral("Save As"),
+                        [this]() {saveAs(); },
+                        QKeySequence::SaveAs);
     fileMenu->addSeparator();
-    fileMenu->addAction(QStringLiteral("Close"), [this]() {close(); }, QKeySequence::SaveAs);
+    fileMenu->addAction(QStringLiteral("Close"),
+                        [this]() {close(); },
+                        QKeySequence::SaveAs);
 
     auto* editMenu = menuBar()->addMenu(QStringLiteral("Edit"));
-    auto* undoAct = editMenu->addAction(QStringLiteral("Undo"), [this]() {HistoryService::restoreHistorySnapshot(); }, QKeySequence::Undo);
-    auto* cutAct = editMenu->addAction(QStringLiteral("Cut"), [this]() {mainTextEdit->cut(); }, QKeySequence::Cut);
-    auto* copyAct = editMenu->addAction(QStringLiteral("Copy"), [this]() {mainTextEdit->copy(); }, QKeySequence::Copy);
-    auto* pasteAct = editMenu->addAction(QStringLiteral("Paste"), [this]() {mainTextEdit->paste(); }, QKeySequence::Paste);
+    auto* undoAct = editMenu->addAction(QStringLiteral("Undo"),
+                                        [this]() {HistoryService::restoreHistorySnapshot(); },
+                                        QKeySequence::Undo);
+    auto* cutAct = editMenu->addAction(QStringLiteral("Cut"),
+                                       [this]() {mainTextEdit->cut(); },
+                                       QKeySequence::Cut);
+    auto* copyAct = editMenu->addAction(QStringLiteral("Copy"),
+                                        [this]() {mainTextEdit->copy(); },
+                                        QKeySequence::Copy);
+    auto* pasteAct = editMenu->addAction(QStringLiteral("Paste"),
+                                         [this]() {mainTextEdit->paste(); },
+                                         QKeySequence::Paste);
 
     auto* helpMenu = menuBar()->addMenu(QStringLiteral("Help"));
     helpMenu->addAction(QStringLiteral("About"), [this]() {about(); });
@@ -158,8 +175,10 @@ void MainWindow::createActions()
     editToolBar->addAction(pasteAct);
 
     auto* fileToolBar = addToolBar(QStringLiteral("File"));
-    fileToolBar->addAction(QStringLiteral("Syntax refresh"), [this]() {mainTextEdit->syntax_reload(); });
-    fileToolBar->addAction(QStringLiteral("Undo"), [this]() {HistoryService::restoreHistorySnapshot(); });
+    fileToolBar->addAction(QStringLiteral("Syntax refresh"),
+                           [this]() {mainTextEdit->syntax_reload(); });
+    fileToolBar->addAction(QStringLiteral("Undo"),
+                           [this]() {HistoryService::restoreHistorySnapshot(); });
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); });
@@ -222,10 +241,22 @@ void MainWindow::loadFile(const QString& fileName)
         return;
     }
 
+    //disable code change detection
     HighlightService::setEnabled(false);
+    //clear all background formating
     CodeService::clearBackground();
-
+    //clear semantics classes
+    Semantics::getInstance().removeClasses();
+    //clear semantics classes
+    Semantics::getInstance().removeSequences();
+    //clear text editor
     mainTextEdit->clear();
+
+    VitaClear();
+    VitaPrint("New file loaded");
+
+    erdView->update();
+    seqView->update();
 
     setCurrentFile(fileName);
     if (fileName.isEmpty()) {

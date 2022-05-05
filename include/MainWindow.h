@@ -4,6 +4,7 @@
 
 #include "Graph/ERD/View.h"
 #include "Graph/SEQ/View.h"
+#include "Services/SSemantics.h"
 #include "TextCode.h"
 
 /// @brief Main window class
