@@ -4,7 +4,13 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
 {
     this->setParent(parent);
 
-    addline({ BlockType::Text, clas.getClassName() });
+    xpos_line = clas.getXLine();
+    ypos_line = clas.getYLine();
+    class_line = clas.pos;
+    class_end = clas.pos_end;
+    class_name = clas.getClassName();
+
+    addline({ BlockType::Text, class_name });
     addline({ BlockType::SepBold ,"" });
     addAtributes(clas);
     addline({ BlockType::SepDouble ,"" });
@@ -12,11 +18,6 @@ ERDItem::ERDItem(QGraphicsScene* parent, UMLClass clas)
     moveBy(qreal(clas.getXPos()), qreal(clas.getYPos()));
 
     rsize = RSize();
-
-    xpos_line = clas.getXLine();
-    ypos_line = clas.getYLine();
-    class_line = clas.pos;
-    class_end = clas.pos_end;
 
     cached_pos = QPoint(clas.getXPos(), clas.getYPos());
 
@@ -97,7 +98,7 @@ void ERDItem::addline(const Block line)
 
 QRectF ERDItem::boundingRect() const
 {
-    return QRectF{ QPoint(0,0), rsize }.normalized(); //.marginsAdded(MARGIN)
+    return QRectF{ QPoint(0,0), rsize }.normalized();
 }
 
 void ERDItem::paint(QPainter* painter,
@@ -106,11 +107,17 @@ void ERDItem::paint(QPainter* painter,
 {
     QPen thick_pen = QPen();
     thick_pen.setWidth(3);
+    QPen selected_pen = QPen();
+    selected_pen.setWidth(5);
+    selected_pen.setColor(Qt::red);
 
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setBrush(fill);
-    if (is_thick) {
+    if (is_selected) {
+        painter->setPen(selected_pen);
+    } 
+    else if (is_thick) {
         painter->setPen(thick_pen);
     }
     painter->drawRoundedRect(boundingRect(), RADIUS, RADIUS);
@@ -152,16 +159,23 @@ void ERDItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     menu.addAction(QStringLiteral("Delete"), [this]() {CodeService::deleteEntity(class_line, class_end); });
     menu.addSeparator();
     QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
-    relations->addAction(QStringLiteral("Aggregation"), [this]() {});
-    relations->addAction(QStringLiteral("Association"), [this]() {});
-    relations->addAction(QStringLiteral("Composition"), [this]() {});
-    relations->addAction(QStringLiteral("Generalization"), [this]() {});
+    relations->addAction(QStringLiteral("Aggregation"), [this]() {connectMode(RuleID::R_AGG); });
+    relations->addAction(QStringLiteral("Association"), [this]() {connectMode(RuleID::R_ASS); });
+    relations->addAction(QStringLiteral("Composition"), [this]() {connectMode(RuleID::R_COM); });
+    relations->addAction(QStringLiteral("Generalization"), [this]() {connectMode(RuleID::R_GEN); });
 
     //menu execution
     menu.exec(event->screenPos());
 
     //relations is pointer to local menu data
     //no need to delete pointer data
+}
+
+void ERDItem::connectMode(RuleID rule)
+{
+    is_selected = true;
+    CodeService::relationRequest(class_name, rule, class_end);
+    update();
 }
 
 void ERDItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
@@ -179,6 +193,11 @@ void ERDItem::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
 {
     is_thick = false;
     update();
+}
+
+void ERDItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    CodeService::relationConnect(class_name);
 }
 
 //paints block of item

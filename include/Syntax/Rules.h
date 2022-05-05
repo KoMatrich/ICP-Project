@@ -35,10 +35,10 @@ inline const char* RuleIDtoString(RuleID r)
     case RuleID::R_TYPE: return "R_TYPE"; break;
     case RuleID::R_ACCESS: return "R_ACCESS"; break;
     case RuleID::R_IN: return "R_IN"; break;
-    case RuleID::R_ASS: return "R_ASS"; break;
-    case RuleID::R_AGG: return "R_AGG"; break;
-    case RuleID::R_COM: return "R_COM"; break;
-    case RuleID::R_GEN: return "R_GEN"; break;
+    case RuleID::R_ASS: return "association"; break;
+    case RuleID::R_AGG: return "aggregation"; break;
+    case RuleID::R_COM: return "composition"; break;
+    case RuleID::R_GEN: return "generalisation"; break;
     case RuleID::R_XPOS: return "R_XPOS"; break;
     case RuleID::R_YPOS: return "R_YPOS"; break;
     case RuleID::R_POSVAL: return "R_POSVAL"; break;

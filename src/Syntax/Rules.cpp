@@ -213,14 +213,14 @@ RuleSet const SyntaxTree::genRules()
 
 	// activate keyword
 	Rule* activate_keyword = new Rule();
-	activate_keyword->start = Start("activate");
+	activate_keyword->start = Start("ac?t?i?v?a?t?e?");
 	activate_keyword->format.setFontWeight(QFont::Bold);
 	activate_keyword->format.setForeground(Qt::darkGreen);
 	activate_keyword->id = RuleID::R_ACTIVATE;
 
 	// deactivate keyword
 	Rule* deactivate_keyword = new Rule();
-	deactivate_keyword->start = Start("deactivate");
+	deactivate_keyword->start = Start("de?a?c?t?i?v?a?t?e?");
 	deactivate_keyword->format.setFontWeight(QFont::Bold);
 	deactivate_keyword->format.setForeground(Qt::darkRed);
 	deactivate_keyword->id = RuleID::R_DEACTIVATE;

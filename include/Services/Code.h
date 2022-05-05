@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Services/Highlight.h"
+#include "Syntax/Rules.h"
 
 /// @brief highlighting type
 enum class HLevel
@@ -54,6 +55,14 @@ public:
     /// @brief              highlightes and jumps to class
     /// @param ln           first line of class
     static void highlightClass(size_t ln);
+    /// @brief              first connection pair storing
+    /// @param sel_name     name of calling class
+    /// @param rule         connection type
+    /// @param line         line to specify where to put the code
+    static void relationRequest(QString sel_name, RuleID rule, size_t line);
+    /// @brief              second connection pair storing and processing
+    /// @param target       name of target class
+    static void relationConnect(QString target);
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint
@@ -64,4 +73,9 @@ private:
     size_t new_y_line = 0;
     int new_x = 0;
     int new_y = 0;
+
+    bool isConnecting = false;
+    size_t rel_line = 0;
+    QString sel_name;
+    RuleID rule = RuleID::R_ERR;
 };

@@ -41,6 +41,12 @@ protected:
     /// @brief          marks the entity as not selected while in connect mode
     /// @param event    mouse event
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+    /// @brief          connects the relation (if any in connect mode)
+    /// @param rule     mouse event
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    /// @brief          enter the connect mode
+    /// @param rule     specifies the option selected
+    void connectMode(RuleID rule);
 private:
     //automatic vars
     //used for size calculations
@@ -61,6 +67,8 @@ private:
 
     /// @brief used for highlighting
     bool is_thick = false;
+    /// @brief used for connecting to other classes
+    bool is_selected = false;
 
     //feed back loop
     /// @brief used for getting position of cords in text file
@@ -71,6 +79,8 @@ private:
     size_t class_line{ 0 };
     /// @brief used for getting position of cords in text file
     size_t class_end{ 0 };
+    /// @brief used for getting position of cords in text file
+    QString class_name;
 
     /// @brief cashed position for movement
     QPoint cached_pos;

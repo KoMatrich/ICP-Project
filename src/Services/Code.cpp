@@ -35,6 +35,30 @@ void CodeService::highlightClass(size_t ln)
     HighlightService::setEnabled(true);
 }
 
+void CodeService::relationRequest(QString sel_name, RuleID rule, size_t line)
+{
+    CodeService& instance = CodeService::getInstance();
+    QTextEdit* editor = instance.code;
+    editor->setDisabled(true);
+    instance.isConnecting = true;
+    instance.sel_name = sel_name;
+    instance.rule = rule;
+    instance.rel_line = line;
+}
+
+void CodeService::relationConnect(QString target)
+{
+    CodeService& instance = CodeService::getInstance();
+    if (!instance.isConnecting) return;
+
+    instance.isConnecting = false;
+    QTextEdit* editor = instance.code;
+    QTextBlock block = editor->document()->findBlockByLineNumber(instance.rel_line);
+    QTextCursor cursor = QTextCursor(block);
+    cursor.movePosition(QTextCursor::StartOfLine);
+    cursor.insertText(QString("   in ") + RuleIDtoString(instance.rule) + QString(" with ") + target + QString("\n"));
+    editor->setDisabled(false);
+}
 
 void CodeService::formatLine(size_t ln, HLevel level)
 {
