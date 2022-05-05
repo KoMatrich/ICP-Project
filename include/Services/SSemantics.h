@@ -30,12 +30,29 @@ protected:
     /// @brief              Adds new class to memory
     /// @param new_class    UMLClass created by semantic
     void addClass(UMLClass new_class);
-    // @TODO @xkrizv03
+    /// @brief          Reads lines of global stack until the last element at pos is of type rule
+    /// @param rules    vector of acceptable rules
+    /// @param index    index pointer (will be incremented outside of the function)
+    /// @param pos      position in a linestack
+    /// @return         returns true on find and false if skipped to the end of global stack
     bool skipTreeUntilLastIs(std::vector<RuleID> rules, size_t* index, size_t pos);
+    /// @brief          Reads lines of global stack until linestack element at position pos is
+    ///                 in rules vector or the condition (true_id at true_pos) is invalid
+    /// @param rules    vector of acceptable rules
+    /// @param index    index pointer (will be incremented outside of the function)
+    /// @param pos      position in a linestack
+    /// @param true_id  condition - id of required rule
+    /// @param true_pos condition - position of required rule
+    /// @return         returns true on find and false if skipped to the end of global stack
     bool skipTreeUntilWhileTrue(std::vector<RuleID> rules, size_t* index, size_t pos, RuleID true_id, size_t true_pos);
+    /// @brief          tests classes for duplicate names and sets error flags
     void testDuplicates();
+    /// @brief          tests class relations and connects them by class id
     void testRelations();
+    /// @brief          in case of generalization, copies all inherited methods and attributes to specialized child
     void addInheritedProperties();
+    /// @brief          Debug - prints the entire global stack into Debug window
     void printStack();
+    /// @brief          Tests if names of properties (both own and inherited) are not colliding and sets error flags
     void testProperties();
 };
