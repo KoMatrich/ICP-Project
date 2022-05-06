@@ -42,6 +42,7 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     if (pos1 != pos2) {
         painter->drawLine(end.toPoint(), col_vec.toPoint());
     }
+    // otherwise, create an 'U' Shape
     else {
         painter->drawLine(end.toPoint(), end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0));
         painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0), end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT));
