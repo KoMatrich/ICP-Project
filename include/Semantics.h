@@ -129,7 +129,9 @@ class SEQAction
 {
 public:
     SEQAction(QString method, RuleID type, size_t line, QString sender, QString receiver)
-        : sender(sender), receiver(receiver), method(method), type(type), line(line) {}
+        : sender(sender), receiver(receiver), method(method), type(type), line(line)
+    {
+    }
     ~SEQAction() {}
     /// @brief      Getter for member name
     /// @return     member name
