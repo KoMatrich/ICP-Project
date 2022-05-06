@@ -27,7 +27,11 @@ Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const
 
 QRectF Column::boundingRect() const
 {
-    return QRectF(0, 0, rsize.width(), rsize.height() + cont_height * ACTION_RH);
+    return QRectF(-rsize.width() / 2,
+                  -HEADER_SPACE - rsize.height(),
+                  rsize.width(),
+                  HEADER_SPACE + rsize.height() + cont_height * ACTION_RH + STEM_EXTRA
+    ).normalized().marginsAdded(BOUND_OF);
 }
 
 void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -45,23 +49,27 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         painter->setPen(thick_pen);
     }
     painter->save();
-    //paint up from center
+    //go to header start
     painter->translate(0, -HEADER_SPACE);
-    //draw stem
-    painter->drawLine(0, 0, 0, HEADER_SPACE + (cont_height + 1) * ACTION_RH);
+    //draw stem with extra down
+    painter->drawLine(0, 0, 0, HEADER_SPACE + cont_height * ACTION_RH + STEM_EXTRA);
+    //go to top left corner of header
     painter->translate(-rsize.width() / 2, -rsize.height());
     //draw rect
     painter->drawRoundedRect(0, 0, rsize.width(), rsize.height(), RADIUS / 10, RADIUS / 10);
+    //go to center of rect
     painter->translate(rsize.width() / 2, rsize.height() / 2);
-    //draw text in rectangle (centered)
+    //draw text (centered)
     QPoint textOffset{ -metric.width(name) / 2, metric.height() / 2 };
     painter->drawText(textOffset, name);
 
     painter->restore();
     //paint down from center
     for (auto& act : activations) {
+        //draw at start pos
         int start = act.startIndex() * ACTION_RH;
-        int end = act.endIndex() * ACTION_RH + (ACTION_RH / 4);
+        //draw end of activation with litle tail
+        int end = act.endIndex() * ACTION_RH + (ACTION_RH / 8);
         //draw activation rectangle
         painter->drawRect(-ACTIVATION_W / 2, start, ACTIVATION_W, end - start);
     }

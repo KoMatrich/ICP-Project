@@ -20,7 +20,7 @@ QRectF Arrow::boundingRect() const
 {
     auto posP = pos().toPoint();
     auto vecP = col_vec.toPoint();
-    return QRect(posP, vecP).normalized();
+    return QRect(posP, vecP).normalized().marginsAdded(BOUND_OF);
 }
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

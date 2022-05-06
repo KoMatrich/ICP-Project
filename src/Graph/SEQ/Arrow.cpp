@@ -11,7 +11,7 @@ SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos
 
 QRectF SEQArrow::boundingRect() const
 {
-    return QRect(pos().toPoint() - QPoint{ 0, ACTION_RH / 2 }, end.toPoint() + QPoint{ 0, ACTION_RH / 2 }).normalized();
+    return QRect(0, -(ACTION_RH+ACTION_H)/2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(BOUND_OF);
 }
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -36,7 +36,7 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->setPen(pen);
     painter->setBrush(brush);
 
-    QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
+    QPoint textOffset{ metric.width(method) / 2, ACTION_H / 3 };
     painter->drawLine(end.toPoint(), col_vec.toPoint());
 
     painter->drawPolygon(arrow_head);

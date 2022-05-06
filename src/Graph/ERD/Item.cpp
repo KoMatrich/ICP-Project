@@ -98,7 +98,7 @@ void ERDItem::addline(const Block line)
 
 QRectF ERDItem::boundingRect() const
 {
-    return QRectF{ QPoint(0,0), rsize }.normalized();
+    return QRectF{ QPoint(0,0), rsize }.normalized().marginsAdded(BOUND_OF);
 }
 
 void ERDItem::paint(QPainter* painter,

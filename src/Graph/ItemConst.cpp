@@ -9,7 +9,7 @@ void drawDebug(QPainter* painter, QGraphicsObject* obj)
     painter->restore();
     painter->save();
     QPen debugDrawPen;
-    debugDrawPen.setColor(QColor(255 - index, 150, index));
+    debugDrawPen.setColor(QColor(255 - index, 0, index));
     debugDrawPen.setStyle(Qt::DashLine);
     debugDrawPen.setWidth(1);
     painter->setPen(debugDrawPen);

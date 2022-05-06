@@ -46,16 +46,21 @@ const int ACTIVATION_W{ GRID_S * 2 };
 
 /// @brief Action text height
 const int ACTION_H{ GRID_S };
-/// @brief Real action height (with space)
-const int ACTION_RH{ ACTION_H + GRID_S * 2 };
+/// @brief Real action height
+const int ACTION_RH{ ACTION_H + int(ARROW_GEN_SIZE) };
 /// @brief (extra) Space between columns
 const int COLUMN_SPACE{ GRID_S * 2 };
 /// @brief Space under header
 const int HEADER_SPACE{ GRID_S * 2 };
+/// @brief Steam ending extra
+const int STEM_EXTRA{ GRID_S };
 
 //ERD settings
 /// @brief separator height
 const int SEPARATOR_H{ 3 };
+
+const int pixOf = 0;
+const QMargins BOUND_OF{ pixOf,pixOf,pixOf,pixOf };
 
 inline QLinearGradient redG(uint cont_height)
 {
@@ -95,3 +100,8 @@ inline QLinearGradient blueG(uint cont_height)
 /// @note           use as last thing in paint function
 /// @warn           clears all formating
 void drawDebug(QPainter* painter, QGraphicsObject* obj);
+
+void inline drawPoint(QPainter* painter)
+{
+    painter->drawEllipse(-3, -3, 6, 6);
+}
