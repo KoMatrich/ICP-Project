@@ -1,11 +1,11 @@
 #include "Graph/SEQ/Column.h"
 
-Column::Column(QGraphicsScene* parent, QPoint& offsetPos, SEQMember& mem, const int& height, const int& COLUMN_SPACING)
+Column::Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, const int& height)
     : cont_height(height), name(mem.getName())
 {
     //calculate size
     size = { metric.width(name),HEADER_HEIGHT };
-    rsize = QSize{ size.width(), size.height() } + SOFFSET;
+    rsize = QSize{ size.width(), HEADER_HEIGHT } + SOFFSET;
 
     //create infill
     if (mem.getErrorFlag()) {
@@ -21,15 +21,15 @@ Column::Column(QGraphicsScene* parent, QPoint& offsetPos, SEQMember& mem, const 
     //get all activations
     activations = mem.getActivations();
     //update pos
-    setPos(offsetPos - QPoint{rsize.width()/2,0});
-    offsetPos = { offsetPos.x() + COLUMN_SPACING, offsetPos.y() };
+    setPos(pos);
+    off = { rsize.width()/2,0 };
 }
 
 QRectF Column::boundingRect() const
 {
     return QRectF(0, 0,
                   rsize.width(),
-                  HEADER_SPACE + rsize.height() + cont_height * ACTION_RH + STEM_EXTRA
+                  HEADER_SPACE + HEADER_HEIGHT + OFFSET + cont_height * ACTION_RH + STEM_EXTRA
     ).normalized().marginsAdded(BOUND_OF);
 }
 

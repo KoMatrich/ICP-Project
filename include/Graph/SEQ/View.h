@@ -14,8 +14,8 @@ public:
 	/// @brief          updates scene
 	void update();
 private:
-	void addColumn(SEQMember& member, QPoint& offsetPos, const int& height, const int& COLUMN_SPACING);
-	void addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> offsets);
+	void addColumn(SEQMember& member, QPoint pos, QPoint& off, const int& height);
+	void addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> pos, std::vector<QPoint> off);
 protected:
 	/// @brief          handles code refreshing after dragging
 	/// @param event    mouse release

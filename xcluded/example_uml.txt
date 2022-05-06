@@ -5,8 +5,8 @@ https://real-world-plantuml.com/?type=sequence
 
 interface teacher{
 
-	x: 348
-	y: -66
+	x: 360
+	y: -114
 	in assoc with student
 	+	String firstname
 	+ String  lastname
@@ -17,8 +17,8 @@ interface teacher{
 }
 
 class student{
-	x: 96
-	y: -24
+	x: 120
+	y: -12
 	+  String as
 	-	String firstname
 	+ String lastname
@@ -32,14 +32,14 @@ class student{
 }
 
 class Martin{
-x: 336
-y: 144
+x: 444
+y: 36
 	in gen with student
 }
 
 interface Vita{
-x: 120
-y: 216
+x: 252
+y: 192
 	in gen with student
 	+ uint breadcount
 	+ uint getBreadCount()

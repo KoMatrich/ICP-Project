@@ -57,7 +57,8 @@ const int HEADER_HEIGHT{ GRID_S * 2 };
 /// @brief Steam ending extra
 const int STEM_EXTRA{ GRID_S };
 
-const int BOX_INNER_OFFSET{ GRID_S };
+const int BOX_OFFSET{ GRID_S };
+const QMargins BOX_OFF{ BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET };
 
 //ERD settings
 /// @brief separator height
