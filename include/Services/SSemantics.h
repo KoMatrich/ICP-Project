@@ -2,6 +2,8 @@
 
 #include "Semantics.h"
 #include "Services/Code.h"
+#include "Graph/ERD/View.h"
+#include "Graph/SEQ/View.h"
 
 /// @brief Main semantic checking service
 class Semantics : public Service<Semantics>
@@ -20,7 +22,13 @@ public:
     void removeClasses();
     /// @brief          Clears all sequences from memory
     void removeSequences();
+
+    void setERDView(ERDView*);
+    void setSEQView(SEQView*);
 protected:
+    ERDView* erd = nullptr;
+    SEQView* seq = nullptr;
+
     /// @brief          All classes found by semantic
     std::vector<UMLClass> classes;
     /// @brief          All sequences found by semantic
@@ -29,6 +37,7 @@ protected:
     GlobalStack stack;
     /// @brief              Adds new class to memory
     /// @param new_class    UMLClass created by semantic
+
     void addClass(UMLClass new_class);
     /// @brief          Reads lines of global stack until the last element at pos is of type rule
     /// @param rules    vector of acceptable rules

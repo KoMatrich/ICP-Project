@@ -1,9 +1,13 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QtWidgets>
 
 #include "Graph/ERD/View.h"
 #include "Graph/SEQ/View.h"
+#include "Services/Debug.h"
+#include "Services/Code.h"
+#include "Services/History.h"
 #include "Services/SSemantics.h"
 #include "TextCode.h"
 

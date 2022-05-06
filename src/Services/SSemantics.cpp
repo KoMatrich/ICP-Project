@@ -162,6 +162,16 @@ void Semantics::removeSequences()
     sequences.clear();
 }
 
+void Semantics::setERDView(ERDView* erd)
+{
+    this->erd = erd;
+}
+
+void Semantics::setSEQView(SEQView* seq)
+{
+    this->seq = seq;
+}
+
 void Semantics::testRelations()
 {
     for (size_t i = 0; i < classes.size(); i++) {
@@ -205,6 +215,11 @@ void Semantics::addInheritedProperties()
 
 void Semantics::buildSTree(GlobalStack stack)
 {
+    if (!erd && !seq) {
+        VitaPrint("Semantic missing dependency!");
+        return;
+    }
+
     if (stack.size() <= 1) return;
 
     HighlightService::setEnabled(false);
@@ -395,6 +410,9 @@ void Semantics::buildSTree(GlobalStack stack)
     }
 
     HighlightService::setEnabled(true);
+
+    erd->update();
+    seq->update();
 }
 
 void Semantics::addClass(UMLClass new_class)

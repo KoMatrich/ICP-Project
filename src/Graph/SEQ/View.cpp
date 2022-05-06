@@ -45,13 +45,13 @@ void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& heigh
     addItem(col);
 }
 
-void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int>& offsets)
+void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int> offsets)
 {
     uint HOffset = timeIndex * ACTION_RH;
 
     timeIndex++;
 
-    if (action.getType() == RuleID::R_NOP) {
+    if (action.getType() == RuleID::R_NOP || action.getErrorFlag()) {
         return;
     }
 
@@ -79,6 +79,6 @@ SEQView::SEQView(QObject* parent)
     setAlignment(Qt::AlignCenter);
 
     QFont f = font();
-    f.setPointSize(ACTION_H*3/4);
+    f.setPointSize(ACTION_H * 3 / 4);
     setFont(f);
 }

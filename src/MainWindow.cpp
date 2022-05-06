@@ -1,12 +1,13 @@
-#include <QtWidgets>
 #include "MainWindow.h"
-#include "Services/Debug.h"
-#include "Services/Code.h"
-#include "Services/History.h"
 
 MainWindow::MainWindow(const QString& fileName)
 {
     init();
+
+    Semantics& sem = Semantics::getInstance();
+
+    sem.setERDView(erdView);
+    sem.setSEQView(seqView);
 }
 
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
@@ -182,10 +183,6 @@ void MainWindow::createActions()
 
     connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
             [this]() { setWindowModified(true); });
-    connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
-            [this]() { erdView->update(); });
-    connect(mainTextEdit->document(), &QTextDocument::contentsChanged,
-            [this]() { seqView->update(); });
 
     connect(mainTextEdit, &MainTextEdit::copyAvailable,
             [cutAct](bool s) {cutAct->setEnabled(s); });
