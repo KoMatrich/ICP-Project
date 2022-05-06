@@ -287,22 +287,22 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 QString type;
                 for (UMLProperty m : methods) {
                     if (m.getName() == action.getMethod()) {
-                        type = m.getType();
+                        type = m.getMod();
                         isInside = true;
                         break;
                     }
                 }
-                //not an own method
+                //not an own method, search in inherited
                 if (!isInside) {
                     for (UMLProperty m : inherited) {
                         if (m.getName() == action.getMethod()) {
-                            type = m.getType();
+                            type = m.getMod();
                             isInside = true;
                             break;
                         }
                     }
                 }
-                //not en inherited method
+                //not en inherited method, set error level
                 if (!isInside) {
                     action.setErrorLevel(1);
                     CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
@@ -311,13 +311,31 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 else {
                     //known, is it public?
                     if (type == QString("-")) {
-                        VitaPrint("Private");
+                        if (action.getSenderIndex() != action.getReceiverIndex()) {
+                            action.setErrorLevel(1);
+                            CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
+                            VitaPrint("[WARNING]: Trying to access a private method from another entity.");
+                        }
                     }
                     else if (type == QString("#"))
                     {
-                        VitaPrint("Protected");
+                        if (action.getSenderIndex() != action.getReceiverIndex()) {
+                            //could be inherited
+                            bool isInherited = false;
+                            for (auto recRelation : clas.getRelations()) {
+                                if (recRelation.getType() == RuleID::R_GEN && recRelation.getEntity() == action.getSender())
+                                    isInherited = true;
+                            }
+
+                            if (!isInherited) {
+                                action.setErrorLevel(1);
+                                CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
+                                VitaPrint("[WARNING]: Trying to access a protected method from another entity.");
+                            }
+                        }
                     }
                 }
+                break;
             }
         }
     }

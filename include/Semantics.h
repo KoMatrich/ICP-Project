@@ -55,6 +55,7 @@ public:
     }
     QString toString();
     bool updateProperty(UMLProperty new_p);
+    QString getMod() { return p_mod; }
     QString getType() { return p_type; }
     QString getName() { return p_name; }
     inline bool getDuplicateFlag() { return duplicate; }

@@ -13,7 +13,7 @@ interface teacher{
 	#	String faculty
 
 	- String teach()
-	+ void getMoney()
+	# void getMoney()
 }
 
 class student{
@@ -25,7 +25,7 @@ class student{
 	#	UInt study_program
 	~	UInt credits
 	+ int getKnowledge()
-	+ void getReadyForBullying()
+	# void getReadyForBullying()
 	+ void getBulied()
 	+ int getPoints()
 	+ void laugh()
@@ -79,7 +79,7 @@ sequence test02 {
 	teacher --> Martin: getKnowledge()
 
 	activate Vita
-
+	Martin -> teacher: getMoney()
 	teacher --> Vita: getKnowledge()
 	Martin -> Vita: getBulied()
 	teacher --> Vita: getBulied()
