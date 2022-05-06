@@ -51,11 +51,7 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int> off
 
     timeIndex++;
 
-    if (action.getType() == RuleID::R_NOP || action.getErrorFlag()) {
-        return;
-    }
-
-    if (action.getErrorLevel() >= 2) {
+    if (action.getType() == RuleID::R_NOP || action.getErrorLevel() >= 2) {
         return;
     }
 

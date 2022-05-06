@@ -5,8 +5,8 @@ https://real-world-plantuml.com/?type=sequence
 
 interface teacher{
 
-	x: 312
-	y: -42
+	x: 348
+	y: -66
 	in assoc with student
 	+	String firstname
 	+ String  lastname
@@ -17,8 +17,8 @@ interface teacher{
 }
 
 class student{
-	x: 84
-	y: 0
+	x: 96
+	y: -24
 	+  String as
 	-	String firstname
 	+ String lastname
@@ -50,7 +50,7 @@ y: 216
 
 sequence test01 {
 
-	activate Martina
+	activate Martin
 NOP
 	activate Vita
 	Vita -> Vita: getReadyForBullying()
