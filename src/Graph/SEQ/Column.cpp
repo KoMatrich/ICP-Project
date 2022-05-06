@@ -1,10 +1,10 @@
 #include "Graph/SEQ/Column.h"
 
-Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const int& height, const int& COLUMN_SPACING)
+Column::Column(QGraphicsScene* parent, QPoint& offsetPos, SEQMember& mem, const int& height, const int& COLUMN_SPACING)
     : cont_height(height), name(mem.getName())
 {
     //calculate size
-    size = { metric.width(name),metric.height() };
+    size = { metric.width(name),HEADER_HEIGHT };
     rsize = QSize{ size.width(), size.height() } + SOFFSET;
 
     //create infill
@@ -21,14 +21,13 @@ Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const
     //get all activations
     activations = mem.getActivations();
     //update pos
-    setPos(offsetPos);
-    offsetPos += QPoint(COLUMN_SPACING, 0);
+    setPos(offsetPos - QPoint{rsize.width()/2,0});
+    offsetPos = { offsetPos.x() + COLUMN_SPACING, offsetPos.y() };
 }
 
 QRectF Column::boundingRect() const
 {
-    return QRectF(-rsize.width() / 2,
-                  -HEADER_SPACE - rsize.height(),
+    return QRectF(0, 0,
                   rsize.width(),
                   HEADER_SPACE + rsize.height() + cont_height * ACTION_RH + STEM_EXTRA
     ).normalized().marginsAdded(BOUND_OF);
@@ -48,6 +47,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     if (is_thick) {
         painter->setPen(thick_pen);
     }
+    painter->translate(rsize.width() / 2, HEADER_SPACE + rsize.height());
     painter->save();
     //go to header start
     painter->translate(0, -HEADER_SPACE);

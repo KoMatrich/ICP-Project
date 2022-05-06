@@ -29,7 +29,7 @@ const int OFFSET{ GRID_S };
 const int RADIUS{ GRID_S };
 
 const QPoint POFFSET{ OFFSET, OFFSET };
-const QSize SOFFSET{ GRID_S * 2, GRID_S * 2 };
+const QSize SOFFSET{ OFFSET,OFFSET };
 
 /// @brief metric for getting text size
 QFontMetrics const metric = QFontMetrics{ QApplication::font() };
@@ -52,8 +52,12 @@ const int ACTION_RH{ ACTION_H + int(ARROW_GEN_SIZE) };
 const int COLUMN_SPACE{ GRID_S * 2 };
 /// @brief Space under header
 const int HEADER_SPACE{ GRID_S * 2 };
+/// @brief Height of header
+const int HEADER_HEIGHT{ GRID_S * 2 };
 /// @brief Steam ending extra
 const int STEM_EXTRA{ GRID_S };
+
+const int BOX_INNER_OFFSET{ GRID_S };
 
 //ERD settings
 /// @brief separator height

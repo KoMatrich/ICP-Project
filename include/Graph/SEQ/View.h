@@ -1,45 +1,45 @@
 #pragma once
 
 #include <QWidget>
-#include "Graph/SEQ/Column.h"
+#include "Semantics.h"
 
 /// @brief SEQ scene
 class SEQScene : public QGraphicsScene
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    /// @brief          creates new SEQ scene
-    /// @param parent   parent QObject
-    explicit SEQScene(QObject* parent = nullptr);
-    /// @brief          updates scene
-    void update();
+	/// @brief          creates new SEQ scene
+	/// @param parent   parent QObject
+	explicit SEQScene(QObject* parent = nullptr);
+	/// @brief          updates scene
+	void update();
 private:
-    void addColumn(SEQMember& member, QPointF& offsetPos, const int& height, const int& COLUMN_SPACING);
-    void addArrow(SEQAction& action, uint& timeIndex, std::vector<int> offsets);
+	void addColumn(SEQMember& member, QPoint& offsetPos, const int& height, const int& COLUMN_SPACING);
+	void addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> offsets);
 protected:
-    /// @brief          handles code refreshing after dragging
-    /// @param event    mouse release
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
-    {
-        QGraphicsScene::mouseReleaseEvent(event);
-    }
+	/// @brief          handles code refreshing after dragging
+	/// @param event    mouse release
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+	{
+		QGraphicsScene::mouseReleaseEvent(event);
+	}
 };
 
 /// @brief ERD view
 class SEQView : public QGraphicsView
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    /// @brief          creates new SEQ view
-    /// @param parent   parent QObject
-    SEQView(QObject* parent = nullptr);
-    /// @brief          gets scene from view
-    /// @return         scene
-    SEQScene* getScene() { return &scene; }
+	/// @brief          creates new SEQ view
+	/// @param parent   parent QObject
+	SEQView(QObject* parent = nullptr);
+	/// @brief          gets scene from view
+	/// @return         scene
+	SEQScene* getScene() { return &scene; }
 public slots:
-    /// @brief          triggers scene update
-    void update() { scene.update(); };
+	/// @brief          triggers scene update
+	void update() { scene.update(); };
 private:
-    SEQScene scene;
+	SEQScene scene;
 
 };

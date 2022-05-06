@@ -1,5 +1,8 @@
 #include "Graph/SEQ/View.h"
+
+#include "Graph/SEQ/Column.h"
 #include "Graph/SEQ/Arrow.h"
+#include "Graph/SEQ/Box.h"
 #include "Services/SSemantics.h"
 
 SEQScene::SEQScene(QObject* parent)
@@ -21,39 +24,43 @@ void SEQScene::update()
         return;
 
     //get data
-    Sequence seq = seqs.at(0);
-    std::vector<SEQMember> members = seq.getMembers();
-    std::vector<SEQAction> acts = seq.getActions();
+    QPoint start{ 0,0 };
+    for (auto seq : seqs) {
+        std::vector<SEQMember> members = seq.getMembers();
+        std::vector<SEQAction> acts = seq.getActions();
 
-    int COLUMN_SPACING = 0;
-    for (auto& act : acts) {
-        COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod()));
-    }
-    COLUMN_SPACING += COLUMN_SPACE;
+        int COLUMN_SPACING = 0;
+        for (auto& act : acts) {
+            COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod()));
+        }
+        COLUMN_SPACING += COLUMN_SPACE;
 
-    //keeps starting positions of stems with offset
-    std::vector<int> offsets;
-    QPointF start{ 0,0 };
-    for (auto& member : members) {
-        offsets.push_back(start.x());
-        addColumn(member, start, acts.size(), COLUMN_SPACING);
-    }
+        //keeps starting positions of stems with offset
+        std::vector<QPoint> offsets;
+        for (auto& member : members) {
+            offsets.push_back(start);
+            addColumn(member, start, acts.size(), COLUMN_SPACING);
+        }
 
-    uint timeIndex = 0;
-    for (auto& act : acts) {
-        addArrow(act, timeIndex, offsets);
+        uint timeIndex = 0;
+        for (auto& act : acts) {
+            addArrow(act, timeIndex, offsets);
+        }
+
+        Box* box = new Box(this, QRect(0, 0, start.x(), 0));
+        addItem(box);
     }
 }
 
-void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& height, const int& COLUMN_SPACING)
+void SEQScene::addColumn(SEQMember& member, QPoint& offsetPos, const int& height, const int& COLUMN_SPACING)
 {
     auto col = new Column(this, offsetPos, member, height, COLUMN_SPACING);
     addItem(col);
 }
 
-void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int> offsets)
+void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> offsets)
 {
-    uint HOffset = timeIndex * ACTION_RH;
+    QPoint offset{ 0, int(HEADER_HEIGHT + HEADER_SPACE + POFFSET.x() + timeIndex * ACTION_RH) };
 
     timeIndex++;
 
@@ -64,8 +71,8 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int> off
     int startI = action.getSenderIndex();
     int endI = action.getReceiverIndex();
 
-    QPoint start(offsets.at(startI), HOffset);
-    QPoint end(offsets.at(endI), HOffset);
+    QPoint start = offsets.at(startI) + offset;
+    QPoint end = offsets.at(endI) + offset;
 
     auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod(), action.getErrorLevel());
     addItem(arr);
