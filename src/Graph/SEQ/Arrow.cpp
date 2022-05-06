@@ -11,7 +11,7 @@ SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos
 
 QRectF SEQArrow::boundingRect() const
 {
-    return QRect(pos().toPoint(), end.toPoint()).normalized();
+    return QRect(pos().toPoint() - QPoint{ 0, ACTION_RH / 2 }, end.toPoint() + QPoint{ 0, ACTION_RH / 2 }).normalized();
 }
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
