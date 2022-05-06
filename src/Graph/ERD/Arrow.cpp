@@ -23,6 +23,8 @@ QRectF Arrow::boundingRect() const
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    drawDebug(painter, this);
+
     painter->drawLine(end.toPoint(), col_vec.toPoint());
 
     if (arrow_type == RuleID::R_AGG)

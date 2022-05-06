@@ -16,6 +16,8 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    drawDebug(painter, this);
+
     QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
 
     QPen pen = QPen();

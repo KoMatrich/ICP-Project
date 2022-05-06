@@ -105,6 +105,8 @@ void ERDItem::paint(QPainter* painter,
     const QStyleOptionGraphicsItem* option,
     QWidget* widget)
 {
+    drawDebug(painter, this);
+
     QPen thick_pen = QPen();
     thick_pen.setWidth(3);
     QPen selected_pen = QPen();

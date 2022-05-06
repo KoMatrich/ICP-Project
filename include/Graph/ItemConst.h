@@ -86,3 +86,19 @@ inline QLinearGradient blueG(uint cont_height)
     gradient.setColorAt(1.0, { 220, 220, 240 });
     return gradient;
 }
+
+//#define DEBUG_DRAW
+
+inline void drawDebug(QPainter* painter, QGraphicsObject* obj)
+{
+#ifdef DEBUG_DRAW
+    painter->save();
+    QPen debugDrawPen;
+    debugDrawPen.setColor(QColor(255, 150, 0));
+    debugDrawPen.setStyle(Qt::DotLine);
+    debugDrawPen.setWidth(2);
+    painter->setPen(debugDrawPen);
+    painter->drawRect(obj->boundingRect());
+    painter->restore();
+#endif // DEBUG_DRAW
+}

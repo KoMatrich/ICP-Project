@@ -4,7 +4,7 @@ Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const
     : cont_height(height), name(mem.getName())
 {
     //calculate size
-    size = { metric.width(name),metric.height()};
+    size = { metric.width(name),metric.height() };
     rsize = QSize{ size.width(), size.height() } + SOFFSET;
 
     //create infill
@@ -32,6 +32,8 @@ QRectF Column::boundingRect() const
 
 void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    drawDebug(painter, this);
+
     QPen thick_pen = QPen();
     thick_pen.setWidth(3);
     QPen selected_pen = QPen();
@@ -63,7 +65,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         int start = act.startIndex() * ACTION_RH;
         int end = act.endIndex() * ACTION_RH + (ACTION_RH / 4);
         //draw activation rectangle
-        painter->drawRect(-ACTIVATION_W/2, start, ACTIVATION_W, end - start);
+        painter->drawRect(-ACTIVATION_W / 2, start, ACTIVATION_W, end - start);
     }
 }
 
