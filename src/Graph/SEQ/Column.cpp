@@ -32,8 +32,6 @@ QRectF Column::boundingRect() const
 
 void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    drawDebug(painter, this);
-
     QPen thick_pen = QPen();
     thick_pen.setWidth(3);
     QPen selected_pen = QPen();
@@ -67,6 +65,8 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         //draw activation rectangle
         painter->drawRect(-ACTIVATION_W / 2, start, ACTIVATION_W, end - start);
     }
+
+    drawDebug(painter, this);
 }
 
 void Column::movePos(QPointF& pos)

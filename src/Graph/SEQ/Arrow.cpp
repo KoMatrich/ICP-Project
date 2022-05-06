@@ -16,16 +16,13 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    drawDebug(painter, this);
-
     QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
 
     QPen pen = QPen();
 
     if (has_error) {
         pen.setColor(Qt::red);
-    }
-    else {
+    } else {
         pen.setColor(Qt::black);
     }
 
@@ -47,7 +44,7 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->translate((pos1 - pos2) / 2);
     painter->drawText(-textOffset, method);
 
-
+    drawDebug(painter, this);
 }
 
 void SEQArrow::update()

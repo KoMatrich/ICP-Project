@@ -105,8 +105,6 @@ void ERDItem::paint(QPainter* painter,
     const QStyleOptionGraphicsItem* option,
     QWidget* widget)
 {
-    drawDebug(painter, this);
-
     QPen thick_pen = QPen();
     thick_pen.setWidth(3);
     QPen selected_pen = QPen();
@@ -126,6 +124,8 @@ void ERDItem::paint(QPainter* painter,
     //draw text in frame
     painter->translate(0, OFFSET);
     PaintBlocks(painter);
+
+    drawDebug(painter, this);
 }
 
 QVariant ERDItem::itemChange(GraphicsItemChange change, const QVariant& value)

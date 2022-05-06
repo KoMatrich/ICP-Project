@@ -18,13 +18,13 @@ Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, R
 
 QRectF Arrow::boundingRect() const
 {
-    return QRect(this->pos().toPoint(), this->end.toPoint()).normalized(); //.marginsAdded(MARGIN)
+    auto posP = pos().toPoint();
+    auto vecP = col_vec.toPoint();
+    return QRect(posP, vecP).normalized();
 }
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    drawDebug(painter, this);
-
     painter->drawLine(end.toPoint(), col_vec.toPoint());
 
     if (arrow_type == RuleID::R_AGG)
@@ -33,6 +33,8 @@ void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
         painter->setBrush(Qt::white);
 
     painter->drawPolygon(arrow_head);
+
+    drawDebug(painter, this);
 }
 
 void Arrow::update()
