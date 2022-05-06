@@ -97,7 +97,7 @@ inline QLinearGradient blueG(uint cont_height)
     return gradient;
 }
 
-#define DEBUG_DRAW
+//#define DEBUG_DRAW
 
 /// @brief          paints debug info
 /// @param painter  painter

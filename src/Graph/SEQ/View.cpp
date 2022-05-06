@@ -34,7 +34,7 @@ void SEQScene::update()
         //calculate max spacing width
         int COLUMN_SPACING = 0;
         for (auto& act : acts) {
-            COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod()));
+            COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod())+OFFSET*2);
         }
         COLUMN_SPACING += COLUMN_SPACE;
 
@@ -61,7 +61,8 @@ void SEQScene::update()
         }
 
         start = pos.front();
-        last += {0, HEADER_HEIGHT + HEADER_SPACE + int(acts.size()) * ACTION_RH + STEM_EXTRA + BOX_OFFSET};
+
+        last += {COLUMN_SPACING, HEADER_HEIGHT + HEADER_SPACE + int(acts.size()) * ACTION_RH + STEM_EXTRA + BOX_OFFSET};
         last += off;
 
         Box* box = new Box(this, QRect(start, last - start));
@@ -69,7 +70,7 @@ void SEQScene::update()
         addItem(box);
 
         start.setX(last.x());
-        start += {BOX_OFFSET * 4, 0};
+        start += {BOX_OFFSET * 2 + COLUMN_SPACING, 0};
     }
 }
 

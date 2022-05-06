@@ -41,8 +41,14 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 
     painter->drawPolygon(arrow_head);
 
-    painter->translate((pos1 - pos2) / 2);
-    painter->drawText(-textOffset, method);
+    if (abs(pos1.x() - pos2.x())>0) {
+        painter->translate((pos1 - pos2) / 2 - textOffset);
+    } else {
+        painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height()/2 });
+    }
+    QRect descRect{ 0,0,metric.width(method),metric.height() };
+    painter->drawRect(descRect.marginsAdded(BOUND_OF));
+    painter->drawText(QPoint{ 0,metric.height() }, method);
 
     drawDebug(painter, this);
 }
