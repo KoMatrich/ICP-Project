@@ -39,6 +39,8 @@ const int ARROW_OFFSET{ 0 };
 const float ARROW_GEN_SIZE{ 20.0 };
 const float ARROW_COMAGG_SIZE{ 15.0 };
 const float ARROW_SEQ_SIZE{ 18.0 };
+const float SELF_ARROW_WIDTH{ 60.0 };
+const float SELF_ARROW_HEIGHT{ 18.0 };
 
 //SEQ settings
 /// @brief Width of activation rectangle

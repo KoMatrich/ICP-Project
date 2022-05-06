@@ -36,8 +36,18 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->setPen(pen);
     painter->setBrush(brush);
 
-    QPoint textOffset{ metric.width(method) / 2, ACTION_H / 3 };
-    painter->drawLine(end.toPoint(), col_vec.toPoint());
+    QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
+
+    // if not self referencing:
+    if (pos1 != pos2) {
+        painter->drawLine(end.toPoint(), col_vec.toPoint());
+    }
+    else {
+        painter->drawLine(end.toPoint(), end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0));
+        painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0), end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT));
+        painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT), end.toPoint() + QPointF(0, SELF_ARROW_HEIGHT));
+        arrow_head.translate(QPointF(0, SELF_ARROW_HEIGHT));
+    }
 
     painter->drawPolygon(arrow_head);
 
