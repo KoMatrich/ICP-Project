@@ -18,19 +18,34 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 {
     QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
 
+    QPen pen = QPen();
+
+    if (has_error) {
+        pen.setColor(Qt::red);
+    }
+    else {
+        pen.setColor(Qt::black);
+    }
+
     if (arrow_type == RuleID::R_ARROW_ASYNC)
-        painter->setPen(Qt::DashLine);
+        pen.setStyle(Qt::DashLine);
     else
-        painter->setPen(Qt::SolidLine);
+        pen.setStyle(Qt::SolidLine);
+
+    QBrush brush = QBrush(Qt::white);
+
+    painter->setPen(pen);
+    painter->setBrush(brush);
 
     QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
     painter->drawLine(end.toPoint(), col_vec.toPoint());
-    painter->translate((pos1 - pos2) / 2);
-    //draw center point
-    //painter->drawEllipse(-3, -3, 6, 6);
-    painter->drawText(-textOffset, method);
 
     painter->drawPolygon(arrow_head);
+
+    painter->translate((pos1 - pos2) / 2);
+    painter->drawText(-textOffset, method);
+
+
 }
 
 void SEQArrow::update()
@@ -55,14 +70,14 @@ void SEQArrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
 
-    QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_GEN_SIZE,
-        cos(angle + M_PI / 3) * ARROW_GEN_SIZE);
+    QPointF arrowP1 = end.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_SEQ_SIZE,
+        cos(angle + M_PI / 3) * ARROW_SEQ_SIZE);
 
-    QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE,
-        cos(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE);
+    QPointF arrowP2 = end.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_SEQ_SIZE,
+        cos(angle + 2 * M_PI / 3) * ARROW_SEQ_SIZE);
 
     arrow_head.clear();
-    arrow_head << col_vec.toPointF() << arrowP1 << arrowP2;
+    arrow_head << end.toPointF() << arrowP1 << arrowP2;
 }
 
 void SEQArrow::destroy()

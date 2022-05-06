@@ -55,8 +55,8 @@ NOP
 	activate Vita
 	Vita -> Vita: getReadyForBullying()
 
-	Vita -> Martin: getBulied()
-	Vita -> Martin: getBulied()
+	Vita --> Martin: getBulied()
+	Martin -> Vita: getBulsied()
 
 	deactivate Martin
 	NOP
