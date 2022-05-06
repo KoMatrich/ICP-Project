@@ -169,9 +169,9 @@ protected:
     int error_level = 0;
     const RuleID type;
     const QString sender;
-    size_t sender_index;
+    size_t sender_index = 0;
     const QString receiver;
-    size_t receiver_index;
+    size_t receiver_index = 0;
     const size_t line;
 };
 
