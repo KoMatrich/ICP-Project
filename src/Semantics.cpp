@@ -272,6 +272,57 @@ void Sequence::connectActions()
     }
 }
 
+void Sequence::testActions(std::vector<UMLClass> classes)
+{
+    for (auto& action : actions) {
+        if (action.getErrorLevel() != 0)
+            continue;
+
+        for (auto clas : classes) {
+            if (clas.getClassName() == action.getReceiver()) {
+                // match
+                auto methods = clas.getMethods();
+                auto inherited = clas.getInheritedMethods();
+                bool isInside = false;
+                QString type;
+                for (UMLProperty m : methods) {
+                    if (m.getName() == action.getMethod()) {
+                        type = m.getType();
+                        isInside = true;
+                        break;
+                    }
+                }
+                //not an own method
+                if (!isInside) {
+                    for (UMLProperty m : inherited) {
+                        if (m.getName() == action.getMethod()) {
+                            type = m.getType();
+                            isInside = true;
+                            break;
+                        }
+                    }
+                }
+                //not en inherited method
+                if (!isInside) {
+                    action.setErrorLevel(1);
+                    CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
+                    VitaPrint("[WARNING]: Unknown method - not implemented.");
+                }
+                else {
+                    //known, is it public?
+                    if (type == QString("-")) {
+                        VitaPrint("Private");
+                    }
+                    else if (type == QString("#"))
+                    {
+                        VitaPrint("Protected");
+                    }
+                }
+            }
+        }
+    }
+}
+
 SEQMember* Sequence::getMemberByName(QString name)
 {
     for (auto& member : members) {

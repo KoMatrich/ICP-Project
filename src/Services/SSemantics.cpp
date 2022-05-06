@@ -407,6 +407,7 @@ void Semantics::buildSTree(GlobalStack stack)
         this->sequences.back().connectActions();
         this->sequences.back().testEntities(classes);
         this->sequences.back().disableLeftovers(time);
+        this->sequences.back().testActions(classes);
     }
 
     HighlightService::setEnabled(true);

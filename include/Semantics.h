@@ -161,8 +161,8 @@ public:
     /// @return     member receiver
     inline QString getReceiver() { return receiver; }
     /// @brief      Setter for member has_error
-    /// @param e    new value
-    inline void setErrorLevel(int e) { error_level = e; }
+    /// @param e    new value (Only increasing)
+    inline void setErrorLevel(int e) { if (e>error_level) error_level = e; }
     /// @brief      Getter for member line position in code
     /// @return     line position of action
     inline size_t getLine() { return line; }
@@ -274,6 +274,7 @@ public:
     void connectActions();
     void testEntities(std::vector<UMLClass> classes);
     void disableLeftovers(size_t time);
+    void testActions(std::vector<UMLClass> classes);
 protected:
     SEQMember* getMemberByName(QString name);
     int getMemberIndexByName(QString name);
