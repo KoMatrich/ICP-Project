@@ -25,12 +25,18 @@ void SEQScene::update()
     std::vector<SEQMember> members = seq.getMembers();
     std::vector<SEQAction> acts = seq.getActions();
 
+    int COLUMN_SPACING = 0;
+    for (auto& act : acts) {
+        COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod()));
+    }
+    COLUMN_SPACING += COLUMN_SPACE;
+
     //keeps starting positions of stems with offset
     std::vector<int> offsets;
     QPointF start{ 0,0 };
     for (auto& member : members) {
         offsets.push_back(start.x());
-        addColumn(member, start, acts.size());
+        addColumn(member, start, acts.size(), COLUMN_SPACING);
     }
 
     uint timeIndex = 0;
@@ -39,9 +45,9 @@ void SEQScene::update()
     }
 }
 
-void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& height)
+void SEQScene::addColumn(SEQMember& member, QPointF& offsetPos, const int& height, const int& COLUMN_SPACING)
 {
-    auto col = new Column(this, offsetPos, member, height);
+    auto col = new Column(this, offsetPos, member, height, COLUMN_SPACING);
     addItem(col);
 }
 

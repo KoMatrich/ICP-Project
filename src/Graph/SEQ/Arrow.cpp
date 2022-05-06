@@ -16,9 +16,12 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
+    QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
     painter->drawLine(end.toPoint(), col_vec.toPoint());
-    painter->drawText((pos1 - pos2) / 2 - textWidth, method);
+    painter->translate((pos1 - pos2) / 2);
+    //draw center point
+    //painter->drawEllipse(-3, -3, 6, 6);
+    painter->drawText(-textOffset, method);
 
     if (arrow_type == RuleID::R_AGG)
         painter->setBrush(Qt::black);
@@ -43,7 +46,7 @@ void SEQArrow::updateArrow()
     QVector2D end = QVector2D(pos1 - pos2);
 
     //get colision vector without arrow head size
-    col_vec = QVector2D(end.x() - ACTIVATION_W * sgn(end.x()), end.y());
+    col_vec = QVector2D(end.x(), end.y());
 }
 
 void SEQArrow::updateArrowHead()

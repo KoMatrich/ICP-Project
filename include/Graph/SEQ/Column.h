@@ -11,7 +11,7 @@ public:
     /// @brief          creates ERD item
     /// @param parent   graphics scene on which is displayed
     /// @param clas     class data
-    Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const int& height);
+    Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const int& height, const int& COLUMN_SPACING);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
     QRectF boundingRect() const override;

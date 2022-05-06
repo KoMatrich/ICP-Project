@@ -25,7 +25,7 @@ public:
 
 //general constants
 const int GRID_S = 12;
-const int OFFSET{ GRID_S / 2 };
+const int OFFSET{ GRID_S };
 const int RADIUS{ GRID_S };
 
 const QPoint POFFSET{ OFFSET, OFFSET };
@@ -46,9 +46,9 @@ const int ACTIVATION_W{ GRID_S * 2 };
 /// @brief Action text height
 const int ACTION_H{ GRID_S };
 /// @brief Real action height (with space)
-const int ACTION_RH{ ACTION_H + GRID_S };
-/// @brief Space between columns
-const int COLUMN_SPACE{ GRID_S * 4 };
+const int ACTION_RH{ ACTION_H + GRID_S * 2 };
+/// @brief (extra) Space between columns
+const int COLUMN_SPACE{ GRID_S * 2 };
 /// @brief Space under header
 const int HEADER_SPACE{ GRID_S * 2 };
 

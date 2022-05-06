@@ -1,10 +1,10 @@
 #include "Graph/SEQ/Column.h"
 
-Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const int& height)
+Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const int& height, const int& COLUMN_SPACING)
     : cont_height(height), name(mem.getName())
 {
     //calculate size
-    size = metric.size(Qt::TextLongestVariant, name);
+    size = { metric.width(name),metric.height()};
     rsize = QSize{ size.width(), size.height() } + SOFFSET;
 
     //create infill
@@ -13,18 +13,16 @@ Column::Column(QGraphicsScene* parent, QPointF& offsetPos, SEQMember& mem, const
     } else {
         if (mem.isInterface()) {
             fill = blueG(size.height());
-        }
-        else {
+        } else {
             fill = greenG(size.height());
         }
     }
-
 
     //get all activations
     activations = mem.getActivations();
     //update pos
     setPos(offsetPos);
-    offsetPos += QPoint(rsize.width() + COLUMN_SPACE, 0);
+    offsetPos += QPoint(COLUMN_SPACING, 0);
 }
 
 QRectF Column::boundingRect() const
@@ -48,15 +46,16 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     }
     painter->save();
     //paint up from center
-    painter->translate(-ACTIVATION_W / 2, -HEADER_SPACE);
+    painter->translate(0, -HEADER_SPACE);
     //draw stem
     painter->drawLine(0, 0, 0, HEADER_SPACE + (cont_height + 1) * ACTION_RH);
     painter->translate(-rsize.width() / 2, -rsize.height());
     //draw rect
     painter->drawRoundedRect(0, 0, rsize.width(), rsize.height(), RADIUS / 10, RADIUS / 10);
     painter->translate(rsize.width() / 2, rsize.height() / 2);
-    //draw text in rectangle
-    painter->drawText(-size.width() + OFFSET, size.height() / 2, name);
+    //draw text in rectangle (centered)
+    QPoint textOffset{ -metric.width(name) / 2, metric.height() / 2 };
+    painter->drawText(textOffset, name);
 
     painter->restore();
     //paint down from center
@@ -64,7 +63,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         int start = act.startIndex() * ACTION_RH;
         int end = act.endIndex() * ACTION_RH + (ACTION_RH / 4);
         //draw activation rectangle
-        painter->drawRect(-ACTIVATION_W, start, ACTIVATION_W, end - start);
+        painter->drawRect(-ACTIVATION_W/2, start, ACTIVATION_W, end - start);
     }
 }
 
