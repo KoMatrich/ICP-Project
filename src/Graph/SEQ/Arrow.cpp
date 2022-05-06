@@ -1,7 +1,7 @@
 #include "Graph/SEQ/Arrow.h"
 
-SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method)
-    :pos1(pos1), pos2(pos2), method(method)
+SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error)
+    :pos1(pos1), pos2(pos2), method(method), has_error(error)
 {
     arrow_type = arr_type;
     setParent(parent);

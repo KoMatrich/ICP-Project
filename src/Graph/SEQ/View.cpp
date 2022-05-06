@@ -55,13 +55,17 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<int> off
         return;
     }
 
+    if (action.getErrorLevel() >= 2) {
+        return;
+    }
+
     int startI = action.getSenderIndex();
     int endI = action.getReceiverIndex();
 
     QPoint start(offsets.at(startI), HOffset);
     QPoint end(offsets.at(endI), HOffset);
 
-    auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod());
+    auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod(), action.getErrorLevel());
     addItem(arr);
 }
 

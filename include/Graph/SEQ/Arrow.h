@@ -14,7 +14,8 @@ public:
     /// @param o1           first target (to which is this arrow pointing)
     /// @param o2           second target (from which is this arrow pointing)
     /// @param arr_type     type of arrow head used
-    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method);
+    /// @param error        error level
+    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;
@@ -38,6 +39,8 @@ private:
 
     /// @brief method that is displayed above arrow
     const QString method;
+    /// @brief error level flag
+    const int has_error;
     /// @brief updates end and col_vec
     void updateArrow();
 

@@ -243,14 +243,14 @@ void Sequence::connectActions()
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
-                actions[act].setErrorFlag(true);
+                actions[act].setErrorLevel(2);
             }
             // OK
         }
         else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message sender was not found in members.");
-            actions[act].setErrorFlag(true);
+            actions[act].setErrorLevel(2);
             continue;
         }
         i = getMemberIndexByName(actions[act].getReceiver());
@@ -259,13 +259,13 @@ void Sequence::connectActions()
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
-                actions[act].setErrorFlag(true);
+                actions[act].setErrorLevel(2);
             }
             // OK
         } else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message receiver was not found in members.");
-            actions[act].setErrorFlag(true);
+            actions[act].setErrorLevel(2);
             continue;
         }
 

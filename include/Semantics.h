@@ -139,7 +139,7 @@ public:
     inline RuleID getType() { return type; }
     /// @brief      Getter for member has_error
     /// @return     member has_error
-    inline bool getErrorFlag() { return has_error; }
+    inline int getErrorLevel() { return error_level; }
     /// @brief      Getter for member sender index
     /// @return     member sender
     inline size_t getSenderIndex() { return sender_index; }
@@ -160,13 +160,13 @@ public:
     inline QString getReceiver() { return receiver; }
     /// @brief      Setter for member has_error
     /// @param e    new value
-    inline void setErrorFlag(bool e) { has_error = e; }
+    inline void setErrorLevel(int e) { error_level = e; }
     /// @brief      Getter for member line position in code
     /// @return     line position of action
     inline size_t getLine() { return line; }
 protected:
     const QString method;
-    bool has_error = false;
+    int error_level = 0;
     const RuleID type;
     const QString sender;
     size_t sender_index;
