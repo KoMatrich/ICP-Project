@@ -196,7 +196,7 @@ bool Sequence::activateMember(QString name, size_t time, size_t line)
     SEQMember* m = this->getMemberByName(name);
     // need to create new member
     if (!m) {
-        this->members.push_back(SEQMember(name));
+        this->members.push_back(SEQMember(name, line));
         m = &this->members.back();
     }
 
@@ -281,6 +281,29 @@ SEQMember* Sequence::getMemberByName(QString name)
     return nullptr;
 }
 
+void Sequence::testEntities(std::vector<UMLClass> classes)
+{
+    bool ok;
+    for (auto& member : members) {
+        ok = false;
+        //is member in classes?
+        for (size_t i = 0; i < classes.size(); i++) {
+            if (classes[i].getClassName() == member.getName()) {
+                ok = true;
+                member.setClassID(i);
+                member.setInterfaceFlag(classes[i].isInterface());
+            }
+        }
+
+        member.setErrorFlag(!ok);
+
+        if (!ok) {
+            CodeService::formatLine(member.getLine(), HLevel::LEVEL_ERROR);
+            VitaPrint("[ERROR]: Disconnected entity member.");
+        }
+    }
+}
+
 int Sequence::getMemberIndexByName(QString name)
 {
     auto s = name.toStdString();
@@ -291,6 +314,13 @@ int Sequence::getMemberIndexByName(QString name)
         count++;
     }
     return -1;
+}
+
+void Sequence::disableLeftovers(size_t time)
+{
+    for (auto& member : members) {
+        deactivateMember(member.getName(), time);        
+    }
 }
 
 void SEQMember::addActivation(size_t start, size_t startLine)

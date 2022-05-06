@@ -196,9 +196,10 @@ protected:
 class SEQMember
 {
 public:
-    SEQMember(QString name)
+    SEQMember(QString name, size_t ln)
     {
         this->name = name;
+        this->first_line = ln;
     }
     ~SEQMember() {}
     /// @brief              Getter for member name
@@ -222,10 +223,17 @@ public:
     /// @brief              Setter for member is_activated
     /// @param e            new value
     inline void setActivatedFlag(bool e) { is_activated = e; }
+    /// @brief              Getter for first occurance in code
+    inline size_t getLine() { return first_line; }
     /// @brief              adding new activation Class (only start)
     /// @param start        start time
     /// @param startLine    line in code
     void addActivation(size_t start, size_t startLine);
+    /// @brief              Setter for class_id
+    /// @param id           new id
+    inline void setClassID(size_t id) { class_id = id; }
+    /// @brief              Getter for class_id
+    inline size_t getClassID() { return class_id; }
     /// @brief              Setter for deactivation time (only accessess the end of vector)
     /// @param time         end time
     void setDeactivationTime(size_t time);
@@ -233,6 +241,9 @@ public:
     /// @param time         time to test
     /// @return             true if active
     bool wasActiveAtTime(size_t time);
+    /// @brief              Setter for flag
+    /// @param f            new flag
+    void setInterfaceFlag(bool f) { is_interface = f; }
 protected:
     QString name = "";
     bool has_error = false;
@@ -240,6 +251,7 @@ protected:
     std::vector<SEQActivation> activations;
     size_t class_id = 0;
     bool is_activated = false;
+    size_t first_line = 0;
 };
 
 class Sequence
@@ -258,6 +270,8 @@ public:
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
     void connectActions();
+    void testEntities(std::vector<UMLClass> classes);
+    void disableLeftovers(size_t time);
 protected:
     SEQMember* getMemberByName(QString name);
     int getMemberIndexByName(QString name);

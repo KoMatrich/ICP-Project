@@ -37,7 +37,7 @@ y: 144
 	in gen with student
 }
 
-class Vita{
+interface Vita{
 x: 120
 y: 216
 	in gen with student
@@ -50,7 +50,8 @@ y: 216
 
 sequence test01 {
 
-	activate Martin
+	activate Martina
+NOP
 	activate Vita
 	Vita -> Vita: getReadyForBullying()
 

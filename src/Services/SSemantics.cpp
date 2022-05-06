@@ -340,10 +340,8 @@ void Semantics::buildSTree(GlobalStack stack)
     i = 0;
 
     removeSequences();
-    // find first start SEQ
-    if (stack.size() > 86)
-        int a = 5;
 
+    // find first start SEQ
     this->skipTreeUntilLastIs({ RuleID::R_SEQ }, &i, 0);
 
     // skip until start of sequence
@@ -407,6 +405,8 @@ void Semantics::buildSTree(GlobalStack stack)
         }
         // testing and index connecting
         this->sequences.back().connectActions();
+        this->sequences.back().testEntities(classes);
+        this->sequences.back().disableLeftovers(time);
     }
 
     HighlightService::setEnabled(true);
