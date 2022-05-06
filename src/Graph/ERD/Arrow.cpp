@@ -25,7 +25,16 @@ QRectF Arrow::boundingRect() const
 
 void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    painter->drawLine(end.toPoint(), col_vec.toPoint());
+    // if not self referencing:
+    if (o1 != o2) {
+        painter->drawLine(end.toPoint(), col_vec.toPoint());
+    }
+    // otherwise, create an 'U' Shape
+    else {
+        int x_off = o1->boundingRect().width() / 2 + ARROW_COMAGG_SIZE * 2;
+        int y_off = o1->boundingRect().height() / 2 + ARROW_COMAGG_SIZE * 3;
+        painter->drawRect(end.toPoint().x(), end.toPoint().y(), x_off, y_off);
+    }
 
     if (arrow_type == RuleID::R_AGG)
         painter->setBrush(Qt::black);
@@ -73,6 +82,11 @@ void Arrow::updateArrow()
 void Arrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
+
+    if (o1 == o2) {
+        angle = std::atan2(-1, 0);
+        col_vec = end + QVector2D(0, o1->boundingRect().height() / 2 + ARROW_OFFSET);
+    }
 
     switch (arrow_type) {
     case RuleID::R_ASS:

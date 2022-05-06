@@ -8,6 +8,7 @@ interface teacher{
 	x: 360
 	y: -114
 	in assoc with student
+	in agg with teacher
 	+	String firstname
 	+ String  lastname
 	#	String faculty
