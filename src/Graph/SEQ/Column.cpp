@@ -50,7 +50,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     //paint up from center
     painter->translate(-ACTIVATION_W / 2, -HEADER_SPACE);
     //draw stem
-    painter->drawLine(0, 0, 0, HEADER_SPACE + 600);
+    painter->drawLine(0, 0, 0, HEADER_SPACE + (cont_height + 1) * ACTION_RH);
     painter->translate(-rsize.width() / 2, -rsize.height());
     //draw rect
     painter->drawRoundedRect(0, 0, rsize.width(), rsize.height(), RADIUS / 10, RADIUS / 10);

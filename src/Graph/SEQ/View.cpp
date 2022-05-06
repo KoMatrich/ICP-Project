@@ -30,7 +30,7 @@ void SEQScene::update()
     QPointF start{ 0,0 };
     for (auto& member : members) {
         offsets.push_back(start.x());
-        addColumn(member, start, acts.size() + 2);
+        addColumn(member, start, acts.size());
     }
 
     uint timeIndex = 0;
