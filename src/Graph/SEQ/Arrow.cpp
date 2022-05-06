@@ -16,17 +16,19 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
+
+    if (arrow_type == RuleID::R_ARROW_ASYNC)
+        painter->setPen(Qt::DashLine);
+    else
+        painter->setPen(Qt::SolidLine);
+
     QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
     painter->drawLine(end.toPoint(), col_vec.toPoint());
     painter->translate((pos1 - pos2) / 2);
     //draw center point
     //painter->drawEllipse(-3, -3, 6, 6);
     painter->drawText(-textOffset, method);
-
-    if (arrow_type == RuleID::R_AGG)
-        painter->setBrush(Qt::black);
-    else
-        painter->setBrush(Qt::white);
 
     painter->drawPolygon(arrow_head);
 }
@@ -39,7 +41,7 @@ void SEQArrow::update()
 
 void SEQArrow::updateArrow()
 {
-    //set arrow position to center of object 2
+    //set arrow position to center of object 
     setPos(pos2);
 
     //get connecting vector
@@ -53,41 +55,14 @@ void SEQArrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
 
-    switch (arrow_type) {
-    case RuleID::R_ASS:
-        arrow_head.clear();
-        return;
-    case RuleID::R_COM:
-    case RuleID::R_AGG:
-    {
-        QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_COMAGG_SIZE,
-            cos(angle + M_PI / 3) * ARROW_COMAGG_SIZE);
+    QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_GEN_SIZE,
+        cos(angle + M_PI / 3) * ARROW_GEN_SIZE);
 
-        QPointF arrowP3 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_COMAGG_SIZE,
-            cos(angle + 2 * M_PI / 3) * ARROW_COMAGG_SIZE);
+    QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE,
+        cos(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE);
 
-        QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + M_PI_2) * 2 * ARROW_COMAGG_SIZE,
-            cos(angle + M_PI_2) * 2 * ARROW_COMAGG_SIZE);
-
-        arrow_head.clear();
-        arrow_head << col_vec.toPointF() << arrowP1 << arrowP2 << arrowP3;
-        break;
-    }
-    case RuleID::R_GEN:
-    {
-        QPointF arrowP1 = col_vec.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_GEN_SIZE,
-            cos(angle + M_PI / 3) * ARROW_GEN_SIZE);
-
-        QPointF arrowP2 = col_vec.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE,
-            cos(angle + 2 * M_PI / 3) * ARROW_GEN_SIZE);
-
-        arrow_head.clear();
-        arrow_head << col_vec.toPointF() << arrowP1 << arrowP2;
-        break;
-    }
-    default:
-        break;
-    }
+    arrow_head.clear();
+    arrow_head << col_vec.toPointF() << arrowP1 << arrowP2;
 }
 
 void SEQArrow::destroy()
