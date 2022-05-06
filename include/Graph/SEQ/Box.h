@@ -8,7 +8,7 @@ public:
     /// @brief          creates ERD item
     /// @param parent   graphics scene on which is displayed
     /// @param clas     class data
-    Box(QGraphicsScene* parent, QRect rect_t);
+    Box(QGraphicsScene* parent, QRect rect_t, QString name);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
     QRectF boundingRect() const override;
@@ -21,4 +21,5 @@ public:
                QWidget* widget) override;
 private:
     QRect rect;
+    const QString name;
 };

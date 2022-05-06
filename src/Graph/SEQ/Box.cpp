@@ -1,6 +1,6 @@
 #include "Graph/SEQ/Box.h"
 
-Box::Box(QGraphicsScene* parent, QRect rect_t) :rect(rect_t)
+Box::Box(QGraphicsScene* parent, QRect rect_t, QString name) :rect(rect_t), name(name)
 {
     setPos(rect_t.x(), rect_t.y());
     rect.setX(0);
@@ -16,6 +16,9 @@ QRectF Box::boundingRect() const
 void Box::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     painter->drawRect(rect);
+
+    QPoint textOffset{ 0, -30 };
+    painter->drawText(textOffset, name);
 
     drawDebug(painter, this);
 }

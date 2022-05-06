@@ -272,6 +272,7 @@ public:
     void addAction(SEQAction action);
     std::vector<SEQMember> getMembers() { return members; }
     std::vector<SEQAction> getActions() { return actions; }
+    inline QString getName() { return name; }
     void connectActions();
     void testEntities(std::vector<UMLClass> classes);
     void disableLeftovers(size_t time);

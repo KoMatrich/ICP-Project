@@ -47,7 +47,6 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
         painter->drawLine(end.toPoint(), end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0));
         painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0), end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT));
         painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT), end.toPoint() + QPointF(0, SELF_ARROW_HEIGHT));
-        //arrow_head.translate(QPointF(0, SELF_ARROW_HEIGHT));
     }
 
     painter->drawPolygon(arrow_head);

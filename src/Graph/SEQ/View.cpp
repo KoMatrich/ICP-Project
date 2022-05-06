@@ -65,7 +65,7 @@ void SEQScene::update()
         last += {COLUMN_SPACING, HEADER_HEIGHT + HEADER_SPACE + int(acts.size()) * ACTION_RH + STEM_EXTRA + BOX_OFFSET};
         last += off;
 
-        Box* box = new Box(this, QRect(start, last - start));
+        Box* box = new Box(this, QRect(start, last - start), seq.getName());
         box->ItemStacksBehindParent;
         addItem(box);
 
