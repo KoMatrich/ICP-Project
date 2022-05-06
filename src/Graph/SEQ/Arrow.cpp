@@ -47,7 +47,7 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
         painter->drawLine(end.toPoint(), end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0));
         painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, 0), end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT));
         painter->drawLine(end.toPoint() + QPointF(SELF_ARROW_WIDTH, SELF_ARROW_HEIGHT), end.toPoint() + QPointF(0, SELF_ARROW_HEIGHT));
-        arrow_head.translate(QPointF(0, SELF_ARROW_HEIGHT));
+        //arrow_head.translate(QPointF(0, SELF_ARROW_HEIGHT));
     }
 
     painter->drawPolygon(arrow_head);
@@ -86,14 +86,23 @@ void SEQArrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
 
+    QPointF offset;
+
+    if (pos1 == pos2) {
+        offset = QPointF(0, SELF_ARROW_HEIGHT);
+    }
+    else {
+        offset = QPointF(0, 0);
+    }
+
     QPointF arrowP1 = end.toPointF() + QPointF(sin(angle + M_PI / 3) * ARROW_SEQ_SIZE,
-        cos(angle + M_PI / 3) * ARROW_SEQ_SIZE);
+        cos(angle + M_PI / 3) * ARROW_SEQ_SIZE) + offset;
 
     QPointF arrowP2 = end.toPointF() + QPointF(sin(angle + 2 * M_PI / 3) * ARROW_SEQ_SIZE,
-        cos(angle + 2 * M_PI / 3) * ARROW_SEQ_SIZE);
+        cos(angle + 2 * M_PI / 3) * ARROW_SEQ_SIZE) + offset;
 
     arrow_head.clear();
-    arrow_head << end.toPointF() << arrowP1 << arrowP2;
+    arrow_head << end.toPointF() + offset << arrowP1 << arrowP2;
 }
 
 void SEQArrow::destroy()
