@@ -21,11 +21,11 @@ public:
     /// @brief          Clears all sequences from memory
     void removeSequences();
     /// @brief          Sets endpoint for refreshing
-    /// @param          endpoint
-    void setERDView(ERDView*);
+    /// @param endpoint endpoint
+    void setERDView(ERDView* endpoint);
     /// @brief          Sets endpoint for refreshing
-    /// @param          endpoint
-    void setSEQView(SEQView*);
+    /// @param endpoint endpoint
+    void setSEQView(SEQView* endpoint);
 protected:
     /// @brief          endpoint for ERDView
     ERDView* erd = nullptr;
