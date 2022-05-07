@@ -5,9 +5,10 @@
 class Box : public QGraphicsObject
 {
 public:
-    /// @brief          creates ERD item
-    /// @param parent   graphics scene on which is displayed
-    /// @param clas     class data
+    /// @brief          inicializes box
+    /// @param parent   graphics scene
+    /// @param rect_t   size and pos
+    /// @param name     name
     Box(QGraphicsScene* parent, QRect rect_t, QString name);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
@@ -20,6 +21,8 @@ public:
                const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;
 private:
+    /// @brief          size of box
     QRect rect;
+    /// @brief          name of box
     const QString name;
 };

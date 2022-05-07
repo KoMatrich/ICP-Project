@@ -20,11 +20,16 @@ public:
     void removeClasses();
     /// @brief          Clears all sequences from memory
     void removeSequences();
-
+    /// @brief          Sets endpoint for refreshing
+    /// @param          endpoint
     void setERDView(ERDView*);
+    /// @brief          Sets endpoint for refreshing
+    /// @param          endpoint
     void setSEQView(SEQView*);
 protected:
+    /// @brief          endpoint for ERDView
     ERDView* erd = nullptr;
+    /// @brief          endpoint for SEQView
     SEQView* seq = nullptr;
 
     /// @brief          All classes found by semantic
