@@ -29,10 +29,12 @@ void CodeService::deleteEntity(size_t start, size_t end)
 
 void CodeService::highlightLine(size_t ln)
 {
+    CodeService::formatLine(0, HLevel::LEVEL_OK);
     HighlightService::setEnabled(false);
     CodeService::formatLine(ln, HLevel::LEVEL_OK);
     QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
+    editor->moveCursor(QTextCursor::End);
     editor->setTextCursor(cursor);
     HighlightService::setEnabled(true);
 }
