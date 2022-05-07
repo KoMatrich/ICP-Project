@@ -8,7 +8,7 @@ INC_DIRS ?= ./include
 DOC_DIR  ?= ./doc
 RES_DIR  ?= ./resources
 
-PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMakeLists.txt Makefile README.md resources.qrc windeployqt.cmake
+PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMakeLists.txt Makefile README.md README.txt resources.qrc windeployqt.cmake
 
 run: build
 

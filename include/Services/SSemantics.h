@@ -3,7 +3,7 @@
  *
  * @brief Contains declaration of service for semantical analysis
  *
- * @author Vitezslav Kríz
+ * @author Vitezslav Kriz
  * Contact xkrizv03@stud.fit.vutbr.cz
  *
  */

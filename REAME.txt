@@ -2,7 +2,7 @@
 ## Interactive UML editor
 
 ### Authors:
-- Vítězslav Kříž <xkrizv03@stud.fit.vutbr.cz>
+- V�tezslav Kr�z <xkrizv03@stud.fit.vutbr.cz>
 - Martin Kocich <xkocic02@stud.fit.vutbr.cz>
 
 ### Requirements:
