@@ -4,8 +4,9 @@ Column::Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, 
     : cont_height(height), name(mem.getName())
 {
     //calculate size
-    size = { metric.width(name),HEADER_HEIGHT };
-    rsize = QSize{ size.width(), HEADER_HEIGHT } + SOFFSET;
+    auto w = QFontMetrics(QApplication::font()).boundingRect(name).width();
+    size = { w, HEADER_HEIGHT };
+    rsize = QSize{ w, HEADER_HEIGHT } + SOFFSET;
 
     //create infill
     if (mem.getErrorFlag()) {
@@ -22,7 +23,7 @@ Column::Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, 
     activations = mem.getActivations();
     //update pos
     setPos(pos);
-    off = { rsize.width()/2,0 };
+    off = { rsize.width()/2, 0 };
 }
 
 QRectF Column::boundingRect() const
@@ -47,20 +48,21 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     if (is_thick) {
         painter->setPen(thick_pen);
     }
-    painter->translate(rsize.width() / 2, HEADER_SPACE + rsize.height());
+    painter->translate(rsize.width() / 2.0, HEADER_SPACE + rsize.height());
     painter->save();
     //go to header start
     painter->translate(0, -HEADER_SPACE);
     //draw stem with extra down
     painter->drawLine(0, 0, 0, HEADER_SPACE + cont_height * ACTION_RH + STEM_EXTRA);
     //go to top left corner of header
-    painter->translate(-rsize.width() / 2, -rsize.height());
+    painter->translate(-rsize.width() / 2.0, -rsize.height());
     //draw rect
     painter->drawRoundedRect(0, 0, rsize.width(), rsize.height(), RADIUS / 10, RADIUS / 10);
     //go to center of rect
-    painter->translate(rsize.width() / 2, rsize.height() / 2);
+    painter->translate(rsize.width() / 2.0, rsize.height() / 2.0);
     //draw text (centered)
-    QPoint textOffset{ -metric.width(name) / 2, metric.height() / 2 };
+    auto s = QFontMetrics(QApplication::font()).boundingRect(name);
+    QPointF textOffset{ -size.width() / 2.0, s.height() / 2.0 };
     painter->drawText(textOffset, name);
 
     painter->restore();
@@ -69,9 +71,9 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
         //draw at start pos
         int start = act.startIndex() * ACTION_RH;
         //draw end of activation with litle tail
-        int end = act.endIndex() * ACTION_RH + (ACTION_RH / 8);
+        int end = act.endIndex() * ACTION_RH + (ACTION_RH / 8.0);
         //draw activation rectangle
-        painter->drawRect(-ACTIVATION_W / 2, start, ACTIVATION_W, end - start);
+        painter->drawRect(-ACTIVATION_W / 2.0, start, ACTIVATION_W, end - start);
     }
 
     drawDebug(painter, this);

@@ -10,7 +10,7 @@ Box::Box(QGraphicsScene* parent, QRect rect_t, QString name) :rect(rect_t), name
 
 QRectF Box::boundingRect() const
 {
-    return rect.normalized().marginsAdded(BOX_OFF).marginsAdded(BOUND_OF);
+    return rect.normalized().marginsAdded(BOX_OFF).marginsAdded(SEQ_BOUND_OF);
 }
 
 void Box::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)

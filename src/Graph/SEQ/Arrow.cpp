@@ -11,12 +11,13 @@ SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos
 
 QRectF SEQArrow::boundingRect() const
 {
-    return QRect(0, -(ACTION_RH+ACTION_H)/2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(BOUND_OF);
+    return QRect(0, -(ACTION_RH+ACTION_H)/2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
 }
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
+    //auto w = QFontMetrics(QApplication::font()).boundingRect(method).width();
+    //QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
 
     QPen pen = QPen();
 
@@ -50,14 +51,17 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     }
 
     painter->drawPolygon(arrow_head);
+    painter->setFont(QApplication::font());
 
     if (abs(pos1.x() - pos2.x())>0) {
         painter->translate((pos1 - pos2) / 2 - textOffset);
     } else {
         painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height()/2 });
     }
-    QRect descRect{ 0,0,metric.width(method),metric.height() };
-    painter->drawRect(descRect.marginsAdded(BOUND_OF));
+
+    auto m = QFontMetrics(QApplication::font()).boundingRect(method);
+    QRect descRect{ 0,0,m.width(),m.height() };
+    painter->drawRect(descRect.marginsAdded(SEQ_BOUND_OF));
     painter->drawText(QPoint{ 0,metric.height() }, method);
 
     drawDebug(painter, this);

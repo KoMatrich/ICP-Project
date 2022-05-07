@@ -29,7 +29,7 @@ const int OFFSET{ GRID_S };
 const int RADIUS{ GRID_S };
 
 const QPoint POFFSET{ OFFSET, OFFSET };
-const QSize SOFFSET{ OFFSET,OFFSET };
+const QSize SOFFSET{ OFFSET * 2, OFFSET };
 
 /// @brief metric for getting text size
 QFontMetrics const metric = QFontMetrics{ QApplication::font() };
@@ -66,8 +66,10 @@ const QMargins BOX_OFF{ BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET };
 /// @brief separator height
 const int SEPARATOR_H{ 3 };
 
-const int pixOf = 0;
-const QMargins BOUND_OF{ pixOf,pixOf,pixOf,pixOf };
+const int pixOf = 2;
+const QMargins BOUND_OF{ pixOf, pixOf, pixOf, pixOf };
+const int SEQpixOf = 5;
+const QMargins SEQ_BOUND_OF{ pixOf + SEQpixOf, pixOf, pixOf + SEQpixOf, pixOf };
 
 inline QLinearGradient redG(uint cont_height)
 {

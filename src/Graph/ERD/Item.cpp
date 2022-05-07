@@ -76,7 +76,8 @@ void ERDItem::addMethods(UMLClass clas)
 //adds new data to item
 void ERDItem::addline(const Block line)
 {
-    auto text = metric.size(Qt::TextLongestVariant, line.data.trimmed());
+    auto text = QFontMetrics(QApplication::font()).boundingRect(line.data.trimmed());
+
     blocks.append(line);
     switch (line.type) {
     case BlockType::InheritedText:
@@ -123,6 +124,7 @@ void ERDItem::paint(QPainter* painter,
 
     //draw text in frame
     painter->translate(0, OFFSET);
+    painter->setFont(QApplication::font());
     PaintBlocks(painter);
 
     drawDebug(painter, this);
