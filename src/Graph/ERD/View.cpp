@@ -33,6 +33,8 @@ void ERDScene::addArrows(std::vector<UMLClass> classes)
     for (size_t i = 0; i < classes.size(); i++) {
         auto clas = classes.at(i);
         for (UMLRelation& rel : clas.getRelations()) {
+
+            if (!rel.getValid()) continue;
             ERDItem* i1 = dynamic_cast<ERDItem*>(items().at(classes.size() - i - 1));
             ERDItem* i2 = dynamic_cast<ERDItem*>(items().at(classes.size() - rel.getID() - 1));
 

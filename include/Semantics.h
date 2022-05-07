@@ -11,18 +11,20 @@ class UMLRelation
 public:
     size_t pos = 0;
     UMLRelation() {}
-    UMLRelation(QString entity, RuleID type)
+    UMLRelation(QString entity, RuleID type, size_t ln)
     {
         this->entity = entity;
         this->type = type;
+        this->line = ln;
     }
     ~UMLRelation() {}
     QString toString();
     QString getEntity();
     size_t getID() { return id; }
     RuleID getType() { return type; }
-    void setInvalid() { isValid = false; }
-    bool getValid() { return isValid; }
+    inline void setInvalid() { isValid = false; }
+    inline bool getValid() { return isValid; }
+    inline size_t getLine() { return line; }
     bool updateRelationParams(UMLRelation new_r);
     bool updateRelationConnectors(size_t new_id);
 protected:
@@ -34,6 +36,8 @@ protected:
     RuleID type = RuleID::R_ERR;
     /// @brief Unique identifier
     size_t id = -1;
+    /// @brief Line of relation in code
+    size_t line = 0;
 };
 
 class UMLProperty
