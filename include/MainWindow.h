@@ -6,7 +6,7 @@
  * @author Martin Kocich
  * Contact: xkocic02@stud.fit.vutbr.cz
  *
- * @author Vitezslav Kríz
+ * @author Vitezslav Kriz
  * Contact xkrizv03@stud.fit.vutbr.cz
  *
  */

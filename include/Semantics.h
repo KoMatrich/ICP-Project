@@ -6,7 +6,7 @@
  * @author Martin Kocich
  * Contact: xkocic02@stud.fit.vutbr.cz
  *
- * @author Vitezslav Kríz
+ * @author Vitezslav Kriz
  * Contact xkrizv03@stud.fit.vutbr.cz
  *
  */
@@ -244,7 +244,7 @@ protected:
     std::vector<UMLProperty> attributes;
     /// @brief class methods
     std::vector<UMLProperty> methods;
-    /// @brief inherited attributes	
+    /// @brief inherited attributes
     std::vector<UMLProperty> inheritedAttributes;
     /// @brief inherited methods
     std::vector<UMLProperty> inheritedMethods;
