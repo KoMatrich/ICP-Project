@@ -291,7 +291,15 @@ public:
     /// @brief      Getter for member line position in code
     /// @return     line position of action
     inline size_t getLine() { return line; }
+    /// @brief      Setter for class end index
+    /// @param ln   class end index
+    void setClassEndIndex(size_t ln) { class_end_index = ln; };
+    /// @brief      Setter for class end index
+    /// @return     class end index
+    size_t getClassEndIndex() { return class_end_index; };
 protected:
+    /// @brief      Place for inserting in case of broken link
+    size_t class_end_index;
     /// @brief      method name
     const QString method;
     /// @brief      Actiom error level (0 = OK, 1 = warning, 2 = error)
@@ -457,7 +465,11 @@ public:
     /// @return     sequence name
     inline QString getName() { return name; }
     /// @brief      Connect all actions with their classes
-    void connectActions();
+    /// @param classes vector of members
+    void connectActions(std::vector<UMLClass> classes);
+    /// @brief      give all actions a line of their class implementing the method
+    /// @param      classes vector of members
+    void setEndIndexes(std::vector<UMLClass> classes);
     /// @brief      Test all members if they are valid
     /// @param classes vector of members
     void testEntities(std::vector<UMLClass> classes);

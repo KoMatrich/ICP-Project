@@ -63,7 +63,6 @@ public:
     /// @brief              second connection pair storing and processing
     /// @param target       name of target class
     static void relationConnect(QString target);
-
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint

@@ -1,7 +1,7 @@
 #include "Graph/SEQ/Arrow.h"
 
-SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error)
-    :pos1(pos1), pos2(pos2), method(method), has_error(error)
+SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln)
+    :pos1(pos1), pos2(pos2), method(method), has_error(error), line(ln), classLine(c_ln)
 {
     setAcceptHoverEvents(true);
     arrow_type = arr_type;
@@ -122,14 +122,20 @@ void SEQArrow::destroy()
     delete this;
 }
 
-void SEQArrow::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+void SEQArrow::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
-    is_thick = true;
-    update();
-}
+    //menu creation
+    QMenu menu{};
+    if (has_error) {
+        menu.addAction(QStringLiteral("Fix issue"), [this]() {CodeService::insertLine(classLine, "\t+ void " + method + "\n"); });
+        menu.addSeparator();
+    }
+    menu.addAction(QStringLiteral("Modify Action"), [this]() {CodeService::highlightLine(line); });
+    menu.addAction(QStringLiteral("Delete Action"), [this]() {CodeService::deleteEntity(line, line); });
 
-void SEQArrow::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
-{
-    is_thick = false;
-    update();
+    //menu execution
+    menu.exec(event->screenPos());
+
+    //relations is pointer to local menu data
+    //no need to delete pointer data
 }

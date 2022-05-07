@@ -3,6 +3,7 @@
 #include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
 #include "CMath.h"
+#include "Semantics.h"
 
 /// @brief QGraphicsObject Arrow
 class SEQArrow : public QGraphicsObject
@@ -16,7 +17,7 @@ public:
     /// @param arr_type     type of arrow head used
     /// @param method       name of arrow action
     /// @param error        error level
-    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error);
+    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;
@@ -28,13 +29,9 @@ public:
                const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;
 protected:
-    /// @brief          marks the entity as selected while hovering
-    /// @param event    mouse event
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
-    /// @brief          marks the entity as not selected while hovering
-    /// @param event    mouse event
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
-
+    /// @brief          context menu handler
+    /// @param event    context menu open event
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
 private:
     /// @brief Relative vector from first to second target
     QVector2D end;
@@ -62,6 +59,10 @@ private:
     void update();
     /// @brief is being hovered over?
     bool is_thick = false;
+    /// @brief line in code
+    size_t line = 0;
+    /// @brief last line of class for inserting
+    size_t classLine = 0;
 private slots:
     /// @brief calls destructor of this object
     void destroy();

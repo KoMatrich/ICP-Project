@@ -25,7 +25,7 @@ void Box::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidg
     descRect += {qreal(metric.averageCharWidth()), 0, qreal(metric.averageCharWidth()), 0};
 
     auto fill = greenG(descRect.height());
-    painter->setBrush(fill);
+    painter->setBrush(QColor(225,255,225));
 
     painter->drawRect(descRect);
     painter->drawText(0, 0, name);

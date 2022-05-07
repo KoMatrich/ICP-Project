@@ -412,10 +412,11 @@ void Semantics::buildSTree(GlobalStack stack)
             if (++i >= this->stack.size()) break;
         }
         // testing and index connecting
-        this->sequences.back().connectActions();
+        this->sequences.back().connectActions(classes);
         this->sequences.back().testEntities(classes);
         this->sequences.back().disableLeftovers(time);
         this->sequences.back().testActions(classes);
+        this->sequences.back().setEndIndexes(classes);
     }
 
     HighlightService::setEnabled(true);

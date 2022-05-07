@@ -232,7 +232,7 @@ void Sequence::addAction(SEQAction action)
     this->actions.push_back(action);
 }
 
-void Sequence::connectActions()
+void Sequence::connectActions(std::vector<UMLClass> classes)
 {
     for (size_t act = 0; act < actions.size(); act++) {
         if (actions[act].getType() == RuleID::R_NOP) continue;
@@ -370,6 +370,13 @@ void Sequence::testEntities(std::vector<UMLClass> classes)
             CodeService::formatLine(member.getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Disconnected entity member.");
         }
+    }
+}
+
+void Sequence::setEndIndexes(std::vector<UMLClass> classes)
+{
+    for (auto& act : actions) {
+        act.setClassEndIndex(classes[members[act.getReceiverIndex()].getClassID()].pos_end);
     }
 }
 
