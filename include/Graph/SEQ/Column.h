@@ -25,12 +25,17 @@ public:
     /// @brief          moves column to pos
     /// @param pos      absolute pos
     void movePos(QPointF& pos);
-
-private:
+protected:
     /// @brief          context menu handler
     /// @param event    context menu open event
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
-
+    /// @brief          marks the entity as selected while in connect mode
+    /// @param event    mouse event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    /// @brief          marks the entity as not selected while in connect mode
+    /// @param event    mouse event
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
+private:
     const int cont_height;
     QString name;
 
@@ -42,5 +47,6 @@ private:
     QSize rsize;
     bool is_thick = false;
     QLinearGradient fill;
+    size_t line;
 };
 

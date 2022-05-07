@@ -3,11 +3,14 @@
 Column::Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, const int& height)
     : cont_height(height), name(mem.getName())
 {
+    setAcceptHoverEvents(true);
+
     //calculate size
     auto w = QFontMetrics(QApplication::font()).boundingRect(name).width();
     size = { w, HEADER_HEIGHT };
     rsize = QSize{ w, HEADER_HEIGHT } + SOFFSET;
 
+    line = mem.getLine();
     //create infill
     if (mem.getErrorFlag()) {
         fill = redG(size.height());
@@ -87,4 +90,32 @@ void Column::movePos(QPointF& pos)
 
 void Column::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
+    //menu creation
+    QMenu menu{};
+    menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightLine(line); });
+    //menu.addAction(QStringLiteral("Delete"), [this]() {CodeService::deleteEntity(class_line, class_end); });
+    //menu.addSeparator();
+    //QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
+    //relations->addAction(QStringLiteral("Aggregation"), [this]() {connectMode(RuleID::R_AGG); });
+    //relations->addAction(QStringLiteral("Association"), [this]() {connectMode(RuleID::R_ASS); });
+    //relations->addAction(QStringLiteral("Composition"), [this]() {connectMode(RuleID::R_COM); });
+    //relations->addAction(QStringLiteral("Generalization"), [this]() {connectMode(RuleID::R_GEN); });
+
+    //menu execution
+    menu.exec(event->screenPos());
+
+    //relations is pointer to local menu data
+    //no need to delete pointer data
+}
+
+void Column::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = true;
+    update();
+}
+
+void Column::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = false;
+    update();
 }

@@ -27,7 +27,7 @@ void CodeService::deleteEntity(size_t start, size_t end)
     cursor.removeSelectedText();
 }
 
-void CodeService::highlightClass(size_t ln)
+void CodeService::highlightLine(size_t ln)
 {
     HighlightService::setEnabled(false);
     CodeService::formatLine(ln, HLevel::LEVEL_OK);

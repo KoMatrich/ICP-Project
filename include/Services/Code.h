@@ -54,7 +54,7 @@ public:
     static void deleteEntity(size_t start, size_t end);
     /// @brief              highlightes and jumps to class
     /// @param ln           first line of class
-    static void highlightClass(size_t ln);
+    static void highlightLine(size_t ln);
     /// @brief              first connection pair storing
     /// @param sel_name     name of calling class
     /// @param rule         connection type

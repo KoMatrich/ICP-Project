@@ -158,7 +158,7 @@ void ERDItem::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     //menu creation
     QMenu menu{};
-    menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightClass(class_line); });
+    menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightLine(class_line); });
     menu.addAction(QStringLiteral("Delete"), [this]() {CodeService::deleteEntity(class_line, class_end); });
     menu.addSeparator();
     QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
