@@ -136,22 +136,22 @@ RuleSet const SyntaxTree::genRules()
 
 	// association aggregation composition generalization
 	Rule* association = new Rule();
-	association->start = Start("ass?o?c?i?a?t?i?o?n?");
+	association->start = Start("(ass|assoc|association)");
 	association->format.setFontItalic(true);
 	association->id = RuleID::R_ASS;
 
 	Rule* aggregation = new Rule();
-	aggregation->start = Start("agg?r?e?g?a?t?i?o?n?");
+	aggregation->start = Start("(agg|aggreg|aggregation)");
 	aggregation->format.setFontItalic(true);
 	aggregation->id = RuleID::R_AGG;
 
 	Rule* composition = new Rule();
-	composition->start = Start("co?m?p?o?s?i?t?i?o?n?");
+	composition->start = Start("(com|compos|composition)");
 	composition->format.setFontItalic(true);
 	composition->id = RuleID::R_COM;
 
 	Rule* generalization = new Rule();
-	generalization->start = Start("ge?n?e?r?a?l?i?z?a?t?i?o?n?");
+	generalization->start = Start("(gen|general|generalization)");
 	generalization->format.setFontItalic(true);
 	generalization->id = RuleID::R_GEN;
 
