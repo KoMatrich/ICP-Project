@@ -12,6 +12,7 @@
 
 #include "Graph/ItemConst.h"
 
+ /// @brief SEQ box that contains sequence
 class SEQBox : public QGraphicsObject
 {
 public:

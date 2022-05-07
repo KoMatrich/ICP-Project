@@ -72,10 +72,12 @@ const int ACTION_RH{ ACTION_H + int(ARROW_GEN_SIZE) };
 const int ACTION_S{ pixOf * 2 + 6 };
 /// @brief (extra) Space between columns
 const int COLUMN_SPACE{ GRID_S * 2 };
-/// @brief Space under header
-const int HEADER_SPACE{ GRID_S * 2 };
 /// @brief Height of header
 const int HEADER_HEIGHT{ GRID_S * 2 };
+/// @brief Space under header
+const int HEADER_SPACE{ GRID_S * 2 };
+/// @brief Time line width
+const int TIME_LINE_W{ GRID_S * 2 };
 /// @brief Steam ending extra
 const int STEM_EXTRA{ GRID_S };
 
@@ -116,7 +118,7 @@ inline QLinearGradient blueG(uint cont_height)
     return gradient;
 }
 
-#define DEBUG_DRAW
+//#define DEBUG_DRAW
 
 /// @brief          paints debug info
 /// @param painter  painter

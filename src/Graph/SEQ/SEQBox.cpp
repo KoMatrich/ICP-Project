@@ -15,6 +15,17 @@ QRectF SEQBox::boundingRect() const
 
 void SEQBox::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
+    painter->save();
+    painter->translate(-BOX_OFFSET, 0);
+    int time_index = 0;
+    for (int height = HEADER_HEIGHT + HEADER_SPACE + BOX_OFFSET; height < rect.height() - STEM_EXTRA; height += ACTION_RH + ACTION_S) {
+        painter->drawLine(0, height, TIME_LINE_W, height);
+
+        QString index = QString::number(time_index++);
+        painter->drawText(pixOf, height - pixOf, index);
+    }
+    painter->restore();
+
     //draw bounds
     painter->drawRect(rect);
     //go to top center of bounds
@@ -24,9 +35,7 @@ void SEQBox::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     painter->translate(-descRect.width() / 2, -descRect.height() / 2);
     descRect += {qreal(metric.averageCharWidth()), 0, qreal(metric.averageCharWidth()), 0};
 
-    auto fill = greenG(descRect.height());
     painter->setBrush(QColor(225, 255, 225));
-
     painter->drawRect(descRect);
     painter->drawText(0, 0, name);
 
