@@ -11,9 +11,10 @@ class SEQArrow : public QGraphicsObject
 public:
     /// @brief              Creates new arrow
     /// @param parent       QGraphicsScene to which is this item linked
-    /// @param o1           first target (to which is this arrow pointing)
-    /// @param o2           second target (from which is this arrow pointing)
+    /// @param pos1         first target pos (to which is this arrow pointing)
+    /// @param pos2         second target pos (from which is this arrow pointing)
     /// @param arr_type     type of arrow head used
+    /// @param method       name of arrow action
     /// @param error        error level
     SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error);
     /// @brief              override of virtual function

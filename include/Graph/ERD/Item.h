@@ -33,16 +33,16 @@ protected:
     /// @param event    context menu open event
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);
     /// @brief          updates code on mouse release
-    /// @param event    mouse event
+    /// @param event    mouse release event
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     /// @brief          marks the entity as selected while in connect mode
-    /// @param event    mouse event
+    /// @param event    mouse hover enter event
     void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
     /// @brief          marks the entity as not selected while in connect mode
-    /// @param event    mouse event
+    /// @param event    mouse hover leave event
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
     /// @brief          connects the relation (if any in connect mode)
-    /// @param rule     mouse event
+    /// @param event    mouse press event
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     /// @brief          enter the connect mode
     /// @param rule     specifies the option selected

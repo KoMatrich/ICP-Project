@@ -45,6 +45,7 @@ public slots:
     /// @brief          triggers scene update
     void update() { scene.update(); };
 private:
+    /// @brief          scene of this view
     ERDScene scene;
 
 };

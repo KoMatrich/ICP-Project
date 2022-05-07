@@ -254,6 +254,7 @@ protected:
 class SEQAction
 {
 public:
+    /// @brief      inicializer of SEQAction
     SEQAction(QString method, RuleID type, size_t line, QString sender, QString receiver)
         : sender(sender), receiver(receiver), method(method), type(type), line(line)
     {
@@ -275,10 +276,8 @@ public:
     /// @return     member receiver
     inline size_t getReceiverIndex() { return receiver_index; }
     /// @brief      Getter for member sender index
-    /// @return     member sender
     inline void setSenderIndex(size_t i) { sender_index = i; }
     /// @brief      Setter for member receiver index
-    /// @return     member receiver
     inline void setReceiverIndex(size_t i) { receiver_index = i; }
     /// @brief      Setter for member sender name
     /// @return     member sender
@@ -288,7 +287,7 @@ public:
     inline QString getReceiver() { return receiver; }
     /// @brief      Setter for member has_error
     /// @param e    new value (Only increasing)
-    inline void setErrorLevel(int e) { if (e>error_level) error_level = e; }
+    inline void setErrorLevel(int e) { if (e > error_level) error_level = e; }
     /// @brief      Getter for member line position in code
     /// @return     line position of action
     inline size_t getLine() { return line; }

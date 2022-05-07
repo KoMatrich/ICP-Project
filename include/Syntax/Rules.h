@@ -85,13 +85,23 @@ class SyntaxTree
 {
 public:
     SyntaxTree();
-    QTextCharFormat err, cursor_color, after_err, no_check;
+    /// @brief syntax error formating
+    QTextCharFormat err;
+    /// @brief cursor formating
+    QTextCharFormat cursor_color;
+    /// @brief formating after syntax error
+    /// @note  this text is not checked by syntax any more
+    QTextCharFormat after_err;
+    /// @brief text that is ignored
+    QTextCharFormat no_check;
+    /// @brief Format of positional descriptor
     static QTextCharFormat posFormat()
     {
         QTextCharFormat format;
         format.setFontWeight(QFont::Bold);
         return format;
     };
+    /// @brief Format of positional value
     static QTextCharFormat posValFormat()
     {
         QTextCharFormat format;
@@ -103,6 +113,7 @@ public:
 private:
     /// @brief Generates syntax tree rules
     RuleSet const genRules();
+    /// @brief main syntax tree after is generated
     RuleSet syntax_tree;
 };
 

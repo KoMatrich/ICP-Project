@@ -1,6 +1,6 @@
 #pragma once
 
-/// @brief abstract service class
+/// @brief "abstract" service class
 /// global singleton allocated on stack
 /// for fast access
 /// @note bad practice to use this!
