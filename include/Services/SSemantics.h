@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Graph/ERD/View.h"
-#include "Graph/SEQ/View.h"
+#include "Graph/ERD/ERDView.h"
+#include "Graph/SEQ/SEQView.h"
 
  /// @brief Main semantic checking service
 class Semantics : public Service<Semantics>

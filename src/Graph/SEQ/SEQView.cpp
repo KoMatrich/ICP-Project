@@ -1,4 +1,4 @@
-#include "Graph/SEQ/View.h"
+#include "Graph/SEQ/SEQView.h"
 
 #include "Graph/SEQ/SEQColumn.h"
 #include "Graph/SEQ/SEQArrow.h"

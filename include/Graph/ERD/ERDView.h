@@ -1,5 +1,5 @@
 /**
- * @file View.h
+ * @file ERDView.h
  *
  * @brief Contains declaration of view for ERD
  *

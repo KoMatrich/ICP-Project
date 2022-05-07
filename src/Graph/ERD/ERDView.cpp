@@ -1,4 +1,4 @@
-#include "Graph/ERD/View.h"
+#include "Graph/ERD/ERDView.h"
 #include "Services/SSemantics.h"
 
 ERDScene::ERDScene(QObject* parent)
