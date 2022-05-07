@@ -26,14 +26,14 @@ Column::Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, 
     activations = mem.getActivations();
     //update pos
     setPos(pos);
-    off = { rsize.width()/2, 0 };
+    off = { rsize.width() / 2, 0 };
 }
 
 QRectF Column::boundingRect() const
 {
     return QRectF(0, 0,
                   rsize.width(),
-                  HEADER_SPACE + HEADER_HEIGHT + OFFSET + cont_height * ACTION_RH + STEM_EXTRA
+                  HEADER_SPACE + HEADER_HEIGHT + OFFSET + cont_height * (ACTION_RH + ACTION_S) + STEM_EXTRA
     ).normalized().marginsAdded(BOUND_OF);
 }
 
@@ -53,7 +53,7 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     //go to header start
     painter->translate(0, -HEADER_SPACE);
     //draw stem with extra down
-    painter->drawLine(0, 0, 0, HEADER_SPACE + cont_height * ACTION_RH + STEM_EXTRA);
+    painter->drawLine(0, 0, 0, HEADER_SPACE + cont_height * (ACTION_RH + ACTION_S) + STEM_EXTRA);
     //go to top left corner of header
     painter->translate(-rsize.width() / 2.0, -rsize.height());
     //draw rect
@@ -69,9 +69,9 @@ void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     //paint down from center
     for (auto& act : activations) {
         //draw at start pos
-        int start = act.startIndex() * ACTION_RH;
+        int start = act.startIndex() * (ACTION_RH + ACTION_S);
         //draw end of activation with litle tail
-        int end = act.endIndex() * ACTION_RH + (ACTION_RH / 8.0);
+        int end = act.endIndex() * (ACTION_RH + ACTION_S) + (ACTION_RH / 8.0);
         //draw activation rectangle
         painter->drawRect(-ACTIVATION_W / 2.0, start, ACTIVATION_W, end - start);
     }

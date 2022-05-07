@@ -34,6 +34,11 @@ const QSize SOFFSET{ OFFSET * 2, OFFSET };
 /// @brief metric for getting text size
 QFontMetrics const metric = QFontMetrics{ QApplication::font() };
 
+const int pixOf = 2;
+const QMargins BOUND_OF{ pixOf, pixOf, pixOf, pixOf };
+const int SEQpixOf = 5;
+const QMargins SEQ_BOUND_OF{ pixOf + SEQpixOf, pixOf, pixOf + SEQpixOf, pixOf };
+
 //arrow settings
 const int ARROW_OFFSET{ 0 };
 const float ARROW_GEN_SIZE{ 20.0 };
@@ -50,6 +55,8 @@ const int ACTIVATION_W{ GRID_S * 2 };
 const int ACTION_H{ GRID_S };
 /// @brief Real action height
 const int ACTION_RH{ ACTION_H + int(ARROW_GEN_SIZE) };
+/// @brief Action spacing
+const int ACTION_S{ pixOf * 2 + 6 };
 /// @brief (extra) Space between columns
 const int COLUMN_SPACE{ GRID_S * 2 };
 /// @brief Space under header
@@ -65,11 +72,6 @@ const QMargins BOX_OFF{ BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET ,BOX_OFFSET };
 //ERD settings
 /// @brief separator height
 const int SEPARATOR_H{ 3 };
-
-const int pixOf = 2;
-const QMargins BOUND_OF{ pixOf, pixOf, pixOf, pixOf };
-const int SEQpixOf = 5;
-const QMargins SEQ_BOUND_OF{ pixOf + SEQpixOf, pixOf, pixOf + SEQpixOf, pixOf };
 
 inline QLinearGradient redG(uint cont_height)
 {
@@ -101,7 +103,7 @@ inline QLinearGradient blueG(uint cont_height)
     return gradient;
 }
 
-//#define DEBUG_DRAW
+#define DEBUG_DRAW
 
 /// @brief          paints debug info
 /// @param painter  painter

@@ -12,7 +12,11 @@ SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos
 
 QRectF SEQArrow::boundingRect() const
 {
-    return QRect(0, -(ACTION_RH+ACTION_H)/2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
+    if (pos1 != pos2) {
+        return QRect(0, -ACTION_H / 2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
+    } else {
+        return QRect(0, -ACTION_H / 2, SELF_ARROW_WIDTH + metric.width(method), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
+    }
 }
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -60,6 +64,9 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     } else {
         painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height()/2 });
     }
+
+    if(pos1 == pos2)
+        painter->translate(ACTIVATION_W / 2, 0);
 
     auto m = QFontMetrics(QApplication::font()).boundingRect(method);
     QRect descRect{ 0,0,m.width(),m.height() };
