@@ -18,8 +18,8 @@ class App{
 class MainWindow{
 	x: -756
 	y: -564
-	in com with MainTextEdit
-	in com with DebugTextEdit
+	in comp with MainTextEdit
+	in comp with DebugTextEdit
 	# bool eventFilter()
 	# void closeEvent()
 	- bool save()
@@ -46,7 +46,7 @@ class MainWindow{
 class MainTextEdit{
 	x: -996
 	y: -372
-	in com with Highlighter
+	in comp with Highlighter
 	+ void syntax_reload()
 	- Highlighter* highlighter
 }
@@ -345,7 +345,7 @@ class CodeService{
 class Analyzer{
 	x: -1020
 	y: 72
-	in com with SyntaxTree
+	in comp with SyntaxTree
 	+ void Next()
 	+ void ClearTo()
 	+ void ClearAll()
@@ -361,7 +361,7 @@ class Analyzer{
 class Highlighter{
 	x: -1020
 	y: -132
-	in com with Analyzer
+	in comp with Analyzer
 	# void highlightBlock()
 	- SyntaxTree* syntax_tree
 	- Analyzer* analyzer
