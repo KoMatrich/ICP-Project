@@ -1,5 +1,5 @@
 /**
- * @file Box.h
+ * @file SEQBox.h
  *
  * @brief Contains declaration of box for SEQ
  *

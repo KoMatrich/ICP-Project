@@ -1,5 +1,5 @@
 /**
- * @file Arrow.h
+ * @file SEQArrow.h
  *
  * @brief Contains declaration of arrow for SEQ
  *

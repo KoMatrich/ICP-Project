@@ -11,8 +11,8 @@
 #pragma once
 
 #include <QWidget>
-#include "Graph/ERD/Item.h"
-#include "Graph/ERD/Arrow.h"
+#include "Graph/ERD/ERDItem.h"
+#include "Graph/ERD/ERDArrow.h"
 
  /// @brief ERD scene
 class ERDScene : public QGraphicsScene

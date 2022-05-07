@@ -1,5 +1,5 @@
 /**
- * @file Item.h
+ * @file ERDItem.h
  *
  * @brief Contains declaration of item for ERD
  *

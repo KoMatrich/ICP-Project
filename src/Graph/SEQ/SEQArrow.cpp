@@ -1,4 +1,4 @@
-#include "Graph/SEQ/Arrow.h"
+#include "Graph/SEQ/SEQArrow.h"
 #include "Services/Code.h"
 
 SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln)

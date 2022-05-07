@@ -1,4 +1,4 @@
-#include "Graph/ERD/Arrow.h"
+#include "Graph/ERD/ERDArrow.h"
 
 ERDArrow::ERDArrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type)
     :o1(o1), o2(o2)

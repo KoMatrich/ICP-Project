@@ -1,5 +1,5 @@
 /**
- * @file Column.h
+ * @file SEQColumn.h
  *
  * @brief Contains declaration of column for SEQ
  *
@@ -17,7 +17,7 @@
 #include "Graph/ItemConst.h"
 
  /// @brief SEQ scene column
-class Column : public QGraphicsObject
+class SEQColumn : public QGraphicsObject
 {
     Q_OBJECT
 public:
@@ -27,7 +27,7 @@ public:
     /// @param off      this offset
     /// @param mem      SEQMember to get name from
     /// @param height   height of column content (count)
-    Column(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, const int& height);
+    SEQColumn(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember& mem, const int& height);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
     QRectF boundingRect() const override;

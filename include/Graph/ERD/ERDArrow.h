@@ -1,5 +1,5 @@
 /**
- * @file Arrow.h
+ * @file ERDArrow.h
  *
  * @brief Contains declaration of arrow for ERD
  *
