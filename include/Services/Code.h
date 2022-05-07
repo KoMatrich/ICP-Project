@@ -80,6 +80,13 @@ public:
     /// @brief              make property at line ln public
     /// @param ln           line with property
     static void makePublic(size_t ln);
+    /// @brief              adds a new class to code
+    /// @param name         name of the class
+    /// @param isInterface  interface flag
+    static void addEntity(QString name, bool isInterface);
+    /// @brief              Stores the line number of enduml
+    /// @param ln           line number in code
+    static void setNewClassLine(size_t ln);
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint

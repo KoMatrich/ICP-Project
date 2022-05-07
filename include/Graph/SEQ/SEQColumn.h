@@ -68,7 +68,11 @@ private:
     bool is_thick = false;
     /// @brief saved filling gradient for background drawing
     QLinearGradient fill;
-    /// @brief line of code
+    /// @brief line in code
     size_t line;
+    /// @brief Class line in code
+    size_t c_line;
+    /// @brief error flag
+    bool has_error = false;
 };
 

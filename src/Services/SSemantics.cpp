@@ -334,6 +334,7 @@ void Semantics::buildSTree(GlobalStack stack)
         this->classes[n].pos_end = i;
         n++;
     }
+    CodeService::setNewClassLine(i);
     // delete excessive classes
     while (this->classes.size() > n) {
         this->classes.pop_back();

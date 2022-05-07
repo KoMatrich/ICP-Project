@@ -89,6 +89,27 @@ void CodeService::makePublic(size_t ln)
     cursor.insertText(line);
 }
 
+void CodeService::addEntity(QString name, bool isInterface)
+{
+    HistoryService::takeHistorySnapshot(); //before change
+    CodeService& instance = CodeService::getInstance();
+    QTextEdit* editor = CodeService::getInstance().code;
+    QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(instance.new_class_line));
+    if (isInterface) {
+        cursor.insertText("\ninterface " + name + " {\n");
+    }
+    else {
+        cursor.insertText("\nclass " + name + " {\n");
+    }
+    cursor.insertText("\tx: 0\n\ty: 0\n}\n");
+}
+
+void CodeService::setNewClassLine(size_t ln)
+{
+    CodeService& instance = CodeService::getInstance();
+    instance.new_class_line = ln;
+}
+
 void CodeService::formatLine(size_t ln, HLevel level)
 {
     QTextEdit* editor = CodeService::getInstance().code;
@@ -111,7 +132,6 @@ void CodeService::formatLine(size_t ln, HLevel level)
     cursor.setBlockFormat(f);
 }
 
-// TODO optimize to use less inserts
 void CodeService::updatePos(size_t entity_ln, size_t x_ln, int x_val, size_t y_ln, int y_val)
 {
     if (!CodeService::getInstance().isPosActive)

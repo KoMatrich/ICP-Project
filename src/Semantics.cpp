@@ -362,6 +362,7 @@ void Sequence::testEntities(std::vector<UMLClass> classes)
             if (classes[i].getClassName() == member.getName()) {
                 ok = true;
                 member.setClassID(i);
+                member.setClassLine(classes[i].pos);
                 member.setInterfaceFlag(classes[i].isInterface());
             }
         }

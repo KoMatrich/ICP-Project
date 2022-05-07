@@ -11,8 +11,9 @@ SEQColumn::SEQColumn(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember&
 	rsize = QSize{ w, HEADER_HEIGHT } + SOFFSET;
 
 	line = mem.getLine();
+    c_line = mem.getClassLine();
 	//create infill
-	if (mem.getErrorFlag()) {
+	if (has_error = mem.getErrorFlag()) {
 		fill = redG(size.height());
 	} else {
 		if (mem.isInterface()) {
@@ -89,14 +90,16 @@ void SEQColumn::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
 	//menu creation
 	QMenu menu{};
+    if (has_error) {
+        menu.addAction(QStringLiteral("Add class..."), [this]() {CodeService::addEntity(name, false); });
+        menu.addAction(QStringLiteral("Add interface..."), [this]() {CodeService::addEntity(name, true); });
+        menu.addSeparator();
+    }
+    else {
+        menu.addAction(QStringLiteral("View class"), [this]() {CodeService::highlightLine(c_line); });
+    }
+
 	menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightLine(line); });
-	//menu.addAction(QStringLiteral("Delete"), [this]() {CodeService::deleteEntity(class_line, class_end); });
-	//menu.addSeparator();
-	//QMenu* relations = menu.addMenu(QStringLiteral("Add relation"));
-	//relations->addAction(QStringLiteral("Aggregation"), [this]() {connectMode(RuleID::R_AGG); });
-	//relations->addAction(QStringLiteral("Association"), [this]() {connectMode(RuleID::R_ASS); });
-	//relations->addAction(QStringLiteral("Composition"), [this]() {connectMode(RuleID::R_COM); });
-	//relations->addAction(QStringLiteral("Generalization"), [this]() {connectMode(RuleID::R_GEN); });
 
 	//menu execution
 	menu.exec(event->screenPos());

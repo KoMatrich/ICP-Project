@@ -419,6 +419,12 @@ public:
     /// @brief              Getter for class_id
     /// @return             class_id
     inline size_t getClassID() { return class_id; }
+    /// @brief              Setter for original class line
+    /// @param id           new id
+    inline void setClassLine(size_t ln) { class_line = ln; }
+    /// @brief              Getter for original class line
+    /// @return             class_id
+    inline size_t getClassLine() { return class_line; }
     /// @brief              Setter for deactivation time (only accessess the end of vector)
     /// @param time         end time
     void setDeactivationTime(size_t time);
@@ -440,6 +446,8 @@ protected:
     std::vector<SEQActivation> activations;
     /// @brief      Member real class id
     size_t class_id = 0;
+    /// @brief      Member real class line
+    size_t class_line = 0;
     /// @brief      Member activation flag
     bool is_activated = false;
     /// @brief      Member first line occurence
