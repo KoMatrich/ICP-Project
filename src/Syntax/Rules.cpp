@@ -102,6 +102,13 @@ RuleSet const SyntaxTree::genRules()
 	attribute->format.setForeground(Qt::darkGreen);
 	attribute->id = RuleID::R_ATTRIBUTE;
 
+    // attribute type (other)
+    Rule* type_other = new Rule();
+    type_other->start = Start("_?[A-Za-z][A-Za-z0-9_:<>\\*\\&]*");
+    type_other->format.setForeground(Qt::darkCyan);
+    type_other->format.setFontWeight(QFont::Bold);
+    type_other->id = RuleID::R_TYPE;
+
 	// attribute type
 	Rule* type = new Rule();
 	type->start = Start("(S|s)tring|(I|i)nt|(B|b)ool|(R|r)eal|(F|f)loat|(UI|ui)nt|void");
@@ -177,12 +184,15 @@ RuleSet const SyntaxTree::genRules()
 
 	type->parts.push_back(method);
 	type->parts.push_back(attribute);
+    type_other->parts.push_back(method);
+    type_other->parts.push_back(attribute);
 
 	in_kw->parts.push_back(association);
 	in_kw->parts.push_back(aggregation);
 	in_kw->parts.push_back(composition);
 	in_kw->parts.push_back(generalization);
-	access->parts.push_back(type);
+    access->parts.push_back(type);
+	access->parts.push_back(type_other);
 	x_pos->parts.push_back(position);
 	y_pos->parts.push_back(position);
 
@@ -274,13 +284,19 @@ RuleSet const SyntaxTree::genRules()
 	sender->format.setFontItalic(true);
 	sender->id = RuleID::R_ENTITYNAME;
 
+    // arrow callback
+    Rule* a_callback = new Rule();
+    a_callback->start = Start("\\<\\-\\-");
+    a_callback->format.setForeground(Qt::darkMagenta);
+    a_callback->id = RuleID::R_ARROW_CALLBACK;
+
 	// arrow sync
 	Rule* a_sync = new Rule();
 	a_sync->start = Start("\\-\\>");
 	a_sync->format.setForeground(Qt::darkMagenta);
 	a_sync->id = RuleID::R_ARROW_SYNC;
 
-	// arrow sync
+	// arrow async
 	Rule* a_async = new Rule();
 	a_async->start = Start("\\-\\-\\>");
 	a_async->format.setForeground(Qt::darkMagenta);
@@ -294,10 +310,22 @@ RuleSet const SyntaxTree::genRules()
 	receiver->id = RuleID::R_ENTITYNAME;
 	receiver->wh = RuleWhitespace::W_OPTIONAL;
 
+    // receiver entity
+    Rule* receiver2 = new Rule();
+    receiver2->start = receiver->start;
+    receiver2->format = receiver->format;
+    receiver2->id = receiver->id;
+    receiver2->wh = receiver->wh;
+
 	// colon
 	Rule* colon = new Rule();
 	colon->start = Start("\\:");
 	colon->id = RuleID::R_COLON;
+
+    // callback colon
+    Rule* colon2 = new Rule();
+    colon2->start = colon->start;
+    colon2->id = colon->id;
 
 	// message
 	Rule* message = new Rule();
@@ -306,13 +334,24 @@ RuleSet const SyntaxTree::genRules()
 	message->format.setForeground(Qt::darkBlue);
 	message->id = RuleID::R_METHOD;
 
+    // callback message
+    Rule* message2 = new Rule();
+    message2->start = Start(".+$");
+    message2->format.setFontWeight(QFont::Bold);
+    message2->format.setForeground(Qt::darkGreen);
+    message2->id = RuleID::R_METHOD;
+
+    colon2->parts.push_back(message2);
 	colon->parts.push_back(message);
 
+    receiver2->parts.push_back(colon2);
 	receiver->parts.push_back(colon);
 
+    a_callback->parts.push_back(receiver2);
 	a_async->parts.push_back(receiver);
 	a_sync->parts.push_back(receiver);
 
+	sender->parts.push_back(a_callback);
 	sender->parts.push_back(a_async);
 	sender->parts.push_back(a_sync);
 	activate_keyword->parts.push_back(x_tivate);

@@ -31,7 +31,12 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     if (error_level) {
         pen.setColor(Qt::red);
     } else {
-        pen.setColor(Qt::black);
+        if (arrow_type == RuleID::R_ARROW_CALLBACK) {
+            pen.setColor(Qt::darkGray);
+        }
+        else {
+            pen.setColor(Qt::black);
+        }
     }
 
     if (arrow_type == RuleID::R_ARROW_ASYNC)

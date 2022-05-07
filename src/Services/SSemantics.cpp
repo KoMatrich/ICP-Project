@@ -394,7 +394,11 @@ void Semantics::buildSTree(GlobalStack stack)
                     //5 - arrow_type
                     //6 - receiver
                     //8 - method
-                    this->sequences.back().addAction(SEQAction(this->stack[i][8].second, this->stack[i][5].first->id, i, this->stack[i][4].second, this->stack[i][6].second));
+                    if (this->stack[i][5].first->id == RuleID::R_ARROW_CALLBACK) {
+                        this->sequences.back().addAction(SEQAction(this->stack[i][8].second, this->stack[i][5].first->id, i, this->stack[i][6].second, this->stack[i][4].second));
+                    } else {
+                        this->sequences.back().addAction(SEQAction(this->stack[i][8].second, this->stack[i][5].first->id, i, this->stack[i][4].second, this->stack[i][6].second));
+                    }
                     time++;
                 } else {
                     CodeService::formatLine(i, HLevel::LEVEL_WARN);

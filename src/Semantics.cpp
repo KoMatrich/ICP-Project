@@ -278,12 +278,17 @@ void Sequence::testActions(std::vector<UMLClass> classes)
         if (action.getErrorLevel() != 0)
             continue;
 
+        if (action.getType() == RuleID::R_ARROW_CALLBACK) {
+            continue;
+        }
+
         for (auto clas : classes) {
             if (clas.getClassName() == action.getReceiver()) {
                 // match
                 auto methods = clas.getMethods();
                 auto inherited = clas.getInheritedMethods();
                 bool isInside = false;
+
                 QString type;
                 for (UMLProperty m : methods) {
                     if (m.getName() == action.getMethod()) {
@@ -416,7 +421,7 @@ void SEQMember::setDeactivationTime(size_t time)
 bool SEQMember::wasActiveAtTime(size_t time)
 {
     for (SEQActivation act : activations) {
-        if ((time >= act.startIndex()) && (time < act.endIndex()))
+        if ((time >= act.startIndex()) && (time <= act.endIndex()))
             return true;
     }
     return false;
