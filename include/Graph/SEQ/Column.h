@@ -1,9 +1,22 @@
+/**
+ * @file Column.h
+ *
+ * @brief Contains declaration of column for SEQ
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Semantics.h"
 #include "Graph/ItemConst.h"
 
-/// @brief SEQ scene column
+ /// @brief SEQ scene column
 class Column : public QGraphicsObject
 {
     Q_OBJECT
@@ -23,8 +36,8 @@ public:
     /// @param option   object painting option
     /// @param widget   widget on which is painted
     void paint(QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget) override;
+               const QStyleOptionGraphicsItem* option,
+               QWidget* widget) override;
     /// @brief          moves column to pos
     /// @param pos      absolute pos
     void movePos(QPointF& pos);

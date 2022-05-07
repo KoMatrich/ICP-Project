@@ -1,6 +1,6 @@
 #include "Graph/ERD/Arrow.h"
 
-Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type)
+ERDArrow::ERDArrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type)
     :o1(o1), o2(o2)
 {
     setFlag(QGraphicsItem::ItemStacksBehindParent);
@@ -16,14 +16,14 @@ Arrow::Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, R
     update();
 }
 
-QRectF Arrow::boundingRect() const
+QRectF ERDArrow::boundingRect() const
 {
     auto posP = pos().toPoint();
     auto vecP = col_vec.toPoint();
     return QRect(posP, vecP).normalized().marginsAdded(BOUND_OF);
 }
 
-void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+void ERDArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     // if not self referencing:
     if (o1 != o2) {
@@ -46,13 +46,13 @@ void Arrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     drawDebug(painter, this);
 }
 
-void Arrow::update()
+void ERDArrow::update()
 {
     updateArrow();
     updateArrowHead();
 }
 
-void Arrow::updateArrow()
+void ERDArrow::updateArrow()
 {
     //get pos of center of objects
     QPoint p1 = o1->pos().toPoint() + o1->boundingRect().center().toPoint();
@@ -79,7 +79,7 @@ void Arrow::updateArrow()
         col_vec = col_vec_w;
 }
 
-void Arrow::updateArrowHead()
+void ERDArrow::updateArrowHead()
 {
     double angle = std::atan2(-col_vec.y(), col_vec.x());
 
@@ -125,7 +125,7 @@ void Arrow::updateArrowHead()
     }
 }
 
-void Arrow::destroy()
+void ERDArrow::destroy()
 {
     delete this;
 }

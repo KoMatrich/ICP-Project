@@ -1,3 +1,14 @@
+/**
+ * @file Debug.h
+ *
+ * @brief Contains declaration of service for debug print
+ * Separates debug console from other parts of text checking
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Services/Service.h"
@@ -10,7 +21,7 @@
 
 #define VitaClear() DebugService::getInstance().clearText()
 
-/// @brief debug console service
+ /// @brief debug console service
 class DebugService : public Service<DebugService>
 {
 private:

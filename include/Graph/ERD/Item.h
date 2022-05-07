@@ -1,9 +1,22 @@
+/**
+ * @file Item.h
+ *
+ * @brief Contains declaration of item for ERD
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Semantics.h"
 #include "Graph/ItemConst.h"
 
-/// @brief ERD scene item
+ /// @brief ERD scene item
 class ERDItem : public QGraphicsObject
 {
     Q_OBJECT
@@ -20,15 +33,15 @@ public:
     /// @param option   object painting option
     /// @param widget   widget on which is painted
     void paint(QPainter* painter,
-        const QStyleOptionGraphicsItem* option,
-        QWidget* widget) override;
+               const QStyleOptionGraphicsItem* option,
+               QWidget* widget) override;
 protected:
     /// @brief          overridden function (handles position change)
     /// @param change   change in item pos
     /// @param value    value of change
     /// @return         change
     QVariant itemChange(GraphicsItemChange change,
-        const QVariant& value);
+                        const QVariant& value);
     /// @brief          context menu handler
     /// @param event    context menu open event
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event);

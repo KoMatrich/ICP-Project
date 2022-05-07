@@ -1,9 +1,19 @@
+/**
+ * @file SSemantics.h
+ *
+ * @brief Contains declaration of service for semantical analysis
+ *
+ * @author Vitezslav Kríz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Graph/ERD/View.h"
 #include "Graph/SEQ/View.h"
 
-/// @brief Main semantic checking service
+ /// @brief Main semantic checking service
 class Semantics : public Service<Semantics>
 {
 public:

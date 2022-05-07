@@ -1,10 +1,20 @@
+/**
+ * @file Analyzer.h
+ *
+ * @brief Contains declaration of syntax analyzer
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "TextDebug.h"
 #include "Types.h"
 
-/// @brief Syntax Analyzer
-/// that uses SyntaxTree
+ /// @brief Syntax Analyzer
+ /// that uses SyntaxTree
 class Analyzer
 {
 public:

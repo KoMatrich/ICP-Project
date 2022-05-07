@@ -1,6 +1,19 @@
+/**
+ * @file ItemConst.h
+ *
+ * @brief Contains declaration of constants for all graphical items
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
-/// @brief item line type
+ /// @brief item line type
 enum class BlockType
 {
     InheritedText, Text, SepSingle, SepBold, SepDouble

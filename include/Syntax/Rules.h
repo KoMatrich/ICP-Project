@@ -1,3 +1,16 @@
+/**
+ * @file Rules.h
+ *
+ * @brief Contains rules types declarations and structures
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kríz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include <QTextCharFormat>

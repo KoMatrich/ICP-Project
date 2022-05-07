@@ -1,10 +1,23 @@
+/**
+ * @file Arrow.h
+ *
+ * @brief Contains declaration of arrow for ERD
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
 
-/// @brief QGraphicsObject Arrow
-class Arrow : public QGraphicsObject
+ /// @brief QGraphicsObject Arrow
+class ERDArrow : public QGraphicsObject
 {
     Q_OBJECT
 public:
@@ -13,7 +26,7 @@ public:
     /// @param o1           first target (to which is this arrow pointing)
     /// @param o2           second target (from which is this arrow pointing)
     /// @param arr_type     type of arrow head used
-    Arrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type);
+    ERDArrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject* o2, RuleID arr_type);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;

@@ -1,3 +1,13 @@
+/**
+ * @file History.h
+ *
+ * @brief Contains declaration of service that provides undo action
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Services/Highlight.h"

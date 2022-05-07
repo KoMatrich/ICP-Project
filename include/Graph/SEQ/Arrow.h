@@ -1,11 +1,22 @@
+/**
+ * @file Arrow.h
+ *
+ * @brief Contains declaration of arrow for SEQ
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
-#include "CMath.h"
-#include "Semantics.h"
 
-/// @brief QGraphicsObject Arrow
+ /// @brief QGraphicsObject Arrow
 class SEQArrow : public QGraphicsObject
 {
     Q_OBJECT

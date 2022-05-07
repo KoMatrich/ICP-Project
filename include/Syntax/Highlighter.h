@@ -1,10 +1,20 @@
+/**
+ * @file Highlighter.h
+ *
+ * @brief Contains declaration of syntax highlighter
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include <QSyntaxHighlighter>
 #include <QDebug>
 #include "Semantics.h"
 
-/// @brief Syntax Highlighter
+ /// @brief Syntax Highlighter
 class Highlighter : public QSyntaxHighlighter
 {
 public:

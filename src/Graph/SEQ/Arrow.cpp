@@ -1,4 +1,5 @@
 #include "Graph/SEQ/Arrow.h"
+#include "Services/Code.h"
 
 SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln)
     :pos1(pos1), pos2(pos2), method(method), has_error(error), line(ln), classLine(c_ln)
@@ -59,13 +60,13 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->drawPolygon(arrow_head);
     painter->setFont(QApplication::font());
 
-    if (abs(pos1.x() - pos2.x())>0) {
+    if (abs(pos1.x() - pos2.x()) > 0) {
         painter->translate((pos1 - pos2) / 2 - textOffset);
     } else {
-        painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height()/2 });
+        painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height() / 2 });
     }
 
-    if(pos1 == pos2)
+    if (pos1 == pos2)
         painter->translate(ACTIVATION_W / 2, 0);
 
     auto m = QFontMetrics(QApplication::font()).boundingRect(method);
@@ -102,8 +103,7 @@ void SEQArrow::updateArrowHead()
 
     if (pos1 == pos2) {
         offset = QPointF(0, SELF_ARROW_HEIGHT);
-    }
-    else {
+    } else {
         offset = QPointF(0, 0);
     }
 

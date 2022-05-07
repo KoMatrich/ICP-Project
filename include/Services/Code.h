@@ -1,9 +1,20 @@
+/**
+ * @file Code.h
+ *
+ * @brief Contains declaration of service for code editing text file
+ * Separates view from text editor
+ *
+ * @author Vitezslav Kriz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Services/Highlight.h"
 #include "Syntax/Rules.h"
 
-/// @brief highlighting type
+ /// @brief highlighting type
 enum class HLevel
 {
     LEVEL_OK, LEVEL_WARN, LEVEL_ERROR

@@ -1,4 +1,15 @@
+/**
+ * @file TextCode.h
+ *
+ * @brief Contains declaration of main text editor
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
+
 #include "Syntax/Highlighter.h"
 
 QT_BEGIN_NAMESPACE

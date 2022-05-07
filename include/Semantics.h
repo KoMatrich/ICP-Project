@@ -1,3 +1,16 @@
+/**
+ * @file Semantics.h
+ *
+ * @brief Contains declaration of semantics types
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kríz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include <QPair>
@@ -5,7 +18,7 @@
 #include "Services/Debug.h"
 #include "Services/Code.h"
 
-/// @brief Class that stores UML relation data
+ /// @brief Class that stores UML relation data
 class UMLRelation
 {
 public:

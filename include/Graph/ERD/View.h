@@ -1,10 +1,20 @@
+/**
+ * @file View.h
+ *
+ * @brief Contains declaration of view for ERD
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include <QWidget>
 #include "Graph/ERD/Item.h"
 #include "Graph/ERD/Arrow.h"
 
-/// @brief ERD scene
+ /// @brief ERD scene
 class ERDScene : public QGraphicsScene
 {
     Q_OBJECT

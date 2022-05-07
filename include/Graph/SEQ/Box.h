@@ -1,15 +1,25 @@
+/**
+ * @file Box.h
+ *
+ * @brief Contains declaration of box for SEQ
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include "Graph/ItemConst.h"
 
-class Box : public QGraphicsObject
+class SEQBox : public QGraphicsObject
 {
 public:
     /// @brief          inicializes box
     /// @param parent   graphics scene
     /// @param rect_t   size and pos
     /// @param name     name
-    Box(QGraphicsScene* parent, QRect rect_t, QString name);
+    SEQBox(QGraphicsScene* parent, QRect rect_t, QString name);
     /// @brief          calculates bounding box
     /// @return         bounding box of this item
     QRectF boundingRect() const override;

@@ -41,12 +41,12 @@ void ERDScene::addArrows(std::vector<UMLClass> classes)
             if (i1 == nullptr || i2 == nullptr)
                 continue;
 
-            Arrow* arrow;
+            ERDArrow* arrow;
 
             if (rel.getType() == RuleID::R_GEN)
-                arrow = new Arrow(this, i1, i2, rel.getType());
+                arrow = new ERDArrow(this, i1, i2, rel.getType());
             else
-                arrow = new Arrow(this, i2, i1, rel.getType());
+                arrow = new ERDArrow(this, i2, i1, rel.getType());
 
             addItem(arrow);
         }

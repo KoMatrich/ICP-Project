@@ -1,9 +1,20 @@
+/**
+ * @file Service.h
+ *
+ * @brief Contains declaration of service
+ * Used for easy creation and modification of services
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
-/// @brief "abstract" service class
-/// global singleton allocated on stack
-/// for fast access
-/// @note bad practice to use this!
+ /// @brief "abstract" service class
+ /// global singleton allocated on stack
+ /// for fast access
+ /// @note bad practice to use this!
 template<typename T>
 class Service
 {

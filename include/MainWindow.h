@@ -1,3 +1,16 @@
+/**
+ * @file MainWindow.h
+ *
+ * @brief Contains declaration of main window
+ *
+ * @author Martin Kocich
+ * Contact: xkocic02@stud.fit.vutbr.cz
+ *
+ * @author Vitezslav Kríz
+ * Contact xkrizv03@stud.fit.vutbr.cz
+ *
+ */
+
 #pragma once
 
 #include <QMainWindow>
@@ -7,7 +20,7 @@
 #include "Services/SSemantics.h"
 #include "TextCode.h"
 
-/// @brief Main window class
+ /// @brief Main window class
 class MainWindow : public QMainWindow
 {
 public:
