@@ -243,14 +243,14 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
-                actions[act].setErrorLevel(2);
+                actions[act].setErrorLevel(3);
             }
             // OK
         }
         else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message sender was not found in members.");
-            actions[act].setErrorLevel(2);
+            actions[act].setErrorLevel(3);
             continue;
         }
         i = getMemberIndexByName(actions[act].getReceiver());
@@ -259,13 +259,13 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
-                actions[act].setErrorLevel(2);
+                actions[act].setErrorLevel(3);
             }
             // OK
         } else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message receiver was not found in members.");
-            actions[act].setErrorLevel(2);
+            actions[act].setErrorLevel(3);
             continue;
         }
 
@@ -287,6 +287,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 QString type;
                 for (UMLProperty m : methods) {
                     if (m.getName() == action.getMethod()) {
+                        action.setMethodLine(m.pos);
                         type = m.getMod();
                         isInside = true;
                         break;
@@ -296,6 +297,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 if (!isInside) {
                     for (UMLProperty m : inherited) {
                         if (m.getName() == action.getMethod()) {
+                            action.setMethodLine(m.pos);
                             type = m.getMod();
                             isInside = true;
                             break;
@@ -312,7 +314,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                     //known, is it public?
                     if (type == QString("-")) {
                         if (action.getSenderIndex() != action.getReceiverIndex()) {
-                            action.setErrorLevel(1);
+                            action.setErrorLevel(2);
                             CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
                             VitaPrint("[ERROR]: Trying to access a private method from another entity.");
                         }
@@ -328,7 +330,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                             }
 
                             if (!isInherited) {
-                                action.setErrorLevel(1);
+                                action.setErrorLevel(2);
                                 CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
                                 VitaPrint("[ERROR]: Trying to access a protected method from another entity.");
                             }

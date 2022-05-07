@@ -310,9 +310,17 @@ public:
     /// @brief      Setter for class end index
     /// @return     class end index
     size_t getClassEndIndex() { return class_end_index; };
+    /// @brief      Getter for mothod line
+    /// @return     method line
+    size_t getMethodLine() { return method_line; }
+    /// @brief      Setter for class end index
+    /// @return     class end index
+    void setMethodLine(size_t ln) { method_line = ln; }
 protected:
     /// @brief      Place for inserting in case of broken link
-    size_t class_end_index;
+    size_t class_end_index = 0;
+    /// @brief      Reference to line in which method was declared
+    size_t method_line = 0;
     /// @brief      method name
     const QString method;
     /// @brief      Actiom error level (0 = OK, 1 = warning, 2 = error)

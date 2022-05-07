@@ -77,6 +77,9 @@ public:
     /// @brief              duplicate specified line
     /// @param ln           line to be duplicated
     static void duplicateLine(size_t ln);
+    /// @brief              make property at line ln public
+    /// @param ln           line with property
+    static void makePublic(size_t ln);
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint

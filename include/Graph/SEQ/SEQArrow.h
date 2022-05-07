@@ -21,6 +21,7 @@ class SEQArrow : public QGraphicsObject
 {
     Q_OBJECT
 public:
+
     /// @brief              Creates new arrow
     /// @param parent       QGraphicsScene to which is this item linked
     /// @param pos1         first target pos (to which is this arrow pointing)
@@ -28,7 +29,10 @@ public:
     /// @param arr_type     type of arrow head used
     /// @param method       name of arrow action
     /// @param error        error level
-    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln);
+    /// @param ln           action line
+    /// @param c_ln         class line
+    /// @param m_ln         method line
+    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln, size_t m_ln);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;
@@ -56,7 +60,7 @@ private:
     /// @brief method that is displayed above arrow
     const QString method;
     /// @brief error level flag
-    const int has_error;
+    const int error_level;
     /// @brief updates end and col_vec
     void updateArrow();
 
@@ -74,6 +78,8 @@ private:
     size_t line = 0;
     /// @brief last line of class for inserting
     size_t classLine = 0;
+    /// @brief last line of class for inserting
+    size_t methodLine = 0;
 private slots:
     /// @brief calls destructor of this object
     void destroy();

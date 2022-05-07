@@ -86,7 +86,7 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> 
 
     timeIndex++;
 
-    if (action.getType() == RuleID::R_NOP || action.getErrorLevel() >= 2) {
+    if (action.getType() == RuleID::R_NOP || action.getErrorLevel() >= 3) {
         return;
     }
 
@@ -96,7 +96,7 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> 
     QPoint start = pos.at(startI) + off.at(startI) + offset;
     QPoint end = pos.at(endI) + off.at(endI) + offset;
 
-    auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod(), action.getErrorLevel(), action.getLine(), action.getClassEndIndex());
+    auto arr = new SEQArrow(this, start, end, action.getType(), action.getMethod(), action.getErrorLevel(), action.getLine(), action.getClassEndIndex(), action.getMethodLine());
     addItem(arr);
 }
 
