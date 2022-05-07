@@ -23,9 +23,9 @@ Highlighter::Highlighter(QTextEdit* parent)
 }
 
 /// Line index numbering updating
-/// chenges index from odd to even
-/// and back, to make chenge in indexing.
-/// Required to updated all remaining
+/// changes index from odd to even
+/// and back, to make change in indexing.
+/// Required to update all remaining
 /// lines after edited line.
 int inline state_modify(int state)
 {
