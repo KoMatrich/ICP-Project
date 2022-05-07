@@ -45,8 +45,11 @@ private:
     QSize size;
     /// @brief  top rectangle size
     QSize rsize;
+    /// @brief flag for hovering effect
     bool is_thick = false;
+    /// @brief saved filling gradient for background drawing
     QLinearGradient fill;
+    /// @brief line of code
     size_t line;
 };
 

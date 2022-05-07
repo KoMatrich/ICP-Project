@@ -14,7 +14,17 @@ public:
 	/// @brief          updates scene
 	void update();
 private:
+	/// @brief Adds new column (1 column per member)
+	/// @param member member present in Sequence
+	/// @param pos XY point for new column
+	/// @param off offset
+	/// @param height height of column calculated from action vector size
 	void addColumn(SEQMember& member, QPoint pos, QPoint& off, const int& height);
+	/// @brief Adds new arrow (1 arrow per Action)
+	/// @param action action present in Sequence
+	/// @param timeIndex time of action (used for calculating its y value)
+	/// @param pos pos XY point for new arrow
+	/// @param off offset
 	void addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> pos, std::vector<QPoint> off);
 protected:
 	/// @brief          handles code refreshing after dragging
