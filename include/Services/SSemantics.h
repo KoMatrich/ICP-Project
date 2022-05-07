@@ -26,6 +26,10 @@ public:
     /// @brief          Sets endpoint for refreshing
     /// @param endpoint endpoint
     void setSEQView(SEQView* endpoint);
+    /// @brief Start line of UML block
+    size_t UML_line = 0;
+    /// @brief Start line of SEQ block
+    size_t SEQ_line = 0;
 protected:
     /// @brief          endpoint for ERDView
     ERDView* erd = nullptr;

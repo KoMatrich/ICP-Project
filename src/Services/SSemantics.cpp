@@ -298,7 +298,7 @@ void Semantics::buildSTree(GlobalStack stack)
         // get all relations
         while (this->skipTreeUntilWhileTrue({ RuleID::R_IN }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
             if (this->stack[i].size() == 8) {
-                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id, i);
+                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
                 rel.pos = i;
 
                 this->classes[n].addRelation(rel, r++);
