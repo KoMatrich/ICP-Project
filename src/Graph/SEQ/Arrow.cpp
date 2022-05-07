@@ -127,11 +127,12 @@ void SEQArrow::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     //menu creation
     QMenu menu{};
     if (has_error) {
-        menu.addAction(QStringLiteral("Fix issue"), [this]() {CodeService::insertLine(classLine, "\t+ void " + method + "\n"); });
+        menu.addAction(QStringLiteral("Add declaration..."), [this]() {CodeService::insertLine(classLine, "\t+ void " + method + "\n"); });
         menu.addSeparator();
     }
-    menu.addAction(QStringLiteral("Modify Action"), [this]() {CodeService::highlightLine(line); });
-    menu.addAction(QStringLiteral("Delete Action"), [this]() {CodeService::deleteEntity(line, line); });
+    menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightLine(line); });
+    menu.addAction(QStringLiteral("Delete"), [this]() {CodeService::deleteEntity(line, line); });
+    menu.addAction(QStringLiteral("Duplicate"), [this]() {CodeService::duplicateLine(line); });
 
     //menu execution
     menu.exec(event->screenPos());

@@ -63,6 +63,9 @@ public:
     /// @brief              second connection pair storing and processing
     /// @param target       name of target class
     static void relationConnect(QString target);
+    /// @brief              duplicate specified line
+    /// @param ln           line to be duplicated
+    static void duplicateLine(size_t ln);
 private:
     /// @brief              non static endpoint set
     /// @param c            endpoint

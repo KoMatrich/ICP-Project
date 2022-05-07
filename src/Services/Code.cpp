@@ -65,6 +65,17 @@ void CodeService::relationConnect(QString target)
     editor->setDisabled(false);
 }
 
+void CodeService::duplicateLine(size_t ln)
+{
+    HistoryService::takeHistorySnapshot(); //before change
+    QTextEdit* editor = CodeService::getInstance().code;
+    QTextCursor cursor = QTextCursor(editor->document()->findBlockByLineNumber(ln));
+    cursor.movePosition(QTextCursor::Down, QTextCursor::KeepAnchor);
+    QString line = cursor.selectedText();
+    cursor.movePosition(QTextCursor::Up);
+    cursor.insertText(line);
+}
+
 void CodeService::formatLine(size_t ln, HLevel level)
 {
     QTextEdit* editor = CodeService::getInstance().code;
