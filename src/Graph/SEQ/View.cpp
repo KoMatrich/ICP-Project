@@ -70,7 +70,7 @@ void SEQScene::update()
         addItem(box);
 
         start.setX(last.x());
-        start += {BOX_OFFSET * 2 + COLUMN_SPACING, 0};
+        start += {BOX_OFFSET * 4, 0};
     }
 }
 
@@ -112,8 +112,4 @@ SEQView::SEQView(QObject* parent)
     setResizeAnchor(QGraphicsView::AnchorViewCenter);
     setDragMode(QGraphicsView::ScrollHandDrag);
     setAlignment(Qt::AlignCenter);
-
-    QFont f = font();
-    f.setPointSize(ACTION_H * 3 / 4);
-    setFont(f);
 }
