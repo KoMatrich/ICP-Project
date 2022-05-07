@@ -26,6 +26,13 @@ public:
     void paint(QPainter* painter,
                const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;
+protected:
+    /// @brief          marks the entity as selected while hovering
+    /// @param event    mouse event
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+    /// @brief          marks the entity as not selected while hovering
+    /// @param event    mouse event
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event);
 
 private:
     /// @brief Relative vector from first to second target
@@ -52,6 +59,8 @@ private:
     void updateArrowHead();
     /// @brief calls update functions
     void update();
+    /// @brief is being hovered over?
+    bool is_thick = false;
 private slots:
     /// @brief calls destructor of this object
     void destroy();

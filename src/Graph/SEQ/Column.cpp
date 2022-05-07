@@ -40,10 +40,7 @@ QRectF Column::boundingRect() const
 void Column::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     QPen thick_pen = QPen();
-    thick_pen.setWidth(3);
-    QPen selected_pen = QPen();
-    selected_pen.setWidth(5);
-    selected_pen.setColor(Qt::red);
+    thick_pen.setWidth(2);
 
     //draw background frame
     painter->setRenderHint(QPainter::Antialiasing);

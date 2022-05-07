@@ -305,16 +305,16 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 //not en inherited method, set error level
                 if (!isInside) {
                     action.setErrorLevel(1);
-                    CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
-                    VitaPrint("[WARNING]: Unknown method - not implemented.");
+                    CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
+                    VitaPrint("[ERROR]: Unknown method - not implemented.");
                 }
                 else {
                     //known, is it public?
                     if (type == QString("-")) {
                         if (action.getSenderIndex() != action.getReceiverIndex()) {
                             action.setErrorLevel(1);
-                            CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
-                            VitaPrint("[WARNING]: Trying to access a private method from another entity.");
+                            CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
+                            VitaPrint("[ERROR]: Trying to access a private method from another entity.");
                         }
                     }
                     else if (type == QString("#"))
@@ -329,8 +329,8 @@ void Sequence::testActions(std::vector<UMLClass> classes)
 
                             if (!isInherited) {
                                 action.setErrorLevel(1);
-                                CodeService::formatLine(action.getLine(), HLevel::LEVEL_WARN);
-                                VitaPrint("[WARNING]: Trying to access a protected method from another entity.");
+                                CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
+                                VitaPrint("[ERROR]: Trying to access a protected method from another entity.");
                             }
                         }
                     }

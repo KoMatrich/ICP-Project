@@ -3,6 +3,7 @@
 SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error)
     :pos1(pos1), pos2(pos2), method(method), has_error(error)
 {
+    setAcceptHoverEvents(true);
     arrow_type = arr_type;
     setParent(parent);
 
@@ -16,10 +17,11 @@ QRectF SEQArrow::boundingRect() const
 
 void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    //auto w = QFontMetrics(QApplication::font()).boundingRect(method).width();
-    //QPoint textWidth{ metric.size(Qt::TextLongestVariant, method).width() - OFFSET,0 };
-
     QPen pen = QPen();
+
+    if (is_thick) {
+        pen.setWidth(2);
+    }
 
     if (has_error) {
         pen.setColor(Qt::red);
@@ -111,4 +113,16 @@ void SEQArrow::updateArrowHead()
 void SEQArrow::destroy()
 {
     delete this;
+}
+
+void SEQArrow::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = true;
+    update();
+}
+
+void SEQArrow::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    is_thick = false;
+    update();
 }

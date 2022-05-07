@@ -185,12 +185,20 @@ void Semantics::testRelations()
             if (search != std::end(this->classes)) {
                 size_t index = search - this->classes.begin();
                 classes[i].has_changed |= rel[j].updateRelationConnectors(index);
+
+                //test for self generalization
+                if (index == i && rel[j].getType() == RuleID::R_GEN) {
+                    CodeService::formatLine(rel[j].pos, HLevel::LEVEL_ERROR);
+                    VitaPrint("[ERROR]: Entity cannot be a specialized version of itself.");
+                    classes[i].setErrorFlag(true);
+                    rel[j].setInvalid();
+                }
             }
             //not found entity
             else {
                 classes[i].setErrorFlag(true);
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString());
+                VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString() + " (skipped)");
                 auto a = rel[j].toString().toStdString();
                 classes[i].has_changed = true;
                 rel[j].setInvalid();
@@ -290,7 +298,7 @@ void Semantics::buildSTree(GlobalStack stack)
         // get all relations
         while (this->skipTreeUntilWhileTrue({ RuleID::R_IN }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
             if (this->stack[i].size() == 8) {
-                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id);
+                UMLRelation rel = UMLRelation(this->stack[i][7].second, this->stack[i][5].first->id, i);
                 rel.pos = i;
 
                 this->classes[n].addRelation(rel, r++);
