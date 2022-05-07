@@ -74,5 +74,7 @@ private:
     size_t c_line;
     /// @brief error flag
     bool has_error = false;
+    /// @brief interface flag
+    bool is_interface = false;
 };
 

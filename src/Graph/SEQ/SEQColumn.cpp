@@ -12,11 +12,12 @@ SEQColumn::SEQColumn(QGraphicsScene* parent, QPoint pos, QPoint& off, SEQMember&
 
 	line = mem.getLine();
     c_line = mem.getClassLine();
+
 	//create infill
 	if (has_error = mem.getErrorFlag()) {
 		fill = redG(size.height());
 	} else {
-		if (mem.isInterface()) {
+		if (is_interface = mem.isInterface()) {
 			fill = blueG(size.height());
 		} else {
 			fill = greenG(size.height());
@@ -96,7 +97,12 @@ void SEQColumn::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
         menu.addSeparator();
     }
     else {
-        menu.addAction(QStringLiteral("View class"), [this]() {CodeService::highlightLine(c_line); });
+        if (is_interface) {
+            menu.addAction(QStringLiteral("View interface"), [this]() {CodeService::highlightLine(c_line); });
+        }
+        else {
+            menu.addAction(QStringLiteral("View class"), [this]() {CodeService::highlightLine(c_line); });
+        }
     }
 
 	menu.addAction(QStringLiteral("Modify"), [this]() {CodeService::highlightLine(line); });
