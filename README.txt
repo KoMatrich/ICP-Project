@@ -27,18 +27,23 @@
   - live incosistency detection
   - support for:
     - multiple sequence diagrams
-    - acces modifiers
-    - class, interfacess
-    - relations (association, inheritance, composition, generalization)
+    - access modifiers
+    - classes, interfaces
+    - relations (association, inheritance, composition, generalization - only one level deep)
+    - (de)activations of sequence diagram members
+    - syntax highlighting
+    - semantic highlighting and error reporting
+    - automated error resolution through GUI in some error cases
   - interactive diagram editing
     - undo fuction
     - keyboard shortcuts
+    - coordinates updating persistently
     - context menu on right click (default actions)
       - Class diagram (on class):
         - modify - shows class definition in text editor
         - delete - deletes class
-        - add relation - adds relation between classes
-      - Sequence diagram (cloumn):
+        - add relation (+ type of relation) - adds relation between classes in interactive mode
+      - Sequence diagram (column):
         - modify    - shows sequence diagram in text editor
         - view clas - shows class definition in text editor
       - Sequence diagram (method):
@@ -46,6 +51,9 @@
         - delete    - deletes sequence method
         - duplicate - duplicates sequence method
     - context menu on right click (advanced actions)
+      - Sequence diagram (column):
+        - add class       - adds class declaration on non existing entity
+        - add interface   - adds interface declaration on non existing entity
       - Sequence diagram (method):
         - add declaration - adds declaration to class
         - make public     - makes method of class public
