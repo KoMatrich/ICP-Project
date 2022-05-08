@@ -326,10 +326,9 @@ void Semantics::buildSTree(GlobalStack stack)
         while (this->skipTreeUntilWhileTrue({ RuleID::R_XPOS, RuleID::R_YPOS }, &i, 4, RuleID::R_ENTITYBLOCK, 3)) {
             if (this->stack[i].size() == 6) {
                 int pos = this->stack[i][5].second.toInt();
-                // this can lead to error, so we need to test
-                if (!this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS, i))
-                    void;
-                //return;
+                // this can lead to error, so we need to test TODO
+                this->classes[n].updatePosition(pos, this->stack[i][4].first->id == RuleID::R_XPOS, i);
+
             } else {
                 CodeService::formatLine(i, HLevel::LEVEL_WARN);
                 VitaPrint("[WARNING]: Incomplete position definition (skipped)");
