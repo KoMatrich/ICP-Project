@@ -15,7 +15,7 @@ class Student{
 class xkrizv03{
 	x: 12
 	y: -84
-	- void drinkTea()
+	- void drinkPrivateTea()
 	- void prepareTea()
 	- int teaBagCount
 	in gen with Student
@@ -47,8 +47,8 @@ sequence Drinking_errors{
 	activate xkrizv03
 	nop
 	xkrizv03 --> xkocic02: fixMeInGui()
-	xkrizv03 -> xkrizv03: drinkTea()
-	xkocic02 -> xkrizv03: drinkTea()
+	xkrizv03 -> xkrizv03: drinkPrivateTea()
+	xkocic02 -> xkrizv03: drinkPrivateTea()
 	deactivate xkrizv03
 }
 
