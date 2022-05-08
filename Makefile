@@ -10,6 +10,9 @@ BUILD_DIR ?= ./build
 DOC_DIR   ?= ./doc
 RES_DIR   ?= ./resources
 
+VARIANT   := 1
+AUTHORS   := xkrizv03-xkocic02
+
 PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMakeLists.txt Makefile README.md README.txt resources.qrc windeployqt.cmake
 
 # provides vars to all chid processes
@@ -19,7 +22,7 @@ run: build
 	cd $(BUILD_DIR) && ./$(TARGET)
 
 pack: clean
-	zip -r 1-xkocic02-xkrizv03.zip $(PACK_FILES)
+	zip -r $(VARIANT)-$(AUTHORS).zip $(PACK_FILES)
 
 build:
 	$(MAKE) $(BUILD_DIR)/$(TARGET)
