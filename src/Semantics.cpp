@@ -403,7 +403,6 @@ int Sequence::getMemberIndexByName(QString name)
 void Sequence::disableLeftovers(size_t time)
 {
     for (auto& member : members) {
-
         deactivateMember(member.getName(), time);        
     }
 }
