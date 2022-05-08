@@ -112,7 +112,7 @@ private:
     }
 
     /// @brief data blocks (text,separators)
-    QVector<Block> blocks;
+    std::vector<Block> blocks;
 
     /// @brief init processing function for data
     void addline(Block data);

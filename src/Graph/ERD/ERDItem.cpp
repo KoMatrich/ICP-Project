@@ -78,7 +78,7 @@ void ERDItem::addline(Block line)
 {
     auto text = QFontMetrics(QApplication::font()).boundingRect(line.data.trimmed());
 
-    blocks.append(line);
+    blocks.push_back(line);
     switch (line.type) {
     case BlockType::InheritedText:
     case BlockType::Text:
