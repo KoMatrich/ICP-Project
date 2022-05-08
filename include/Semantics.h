@@ -287,7 +287,7 @@ public:
     inline RuleID getType() { return type; }
     /// @brief      Getter for member has_error
     /// @return     member has_error
-    inline int getErrorLevel() { return error_level; }
+    inline ARROW_ELVL getErrorLevel() { return error_level; }
     /// @brief      Getter for member sender index
     /// @return     member sender
     inline size_t getSenderIndex() { return sender_index; }
@@ -306,7 +306,7 @@ public:
     inline QString getReceiver() { return receiver; }
     /// @brief      Setter for member has_error
     /// @param e    new value (Only increasing)
-    inline void setErrorLevel(int e) { if (e > error_level) error_level = e; }
+    inline void setErrorLevel(ARROW_ELVL e) { if (e > error_level) error_level = e; }
     /// @brief      Getter for member line position in code
     /// @return     line position of action
     inline size_t getLine() { return line; }
@@ -330,7 +330,7 @@ protected:
     /// @brief      method name
     const QString method;
     /// @brief      Actiom error level (0 = OK, 1 = warning, 2 = error)
-    int error_level = 0;
+    ARROW_ELVL error_level = ARROW_ELVL::E_OK;
     /// @brief      Action type
     const RuleID type;
     /// @brief      Member sender

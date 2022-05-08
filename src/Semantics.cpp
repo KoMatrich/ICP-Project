@@ -244,13 +244,13 @@ void Sequence::addAction(SEQAction action)
     if (!sender->getActivatedFlag()) {
         CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
         VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
-        action.setErrorLevel(3);
+        action.setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
     }
 
     if (!receiver->getActivatedFlag()) {
         CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
         VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
-        action.setErrorLevel(3);
+        action.setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
     }
 
     this->actions.push_back(action); // OK
@@ -267,14 +267,14 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
-                actions[act].setErrorLevel(2);
+                actions[act].setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
             }
             // OK
         }
         else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message sender was not found in members.");
-            actions[act].setErrorLevel(3);
+            actions[act].setErrorLevel(ARROW_ELVL::E_FATAL);
             continue;
         }
         i = getMemberIndexByName(actions[act].getReceiver());
@@ -283,13 +283,13 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
-                actions[act].setErrorLevel(2);
+                actions[act].setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
             }
             // OK
         } else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
             VitaPrint("[ERROR]: Message receiver was not found in members.");
-            actions[act].setErrorLevel(3);
+            actions[act].setErrorLevel(ARROW_ELVL::E_FATAL);
             continue;
         }
 
@@ -299,7 +299,7 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
 void Sequence::testActions(std::vector<UMLClass> classes)
 {
     for (auto& action : actions) {
-        if (action.getErrorLevel() != 0)
+        if (action.getErrorLevel() != ARROW_ELVL::E_OK)
             continue;
 
         if (action.getType() == RuleID::R_ARROW_CALLBACK) {
@@ -335,7 +335,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 }
                 //not en inherited method, set error level
                 if (!isInside) {
-                    action.setErrorLevel(1);
+                    action.setErrorLevel(ARROW_ELVL::E_NOTIMPLEMENTED);
                     CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
                     VitaPrint("[ERROR]: Unknown method - not implemented.");
                 }
@@ -343,7 +343,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                     //known, is it public?
                     if (type == QString("-")) {
                         if (action.getSenderIndex() != action.getReceiverIndex()) {
-                            action.setErrorLevel(2);
+                            action.setErrorLevel(ARROW_ELVL::E_ACCESS);
                             CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
                             VitaPrint("[ERROR]: Trying to access a private method from another entity.");
                         }
@@ -359,7 +359,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                             }
 
                             if (!isInherited) {
-                                action.setErrorLevel(2);
+                                action.setErrorLevel(ARROW_ELVL::E_ACCESS);
                                 CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
                                 VitaPrint("[ERROR]: Trying to access a protected method from another entity.");
                             }
