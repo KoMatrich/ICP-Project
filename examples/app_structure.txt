@@ -90,7 +90,6 @@ class Sequence{
 	y: -648
 	in agg with SEQMember
 	in agg with SEQAction
-	+ void buildSTree()
 	+ bool activateMember()
 	+ bool deactivateMember()
 	+ void addAction()
@@ -383,3 +382,38 @@ class SyntaxTree{
 	- RuleSet syntax_tree
 }
 @enduml
+
+@startseq
+
+sequence Find_error_example{
+	activate Semantics
+	Semantics -> Semantics: buildSTree()
+	Semantics -> Semantics: addClass()
+	activate UMLClass
+	Semantics -> UMLClass: addProperty()
+	Semantics -> UMLClass: addRelation()
+	Semantics -> UMLClass: addProperty()
+	activate Sequence
+	Semantics -> Sequence: activateMember()
+	Semantics -> Sequence: addAction()
+	Semantics -> Sequence: deactivateMember()
+	Semantics -> Sequence: testActions()
+	Sequence --> UMLClass: getMethods()
+	Sequence --> UMLClass: getInheritedMethods()
+	deactivate UMLClass
+	Semantics <-- Sequence: E_NOTIMPLEMENTED
+	deactivate Sequence
+	nop
+	activate CodeService
+	Semantics -> CodeService: highlightLine()
+	deactivate CodeService
+	activate DebugService
+	Semantics -> DebugService: printText()
+	deactivate Semantics
+	activate DebugTextEdit
+	DebugTextEdit <-- DebugService: Action was not implemented.
+	deactivate DebugService
+	deactivate DebugTextEdit
+}
+
+@endseq

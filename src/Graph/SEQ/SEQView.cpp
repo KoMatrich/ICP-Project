@@ -38,6 +38,8 @@ void SEQScene::update()
         }
         COLUMN_SPACING += COLUMN_SPACE;
 
+        if (members.empty()) continue;
+
         //keep track of stem starts
         std::vector<QPoint> pos;
         std::vector<QPoint> offs;
