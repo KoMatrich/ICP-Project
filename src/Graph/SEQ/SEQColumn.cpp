@@ -73,7 +73,7 @@ void SEQColumn::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
 		//draw at start pos
 		int start = act.startIndex() * (ACTION_RH + ACTION_S);
 		//draw end of activation with litle tail
-		int end = act.endIndex() * (ACTION_RH + ACTION_S) + (ACTION_RH / 8.0);
+		int end = act.endIndex() * (ACTION_RH + ACTION_S) - (ACTION_RH / 2.0);
 		//draw activation rectangle
 		painter->drawRect(-ACTIVATION_W / 2.0, start, ACTIVATION_W, end - start);
 	}

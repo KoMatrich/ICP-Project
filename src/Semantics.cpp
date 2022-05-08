@@ -229,7 +229,31 @@ bool Sequence::deactivateMember(QString name, size_t time)
 
 void Sequence::addAction(SEQAction action)
 {
-    this->actions.push_back(action);
+    SEQMember* sender = getMemberByName(action.getSender());
+    if (sender == nullptr) {
+        this->actions.push_back(action); // will get caught later
+        return;
+    }
+
+    SEQMember* receiver = getMemberByName(action.getReceiver());
+    if (receiver == nullptr) {
+        this->actions.push_back(action); // will get caught later
+        return;
+    }
+
+    if (!sender->getActivatedFlag()) {
+        CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
+        VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
+        action.setErrorLevel(3);
+    }
+
+    if (!receiver->getActivatedFlag()) {
+        CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
+        VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
+        action.setErrorLevel(3);
+    }
+
+    this->actions.push_back(action); // OK
 }
 
 void Sequence::connectActions(std::vector<UMLClass> classes)
