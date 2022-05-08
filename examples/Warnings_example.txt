@@ -34,3 +34,20 @@ class xkocic02{
 }
 
 @enduml
+
+@startseq
+
+sequence Drinking_errors{
+	deactivate xkrizv03
+	activate xkocic02
+	activate xkocic02
+	activate xkrizv03
+	nop
+	deactiv
+	deactivate xkrizv03
+	activ
+	nop
+	xkocic02 -> xkocic02: write
+}
+
+@endseq

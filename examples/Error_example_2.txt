@@ -41,7 +41,6 @@ class Teacher{
 @startseq
 
 sequence Drinking_errors{
-	deactivate xkocic02
 	activate fix_me_in_gui
 	activate xkocic02
 	activate xkrizv03
