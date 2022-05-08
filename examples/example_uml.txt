@@ -18,8 +18,8 @@ class App{
 class MainWindow{
 	x: -756
 	y: -564
-	in comp with MainTextEdit
-	in comp with DebugTextEdit
+	in com with MainTextEdit
+	in com with DebugTextEdit
 	# bool eventFilter()
 	# void closeEvent()
 	- bool save()
@@ -46,7 +46,7 @@ class MainWindow{
 class MainTextEdit{
 	x: -996
 	y: -372
-	in comp with Highlighter
+	in com with Highlighter
 	+ void syntax_reload()
 	- Highlighter* highlighter
 }
@@ -86,8 +86,8 @@ class Semantics{
 }
 
 class Sequence{
-	x: 312
-	y: -516
+	x: 384
+	y: -648
 	in agg with SEQMember
 	in agg with SEQAction
 	+ void buildSTree()
@@ -345,7 +345,7 @@ class CodeService{
 class Analyzer{
 	x: -1020
 	y: 72
-	in comp with SyntaxTree
+	in com with SyntaxTree
 	+ void Next()
 	+ void ClearTo()
 	+ void ClearAll()
@@ -361,7 +361,7 @@ class Analyzer{
 class Highlighter{
 	x: -1020
 	y: -132
-	in comp with Analyzer
+	in com with Analyzer
 	# void highlightBlock()
 	- SyntaxTree* syntax_tree
 	- Analyzer* analyzer
