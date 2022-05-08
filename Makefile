@@ -5,12 +5,17 @@
 
 SRC_DIR  ?= ./src
 INC_DIRS ?= ./include
+BUILD_DIR ?= ./build
 DOC_DIR  ?= ./doc
 RES_DIR  ?= ./resources
 
 PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMakeLists.txt Makefile README.md README.txt resources.qrc windeployqt.cmake
 
+# provides vars to all chid processes
+export
+
 run: build
+	cd $(BUILD_DIR) && ./ICP
 
 pack:
 	zip -r 1-xkocic02-xkrizv03.zip $(PACK_FILES)
