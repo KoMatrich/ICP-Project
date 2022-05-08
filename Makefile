@@ -3,11 +3,12 @@
 # @author Martin Kocich
 # Contact: xkocic02@stud.fit.vutbr.cz
 
-SRC_DIR  ?= ./src
-INC_DIRS ?= ./include
+TARGET    ?= ICP
+SRC_DIR   ?= ./src
+INC_DIRS  ?= ./include
 BUILD_DIR ?= ./build
-DOC_DIR  ?= ./doc
-RES_DIR  ?= ./resources
+DOC_DIR   ?= ./doc
+RES_DIR   ?= ./resources
 
 PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMakeLists.txt Makefile README.md README.txt resources.qrc windeployqt.cmake
 
@@ -15,12 +16,15 @@ PACK_FILES := $(DOC_DIR)/Doxyfile examples $(INC_DIRS) $(RES_DIR) $(SRC_DIR) CMa
 export
 
 run: build
-	cd $(BUILD_DIR) && ./ICP
+	cd $(BUILD_DIR) && ./$(TARGET)
 
-pack:
+pack: clean
 	zip -r 1-xkocic02-xkrizv03.zip $(PACK_FILES)
 
 build:
+	$(MAKE) $(BUILD_DIR)/$(TARGET)
+
+$(BUILD_DIR)/$(TARGET):
 	cd $(SRC_DIR) && $(MAKE)
 
 doc:
@@ -30,4 +34,4 @@ clean:
 	cd $(SRC_DIR) && $(MAKE) clean
 	cd $(DOC_DIR) && rm -rf html
 
-.PHONY: run doc clean
+.PHONY: run build doc clean
