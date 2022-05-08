@@ -35,7 +35,7 @@ void Semantics::testProperties()
                 for (size_t j = i + 1; j < att.size(); j++) {
                     if (att[i] == att[j]) {
                         if (!att[i].getDuplicateFlag()) {
-                            VitaPrint("[ERROR] Duplicate attribute name: " + att[i].getName());
+                            VitaPrint("Line " + QString::number(att[j].pos) + " [ERROR] Duplicate attribute name: " + att[i].getName());
                         }
 
 
@@ -59,7 +59,7 @@ void Semantics::testProperties()
                 for (size_t j = 0; j < inh_att.size(); j++) {
                     if (att[i] == inh_att[j]) {
                         if (!att[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Duplicate inherited attribute name: " + att[i].getName());
+                            VitaPrint("Line " + QString::number(att[j].pos) + " [ERROR] Duplicate inherited attribute name: " + att[i].getName());
 
                         CodeService::formatLine(att[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(att[j].pos, HLevel::LEVEL_ERROR);
@@ -79,7 +79,7 @@ void Semantics::testProperties()
                 for (size_t j = i + 1; j < inh_att.size(); j++) {
                     if (inh_att[i] == inh_att[j]) {
                         if (!inh_att[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Inherited attribute in collision: " + inh_att[i].getName());
+                            VitaPrint("Line " + QString::number(inh_att[j].pos) + " [ERROR] Inherited attribute in collision: " + inh_att[i].getName());
 
                         CodeService::formatLine(inh_att[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(inh_att[j].pos, HLevel::LEVEL_ERROR);
@@ -102,7 +102,7 @@ void Semantics::testProperties()
                 for (size_t j = i + 1; j < mth.size(); j++) {
                     if (mth[i] == mth[j]) {
                         if (!mth[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Duplicate method name: " + mth[i].getName());
+                            VitaPrint("Line " + QString::number(mth[j].pos) + " [ERROR] Duplicate method name: " + mth[i].getName());
 
                         CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(mth[j].pos, HLevel::LEVEL_ERROR);
@@ -120,7 +120,7 @@ void Semantics::testProperties()
                 for (size_t j = 0; j < inh_mth.size(); j++) {
                     if (mth[i] == inh_mth[j]) {
                         if (!mth[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Duplicate inherited method name: " + mth[i].getName());
+                            VitaPrint("Line " + QString::number(inh_mth[j].pos) + " [ERROR] Duplicate inherited method name: " + mth[i].getName());
 
                         CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(inh_mth[j].pos, HLevel::LEVEL_ERROR);
@@ -140,7 +140,7 @@ void Semantics::testProperties()
                 for (size_t j = i + 1; j < inh_mth.size(); j++) {
                     if (inh_mth[i] == inh_mth[j]) {
                         if (!inh_mth[i].getDuplicateFlag())
-                            VitaPrint("[ERROR] Inherited attribute in collision: " + inh_mth[i].getName());
+                            VitaPrint("Line " + QString::number(inh_mth[j].pos) + " [ERROR] Inherited attribute in collision: " + inh_mth[i].getName());
 
                         CodeService::formatLine(inh_mth[i].pos, HLevel::LEVEL_ERROR);
                         CodeService::formatLine(inh_mth[j].pos, HLevel::LEVEL_ERROR);
@@ -189,7 +189,7 @@ void Semantics::testRelations()
                 //test for self generalization
                 if (index == i && rel[j].getType() == RuleID::R_GEN) {
                     CodeService::formatLine(rel[j].pos, HLevel::LEVEL_ERROR);
-                    VitaPrint("[ERROR]: Entity cannot be a specialized version of itself.");
+                    VitaPrint("Line " + QString::number(rel[j].pos) + " [ERROR]: Entity cannot be a specialized version of itself.");
                     classes[i].setErrorFlag(true);
                     rel[j].setInvalid();
                 }
@@ -198,7 +198,7 @@ void Semantics::testRelations()
             else {
                 classes[i].setErrorFlag(true);
                 CodeService::formatLine(rel[j].pos, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Unknown entity relation: " + rel[j].toString() + " (skipped)");
+                VitaPrint("Line " + QString::number(rel[j].pos) + " [WARNING]: Unknown entity relation: " + rel[j].toString() + " (skipped)");
                 auto a = rel[j].toString().toStdString();
                 classes[i].has_changed = true;
                 rel[j].setInvalid();
@@ -293,7 +293,7 @@ void Semantics::buildSTree(GlobalStack stack)
                     this->classes[n].addProperty(p, false, a++);
             } else {
                 CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete property definition (skipped)");
+                VitaPrint("Line " + QString::number(i) + " [WARNING]: Incomplete property definition (skipped)");
             }
 
             if (++i >= this->stack.size()) break;
@@ -311,7 +311,7 @@ void Semantics::buildSTree(GlobalStack stack)
                 this->classes[n].addRelation(rel, r++);
             } else {
                 CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete relation definition (skipped)");
+                VitaPrint("Line " + QString::number(i) + " [WARNING]: Incomplete relation definition (skipped)");
             }
 
             if (++i >= this->stack.size()) break;
@@ -331,7 +331,7 @@ void Semantics::buildSTree(GlobalStack stack)
 
             } else {
                 CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                VitaPrint("[WARNING]: Incomplete position definition (skipped)");
+                VitaPrint("Line " + QString::number(i) + " [WARNING]: Incomplete position definition (skipped)");
             }
 
             if (++i >= this->stack.size()) break;
@@ -380,17 +380,17 @@ void Semantics::buildSTree(GlobalStack stack)
                     if (this->stack[i][4].first->id == RuleID::R_ACTIVATE) {
                         if (!this->sequences.back().activateMember(this->stack[i][5].second, time, i)) {
                             CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                            VitaPrint("[WARNING]: Cannot activate already activated member (skipped)");
+                            VitaPrint("Line " + QString::number(i) + " [WARNING]: Cannot activate already activated member (skipped)");
                         }
                     } else {
                         if (!this->sequences.back().deactivateMember(this->stack[i][5].second, time)) {
                             CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                            VitaPrint("[WARNING]: Cannot deactivate already deactivated member (skipped)");
+                            VitaPrint("Line " + QString::number(i) + " [WARNING]: Cannot deactivate already deactivated member (skipped)");
                         }
                     }
                 } else {
                     CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                    VitaPrint("[WARNING]: Incomplete activation definition (skipped)");
+                    VitaPrint("Line " + QString::number(i) + " [WARNING]: Incomplete activation definition (skipped)");
                 }
             }
             // communications (modify timestamps)
@@ -408,7 +408,7 @@ void Semantics::buildSTree(GlobalStack stack)
                     time++;
                 } else {
                     CodeService::formatLine(i, HLevel::LEVEL_WARN);
-                    VitaPrint("[WARNING]: Incomplete communication definition (skipped)");
+                    VitaPrint("Line " + QString::number(i) + " [WARNING]: Incomplete communication definition (skipped)");
                 }
             } else { // NOP
                 size_t noptime = 1;
@@ -423,9 +423,9 @@ void Semantics::buildSTree(GlobalStack stack)
             if (++i >= this->stack.size()) break;
         }
         // testing and index connecting
+        this->sequences.back().disableLeftovers(time);
         this->sequences.back().connectActions(classes);
         this->sequences.back().testEntities(classes);
-        this->sequences.back().disableLeftovers(time);
         this->sequences.back().testActions(classes);
         this->sequences.back().setEndIndexes(classes);
     }
@@ -453,7 +453,7 @@ void Semantics::testDuplicates()
         for (size_t j = i + 1; j < classes.size(); j++) {
             if (classes[i] == classes[j]) {
                 if (!classes[i].getDuplicateFlag())
-                    VitaPrint("[ERROR] Duplicate entity name: " + classes[i].getClassName());
+                    VitaPrint("Line " + QString::number(classes[j].pos) + " [ERROR] Duplicate entity name: " + classes[i].getClassName());
 
                 CodeService::formatLine(classes[i].pos, HLevel::LEVEL_ERROR);
                 classes[i].setErrorFlag(true);

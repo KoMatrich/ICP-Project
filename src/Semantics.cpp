@@ -88,7 +88,7 @@ bool UMLClass::updatePosition(int pos, bool is_x, size_t i)
         if (this->x_set) {
             this->setErrorFlag(true);
             CodeService::formatLine(i, HLevel::LEVEL_ERROR);
-            VitaPrint("[ERROR]: Duplicate x coordinate, please fix in the code edit.");
+            VitaPrint("Line " + QString::number(i) + " [ERROR]: Duplicate x coordinate, please fix in the code edit.");
             return false;
         }
         this->x_set = true;
@@ -98,7 +98,7 @@ bool UMLClass::updatePosition(int pos, bool is_x, size_t i)
         if (this->y_set) {
             this->setErrorFlag(true);
             CodeService::formatLine(i, HLevel::LEVEL_ERROR);
-            VitaPrint("[ERROR]: Duplicate y coordinate, please fix in the code edit.");
+            VitaPrint("Line " + QString::number(i) + " [ERROR]: Duplicate y coordinate, please fix in the code edit.");
             return false;
         }
         this->y_set = true;
@@ -243,13 +243,13 @@ void Sequence::addAction(SEQAction action)
 
     if (!sender->getActivatedFlag()) {
         CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
-        VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
+        VitaPrint("Line " + QString::number(action.getLine()) + " [ERROR]: Message sender was not active at the time message was sent.");
         action.setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
     }
 
     if (!receiver->getActivatedFlag()) {
         CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
-        VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
+        VitaPrint("Line " + QString::number(action.getLine()) + " [ERROR]: Message receiver was not active at the time message was sent.");
         action.setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
     }
 
@@ -266,14 +266,14 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             actions[act].setSenderIndex(i);
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
-                VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
+                VitaPrint("Line " + QString::number(actions[act].getLine()) + " [ERROR]: Message sender was not active at the time message was sent.");
                 actions[act].setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
             }
             // OK
         }
         else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
-            VitaPrint("[ERROR]: Message sender was not found in members.");
+            VitaPrint("Line " + QString::number(actions[act].getLine()) + " [ERROR]: Message sender was not found in members.");
             actions[act].setErrorLevel(ARROW_ELVL::E_FATAL);
             continue;
         }
@@ -282,13 +282,13 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             actions[act].setReceiverIndex(i);
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
-                VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
+                VitaPrint("Line " + QString::number(actions[act].getLine()) + " [ERROR]: Message receiver was not active at the time message was sent.");
                 actions[act].setErrorLevel(ARROW_ELVL::E_NOTACTIVE);
             }
             // OK
         } else {
             CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
-            VitaPrint("[ERROR]: Message receiver was not found in members.");
+            VitaPrint("Line " + QString::number(actions[act].getLine()) + " [ERROR]: Message receiver was not found in members.");
             actions[act].setErrorLevel(ARROW_ELVL::E_FATAL);
             continue;
         }
@@ -337,7 +337,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                 if (!isInside) {
                     action.setErrorLevel(ARROW_ELVL::E_NOTIMPLEMENTED);
                     CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
-                    VitaPrint("[ERROR]: Unknown method - not implemented.");
+                    VitaPrint("Line " + QString::number(action.getLine()) + " [ERROR]: Unknown method - not implemented.");
                 }
                 else {
                     //known, is it public?
@@ -345,7 +345,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                         if (action.getSenderIndex() != action.getReceiverIndex()) {
                             action.setErrorLevel(ARROW_ELVL::E_ACCESS);
                             CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
-                            VitaPrint("[ERROR]: Trying to access a private method from another entity.");
+                            VitaPrint("Line " + QString::number(action.getLine()) + " [ERROR]: Trying to access a private method from another entity.");
                         }
                     }
                     else if (type == QString("#"))
@@ -361,7 +361,7 @@ void Sequence::testActions(std::vector<UMLClass> classes)
                             if (!isInherited) {
                                 action.setErrorLevel(ARROW_ELVL::E_ACCESS);
                                 CodeService::formatLine(action.getLine(), HLevel::LEVEL_ERROR);
-                                VitaPrint("[ERROR]: Trying to access a protected method from another entity.");
+                                VitaPrint("Line " + QString::number(action.getLine()) + " [ERROR]: Trying to access a protected method from another entity.");
                             }
                         }
                     }
@@ -400,7 +400,7 @@ void Sequence::testEntities(std::vector<UMLClass> classes)
 
         if (!ok) {
             CodeService::formatLine(member.getLine(), HLevel::LEVEL_ERROR);
-            VitaPrint("[ERROR]: Disconnected entity member.");
+            VitaPrint("Line " + QString::number(member.getLine()) + " [ERROR]: Disconnected entity member.");
         }
     }
 }
