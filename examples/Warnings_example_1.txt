@@ -1,23 +1,24 @@
 author: Vitezslav Kriz (xkrizv03)
 author: Martin Kocich (xkocic02)
-name: Errors in Class Diagram
+name: Warnings in Class Diagram
 
 @startuml
 
-class Student{
+interface Student{
 	x: 96
 	y: -228
-	y: -228
-	- void writeCode()
+	+ void 
+	- bool canWriteCode()
 }
 
 class xkrizv03{
-	y: -84
+	x: 
+	y: -36
 	- void drinkTea()
 	- void prepareTea()
 	- int teaBagCount
 	in association with Student
-	in gen with xkrizv03
+	in gen 
 	in com with xkrizv03
 }
 
@@ -25,8 +26,10 @@ class xkocic02{
 	x: 300
 	y: -72
 	- void drinkCoffee()
+	+
+	+ int
 	- void prepareCoffee()
-	in gen with Student
+	in gen with
 	- void writeCode()
 }
 

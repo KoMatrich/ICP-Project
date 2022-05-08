@@ -267,7 +267,7 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message sender was not active at the time message was sent.");
-                actions[act].setErrorLevel(3);
+                actions[act].setErrorLevel(2);
             }
             // OK
         }
@@ -283,7 +283,7 @@ void Sequence::connectActions(std::vector<UMLClass> classes)
             if (!members[i].wasActiveAtTime(act)) {
                 CodeService::formatLine(actions[act].getLine(), HLevel::LEVEL_ERROR);
                 VitaPrint("[ERROR]: Message receiver was not active at the time message was sent.");
-                actions[act].setErrorLevel(3);
+                actions[act].setErrorLevel(2);
             }
             // OK
         } else {

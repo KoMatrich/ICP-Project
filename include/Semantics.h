@@ -18,6 +18,12 @@
 #include "Services/Debug.h"
 #include "Services/Code.h"
 
+ /// @brief highlighting type
+enum class ARROW_ELVL
+{
+    E_FATAL = -1, E_OK, E_ACCESS, E_NOTIMPLEMENTED, E_NOTACTIVE
+};
+
  /// @brief Class that stores UML relation data
 class UMLRelation
 {
