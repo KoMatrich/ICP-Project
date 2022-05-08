@@ -60,6 +60,8 @@ void SEQScene::update()
             addArrow(act, timeIndex, pos, offs);
         }
 
+        if (pos.empty()) return;
+
         start = pos.front();
 
         last += {COLUMN_SPACING, HEADER_HEIGHT + HEADER_SPACE + int(acts.size()) * (ACTION_RH + ACTION_S) + STEM_EXTRA + BOX_OFFSET};

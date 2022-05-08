@@ -112,12 +112,14 @@ RuleSet const SyntaxTree::genRules()
 	// attribute type
 	Rule* type = new Rule();
 	type->start = Start("(S|s)tring|(I|i)nt|(B|b)ool|(R|r)eal|(F|f)loat|(UI|ui)nt|void");
+    type->format.setForeground(Qt::black);
 	type->format.setFontWeight(QFont::Bold);
 	type->id = RuleID::R_TYPE;
 
 	// var/method access
 	Rule* access = new Rule();
 	access->start = Start("[+\\-#~]");
+    access->format.setForeground(Qt::black);
 	access->format.setFontWeight(QFont::Bold);
 	access->id = RuleID::R_ACCESS;
 	access->wh = RuleWhitespace::W_OPTIONAL;
@@ -125,33 +127,39 @@ RuleSet const SyntaxTree::genRules()
 	// in keyword
 	Rule* in_kw = new Rule();
 	in_kw->start = Start("in");
+    in_kw->format.setForeground(Qt::black);
 	in_kw->format.setFontWeight(QFont::Bold);
 	in_kw->id = RuleID::R_IN;
 
 	// with keyword
 	Rule* with = new Rule();
 	with->start = Start("with");
+    with->format.setForeground(Qt::black);
 	with->format.setFontWeight(QFont::Bold);
 	with->id = RuleID::R_IN;
 
 	// association aggregation composition generalization
 	Rule* association = new Rule();
 	association->start = Start("(ass|assoc|association)");
+    association->format.setForeground(Qt::black);
 	association->format.setFontItalic(true);
 	association->id = RuleID::R_ASS;
 
 	Rule* aggregation = new Rule();
 	aggregation->start = Start("(agg|aggreg|aggregation)");
+    aggregation->format.setForeground(Qt::black);
 	aggregation->format.setFontItalic(true);
 	aggregation->id = RuleID::R_AGG;
 
 	Rule* composition = new Rule();
 	composition->start = Start("(com|compos|composition)");
+    composition->format.setForeground(Qt::black);
 	composition->format.setFontItalic(true);
 	composition->id = RuleID::R_COM;
 
 	Rule* generalization = new Rule();
 	generalization->start = Start("(gen|general|generalization)");
+    generalization->format.setForeground(Qt::black);
 	generalization->format.setFontItalic(true);
 	generalization->id = RuleID::R_GEN;
 
