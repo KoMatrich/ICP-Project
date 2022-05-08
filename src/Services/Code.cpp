@@ -12,7 +12,7 @@ void CodeService::clearBackground()
     QTextEdit* editor = CodeService::getInstance().code;
     QTextCursor cursor = editor->textCursor();
     QTextBlockFormat f;
-    f.setBackground(Qt::transparent);
+    //f.setBackground(Qt::transparent);
     cursor.select(QTextCursor::Document);
     cursor.setBlockFormat(f);
 

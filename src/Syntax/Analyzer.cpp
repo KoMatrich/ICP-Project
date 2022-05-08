@@ -145,9 +145,9 @@ SKIP:
 void Analyzer::ClearTo(int lineNumber)
 {
     if (lineNumber < 1) return;
-    // FIX
-    global_stack.resize(lineNumber);
-    global_stack.shrink_to_fit();
+    while (lineNumber < global_stack.size()) {
+        global_stack.pop_back();
+    }
 }
 
 void Analyzer::ClearAll()

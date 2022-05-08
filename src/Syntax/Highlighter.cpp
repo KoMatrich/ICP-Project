@@ -140,20 +140,21 @@ void Highlighter::highlightBlock(const QString& text)
 	}
 	while ((offset >= 0) && (offset < len));
 
-	VitaClear();
-
 	switch (offset) {
 	case NO_CHECK:
+        VitaClear();
 		VitaPrint("Nothing to compile!");
 		setFormat(last_off, len - last_off, syntax_tree->no_check);
         return;
 	case SYNTAX_ERR:
+        VitaClear();
 		VitaPrint("Syntax error!");
 		CodeService::clearBackground();
 		setFormat(last_off, len - last_off, syntax_tree->err);
 		setCurrentBlockState(SYNTAX_E);
         return;
 	case INTERNAL_E:
+        VitaClear();
 		VitaPrint("Internal error!");
 		setCurrentBlockState(INTERNAL_E);
         return;
@@ -166,6 +167,7 @@ void Highlighter::highlightBlock(const QString& text)
         if (analyzer->GetStack().size() > 0)
             if (analyzer->GetStack().back().size() == 0) {
                 //whole file has right syntax
+                VitaClear();
                 CodeService::clearBackground();
                 Semantics::getInstance().buildSTree(analyzer->GetStack());
             }
