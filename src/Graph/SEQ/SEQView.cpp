@@ -84,11 +84,15 @@ void SEQScene::addArrow(SEQAction& action, uint& timeIndex, std::vector<QPoint> 
 {
     QPoint offset{ 0, int(HEADER_HEIGHT + HEADER_SPACE + POFFSET.x() + timeIndex * (ACTION_RH + ACTION_S)) };
 
-    if (action.getType() == RuleID::R_NOP || int(action.getErrorLevel()) < 0) {
+    if (int(action.getErrorLevel()) < 0) {
         return;
     }
 
     timeIndex++;
+
+    if (action.getType() == RuleID::R_NOP) {
+        return;
+    }
 
     int startI = action.getSenderIndex();
     int endI = action.getReceiverIndex();
