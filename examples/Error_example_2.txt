@@ -1,6 +1,6 @@
 author: Vitezslav Kriz (xkrizv03)
 author: Martin Kocich (xkocic02)
-name: Simplified coding UML
+name: Fixable errors example
 
 @startuml
 
@@ -45,6 +45,7 @@ sequence Drinking_errors{
 	activate xkocic02
 	activate xkrizv03
 	nop
+	deactivate fix_me_in_gui
 	xkrizv03 --> xkocic02: fixMeInGui()
 	xkrizv03 -> xkrizv03: drinkPrivateTea()
 	xkocic02 -> xkrizv03: drinkPrivateTea()
