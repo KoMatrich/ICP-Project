@@ -31,7 +31,7 @@ protected:
     Service() {};
     /// @brief prevents construction by copying
     /// @param self
-    Service(const Service&) final {};
+    Service(const Service&) {};
     /// @brief  prevents overwrite by assignment
     /// @param  self
     /// @return self

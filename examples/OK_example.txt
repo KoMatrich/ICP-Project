@@ -83,24 +83,10 @@ sequence Coding_experience{
 	deactivate xkocic02
 }
 
-sequence Test{
-
-
+sequence Another_sequence{
 	activate xkrizv03
-	
-	xkrizv03 -> xkrizv03: prepareTea()
-	deactivate xkrizv03
-
-}
-
-sequence Drinking_errors{
-	deactivate xkocic02
-	activate unknown_student
-	activate xkocic02
-	activate xkrizv03
-	
-	xkrizv03 --> xkrizv03: prepareTea()
 	xkrizv03 -> xkrizv03: drinkTea()
+	deactivate xkrizv03
 }
 
 @endseq
