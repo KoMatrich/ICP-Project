@@ -17,7 +17,7 @@ public:
     {
         app.setApplicationName("ICP-Project");
         app.setOrganizationName("BUT FIT");
-        QFont font("Comic Sans MS", 8);
+        QFont font("Open Sans", 8);
         app.setFont(font);
     }
     /// Starts application
