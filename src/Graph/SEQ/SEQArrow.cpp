@@ -16,7 +16,8 @@ QRectF SEQArrow::boundingRect() const
     if (pos1 != pos2) {
         return QRect(0, -ACTION_H / 2, col_vec.toPoint().x(), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
     } else {
-        return QRect(0, -ACTION_H / 2, SELF_ARROW_WIDTH + metric.width(method), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
+        auto m = QFontMetrics(QApplication::font()).boundingRect(method);
+        return QRect(0, -ACTION_H / 2, SELF_ARROW_WIDTH + m.width(), ACTION_RH).normalized().marginsAdded(SEQ_BOUND_OF);
     }
 }
 
@@ -48,7 +49,9 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->setPen(pen);
     painter->setBrush(brush);
 
-    QPoint textOffset{ metric.width(method) / 2, metric.height() / 2 };
+
+    auto m = QFontMetrics(QApplication::font()).boundingRect(method);
+    QPoint textOffset{ m.width() / 2, m.height() / 2 };
 
     // if not self referencing:
     if (pos1 != pos2) {
@@ -67,16 +70,15 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     if (abs(pos1.x() - pos2.x()) > 0) {
         painter->translate((pos1 - pos2) / 2 - textOffset);
     } else {
-        painter->translate(QPoint{ int(ARROW_GEN_SIZE),-metric.height() / 2 });
+        painter->translate(QPoint{ int(ARROW_GEN_SIZE),-m.height() / 2 });
     }
 
     if (pos1 == pos2)
         painter->translate(ACTIVATION_W / 2, 0);
 
-    auto m = QFontMetrics(QApplication::font()).boundingRect(method);
     QRect descRect{ 0,0,m.width(),m.height() };
     painter->drawRect(descRect.marginsAdded(SEQ_BOUND_OF));
-    painter->drawText(QPoint{ 0,metric.height() }, method);
+    painter->drawText(QPoint{ 0,m.height() }, method);
 
     drawDebug(painter, this);
 }

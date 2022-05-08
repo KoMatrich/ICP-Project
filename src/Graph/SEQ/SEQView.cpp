@@ -34,7 +34,8 @@ void SEQScene::update()
         //calculate max spacing width
         int COLUMN_SPACING = 0;
         for (auto& act : acts) {
-            COLUMN_SPACING = qMax(COLUMN_SPACING, metric.width(act.getMethod()) + OFFSET * 2);
+            auto m = QFontMetrics(QApplication::font()).boundingRect(act.getMethod());
+            COLUMN_SPACING = qMax(COLUMN_SPACING, m.width() + OFFSET * 2);
         }
         COLUMN_SPACING += COLUMN_SPACE;
 

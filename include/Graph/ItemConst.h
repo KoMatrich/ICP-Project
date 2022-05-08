@@ -44,9 +44,6 @@ const int RADIUS{ GRID_S };
 const QPoint POFFSET{ OFFSET, OFFSET };
 const QSize SOFFSET{ OFFSET * 2, OFFSET };
 
-/// @brief metric for getting text size
-QFontMetrics const metric = QFontMetrics{ QFont{} };
-
 const int pixOf = 2;
 const QMargins BOUND_OF{ pixOf, pixOf, pixOf, pixOf };
 const int SEQpixOf = 5;

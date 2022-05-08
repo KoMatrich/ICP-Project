@@ -33,7 +33,7 @@ void SEQBox::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QW
     //offset to draw centered
     QRectF descRect = QFontMetrics(QApplication::font()).boundingRect(name);
     painter->translate(-descRect.width() / 2, -descRect.height() / 2);
-    descRect += {qreal(metric.averageCharWidth()), 0, qreal(metric.averageCharWidth()), 0};
+    descRect += {pixOf, 0, pixOf, 0};
 
     painter->setBrush(QColor(225, 255, 225));
     painter->drawRect(descRect);
