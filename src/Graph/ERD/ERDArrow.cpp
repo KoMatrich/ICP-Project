@@ -18,7 +18,7 @@ ERDArrow::ERDArrow(QGraphicsScene* parent, QGraphicsObject* o1, QGraphicsObject*
 
 QRectF ERDArrow::boundingRect() const
 {
-    auto posP = pos().toPoint();
+    auto posP = end.toPoint();
     auto vecP = col_vec.toPoint();
     return QRect(posP, vecP).normalized().marginsAdded(BOUND_OF);
 }
