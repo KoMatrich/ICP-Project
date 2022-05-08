@@ -18,7 +18,7 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 # Include Qt deployment helper function
-include(windeployqt.cmake)
+# include(windeployqt.cmake)
 
 file(GLOB_RECURSE vsrc src/**.cpp)
 file(GLOB_RECURSE vrec resources.qrc resources/**)
@@ -38,7 +38,7 @@ if(MSVC)
     target_link_options(${PROJECT_NAME} PUBLIC "/INCREMENTAL")
 endif()
 
-windeployqt("${PROJECT_NAME}")
+# windeployqt("${PROJECT_NAME}")
 
 # Doxygen support
 find_package(Doxygen OPTIONAL_COMPONENTS)
