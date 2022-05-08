@@ -123,7 +123,7 @@ void Semantics::testProperties()
                             VitaPrint("[ERROR] Duplicate inherited method name: " + mth[i].getName());
 
                         CodeService::formatLine(mth[i].pos, HLevel::LEVEL_ERROR);
-                        CodeService::formatLine(mth[j].pos, HLevel::LEVEL_ERROR);
+                        CodeService::formatLine(inh_mth[j].pos, HLevel::LEVEL_ERROR);
                         c.setErrorFlag(true);
                     }
                 }

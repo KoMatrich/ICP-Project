@@ -1,103 +1,35 @@
 author: Vitezslav Kriz (xkrizv03)
 author: Martin Kocich (xkocic02)
-name: Simplified coding UML
+name: Errors in Class Diagram
 
 @startuml
 
 class Student{
 	x: 96
 	y: -228
-	+ void getPoints()
-	+ bool canWriteCode()
+	+ void 
+	- bool canWriteCode()
 	- void writeCode()
 }
 
 class xkrizv03{
-	x: 12
+	x: 
 	y: -84
 	- void drinkTea()
 	- void prepareTea()
 	- int teaBagCount
-	in gen with Student
+	in association with Student
+	in gen with xkrizv03
+	in com with xkrizv03
 }
 
 class xkocic02{
-	x: 252
-	y: -84
+	x: 300
+	y: -72
 	- void drinkCoffee()
 	- void prepareCoffee()
 	in gen with Student
-}
-
-class Teacher{
-	x: 336
-	y: -192
-	in assoc with Student
-	# UInt gradeProject()
+	- void writeCode()
 }
 
 @enduml
-
-@startseq
-
-sequence Coding_experience{
-	activate xkocic02
-	xkocic02 -> xkocic02: writeCode()
-	xkocic02 -> xkocic02: writeCode()
-	deactivate xkocic02
-
-	activate xkrizv03
-	xkrizv03 -> xkrizv03: writeCode()
-	deactivate xkrizv03
-	
-	NOP 
-
-	activate xkocic02
-	activate xkrizv03
-
-	xkocic02 --> xkrizv03: canWriteCode()
-	xkocic02 <-- xkrizv03: NO
-	xkrizv03 --> xkrizv03: prepareTea()
-	xkrizv03 -> xkrizv03: drinkTea()
-	xkocic02 --> xkrizv03: canWriteCode()
-	xkocic02 <-- xkrizv03: YES
-	deactivate xkocic02
-	
-	xkrizv03 -> xkrizv03: writeCode()
-	deactivate xkrizv03
-	activate xkocic02
-	xkocic02 -> xkocic02: writeCode()
-	deactivate xkocic02
-
-	NOP
-
-	activate Teacher
-	activate xkocic02
-	activate xkrizv03
-	Teacher -> xkrizv03: getPoints()
-	Teacher -> xkocic02: getPoints()
-	Teacher <-- xkrizv03: Thank you
-	Teacher <-- xkocic02: Thank you
-	deactivate Teacher
-	deactivate xkrizv03
-	deactivate xkocic02
-}
-
-sequence Test{
-	
-	activate xkrizv03
-	xkrizv03 -> xkrizv03: drinkTea()
-	deactivate xkrizv03
-}
-
-sequence Drinking_errors{
-	deactivate xkocic02
-	activate unknown_student
-	activate xkocic02
-	activate xkrizv03
-	
-	xkrizv03 --> xkrizv03: prepareTea()
-	xkrizv03 -> xkrizv03: drinkTea()
-}
-
-@endseq
