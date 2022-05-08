@@ -15,6 +15,7 @@
 
 #include "Graph/ItemConst.h"
 #include "Syntax/Rules.h"
+#include "Semantics.h"
 
  /// @brief QGraphicsObject Arrow
 class SEQArrow : public QGraphicsObject
@@ -32,7 +33,7 @@ public:
     /// @param ln           action line
     /// @param c_ln         class line
     /// @param m_ln         method line
-    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln, size_t m_ln);
+    SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const ARROW_ELVL error, size_t ln, size_t c_ln, size_t m_ln);
     /// @brief              override of virtual function
     /// @return             bounding box of arrow
     QRectF boundingRect() const override;
@@ -60,7 +61,7 @@ private:
     /// @brief method that is displayed above arrow
     const QString method;
     /// @brief error level flag
-    const int error_level;
+    const ARROW_ELVL error_level;
     /// @brief updates end and col_vec
     void updateArrow();
 

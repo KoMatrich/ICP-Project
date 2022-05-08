@@ -1,7 +1,7 @@
 #include "Graph/SEQ/SEQArrow.h"
 #include "Services/Code.h"
 
-SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const int error, size_t ln, size_t c_ln, size_t m_ln)
+SEQArrow::SEQArrow(QGraphicsScene* parent, const QPoint& pos1, const QPoint& pos2, const RuleID& arr_type, const QString& method, const ARROW_ELVL error, size_t ln, size_t c_ln, size_t m_ln)
     :pos1(pos1), pos2(pos2), method(method), error_level(error), line(ln), classLine(c_ln), methodLine(m_ln)
 {
     setAcceptHoverEvents(true);
@@ -28,13 +28,12 @@ void SEQArrow::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
         pen.setWidth(2);
     }
 
-    if (error_level) {
+    if (error_level > ARROW_ELVL::E_OK) {
         pen.setColor(Qt::red);
     } else {
         if (arrow_type == RuleID::R_ARROW_CALLBACK) {
             pen.setColor(Qt::darkGray);
-        }
-        else {
+        } else {
             pen.setColor(Qt::black);
         }
     }
@@ -131,10 +130,10 @@ void SEQArrow::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
     //menu creation
     QMenu menu{};
-    if (error_level) {
-        if (error_level == 1)
+    if (error_level > ARROW_ELVL::E_OK) {
+        if (error_level == ARROW_ELVL::E_NOTIMPLEMENTED)
             menu.addAction(QStringLiteral("Add declaration..."), [this]() {CodeService::insertLine(classLine, "\t+ void " + method + "\n"); });
-        else if (error_level == 2)
+        else if (error_level == ARROW_ELVL::E_ACCESS)
             menu.addAction(QStringLiteral("Make public..."), [this]() {CodeService::makePublic(methodLine); });
         menu.addSeparator();
     }
