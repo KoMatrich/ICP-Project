@@ -100,12 +100,12 @@ private:
 
     /// @brief  size of object
     /// @return QSize
-    constexpr QSize Size() { return QSize{ this->width, this->Height() }; }
+    inline QSize Size() { return QSize{ this->width, this->Height() }; }
     /// @brief  real size for bounding box function
     QSize rsize;
     /// @brief  real size of object
     /// @return QSize
-    constexpr QSize RSize()
+    inline QSize RSize()
     {
         return QSize{ qCeil(qreal(Size().width() + POFFSET.x() * 2) / GRID_S) * GRID_S,
         qCeil(qreal(Size().height() + POFFSET.x() * 2) / GRID_S) * GRID_S };
