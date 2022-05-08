@@ -228,7 +228,14 @@ void Semantics::buildSTree(GlobalStack stack)
         return;
     }
 
-    if (stack.size() <= 1) return;
+    if (stack.size() <= 1) {
+        removeClasses();
+        removeSequences();
+
+        erd->update();
+        seq->update();
+        return;
+    }
 
     HighlightService::setEnabled(false);
 
