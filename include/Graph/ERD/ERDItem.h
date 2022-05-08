@@ -115,7 +115,7 @@ private:
     QVector<Block> blocks;
 
     /// @brief init processing function for data
-    void addline(const Block data);
+    void addline(Block data);
 
     //paint sub functions
     /// @brief          paints all blocks

@@ -74,14 +74,13 @@ void ERDItem::addMethods(UMLClass clas)
 }
 
 //adds new data to item
-void ERDItem::addline(const Block line)
+void ERDItem::addline(Block line)
 {
     auto text = QFontMetrics(QApplication::font()).boundingRect(line.data.trimmed());
 
     blocks.append(line);
     switch (line.type) {
     case BlockType::InheritedText:
-        [[FALLTHROUGH]];
     case BlockType::Text:
         width = qMax(width, text.width());
         line_h = qMax(line_h, text.height());
